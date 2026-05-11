@@ -1,35 +1,22 @@
 import { NextResponse } from "next/server"
-import { createClient } from "@/lib/supabase/server"
-import { embedText } from "@/lib/voyage"
+import { embedText, embedBatch } from "@/lib/voyage"
 
+// POST /api/kb/embed — utility to embed arbitrary text (used by seed scripts, etc).
+// Q&A and document writes have their own endpoints that handle embedding internally.
 export async function POST(req: Request) {
   try {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    const body = await req.json()
+    const { text, texts } = body
 
-    const { question, answer, clinicId } = await req.json()
-    if (!question || !answer || !clinicId) {
-      return NextResponse.json({ error: "question, answer, and clinicId required" }, { status: 400 })
+    if (Array.isArray(texts)) {
+      const vectors = await embedBatch(texts)
+      return NextResponse.json({ vectors })
     }
-
-    const content = `Q: ${question}\nA: ${answer}`
-    const embedding = await embedText(content)
-
-    const { data, error } = await supabase
-      .from("kb_qa_pairs")
-      .insert({
-        clinic_id:  clinicId,
-        question,
-        answer,
-        embedding,
-        status:     "published",
-      })
-      .select()
-      .single()
-
-    if (error) throw error
-    return NextResponse.json(data, { status: 201 })
+    if (typeof text === "string") {
+      const vector = await embedText(text)
+      return NextResponse.json({ vector })
+    }
+    return NextResponse.json({ error: "Provide either 'text' or 'texts'." }, { status: 400 })
   } catch (err) {
     console.error("[api/kb/embed]", err)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
