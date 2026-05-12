@@ -65,3 +65,25 @@ export interface SmartReplyResult {
   warm:    string
   concise: string
 }
+
+// ── Pipeline (4-layer orchestrator) ───────────────────────
+export type PipelineLayer = "keyword" | "gatekeeper" | "kb" | "confidence" | "auto_reply"
+
+export interface PipelineRequest {
+  message:         string
+  clinicId:        string
+  conversationId?: string
+  patientId?:      string
+  history?:        string[]
+}
+
+export interface PipelineResult {
+  action:     "auto_reply" | "escalate" | "booking_request"
+  reply?:     string
+  confidence: number
+  gatekeeper: GatekeeperResult
+  kbMatches:  KBMatch[]
+  triage?:    TriageResult
+  decidedAt:  PipelineLayer
+  reason:     string
+}

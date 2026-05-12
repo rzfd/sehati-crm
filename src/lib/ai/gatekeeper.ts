@@ -1,22 +1,18 @@
-import { anthropic, HAIKU } from "./anthropic"
+import { anthropic, HAIKU, extractText, safeParseJson } from "./anthropic"
 import { GATEKEEPER_SYSTEM } from "./prompts"
-import { URGENT_KEYWORDS } from "@/lib/constants"
+import { AI_CONFIG } from "@/lib/constants"
 import type { GatekeeperRequest, GatekeeperResult } from "@/types/ai"
 
+// Layer 2: AI classifier (Haiku, structured JSON).
+// Layer 1 (keyword filter) sudah dijalankan oleh orchestrator sebelum sampai sini —
+// fungsi ini fokus klasifikasi + confidence + escalation rules.
+type RawClassification = {
+  category:   GatekeeperResult["category"]
+  confidence: number
+  reason:     string
+}
+
 export async function runGatekeeper(req: GatekeeperRequest): Promise<GatekeeperResult> {
-  const lower = req.message.toLowerCase()
-
-  // Layer 1: keyword blocklist — bypass AI entirely
-  const isUrgent = URGENT_KEYWORDS.some((kw) => lower.includes(kw))
-  if (isUrgent) {
-    return { action: "escalate", category: "urgent", confidence: 1, reason: "URGENT_KEYWORD match" }
-  }
-
-  // Layer 2: patient escape hatch
-  if (lower.trim() === "staff") {
-    return { action: "escalate", category: "unclear", confidence: 1, reason: "Patient requested staff" }
-  }
-
   try {
     const res = await anthropic.messages.create({
       model: HAIKU,
@@ -25,16 +21,21 @@ export async function runGatekeeper(req: GatekeeperRequest): Promise<GatekeeperR
       messages: [{ role: "user", content: req.message }],
     })
 
-    const text = res.content[0].type === "text" ? res.content[0].text : ""
-    const parsed = JSON.parse(text) as { category: GatekeeperResult["category"]; confidence: number; reason: string }
+    const text = extractText(res.content)
+    const parsed = safeParseJson<RawClassification>(text)
 
-    // Layer 3: medical/complaint always escalates
-    if (parsed.category === "medical" || parsed.category === "complaint") {
+    if (!parsed || typeof parsed.confidence !== "number" || !parsed.category) {
+      console.error("[gatekeeper] unparseable output:", text)
+      return { action: "escalate", category: "unclear", confidence: 0, reason: "Unparseable classifier output" }
+    }
+
+    // Hard rule: gejala medis & complaint SELALU ke staff
+    if (parsed.category === "medical" || parsed.category === "complaint" || parsed.category === "urgent") {
       return { action: "escalate", category: parsed.category, confidence: parsed.confidence, reason: parsed.reason }
     }
 
-    // Layer 4: low confidence → escalate
-    if (parsed.confidence < 0.75) {
+    // Layer 4 confidence gate (juga diterapkan kembali di pipeline setelah cek KB)
+    if (parsed.confidence < AI_CONFIG.CONFIDENCE_THRESHOLD) {
       return { action: "escalate", category: parsed.category, confidence: parsed.confidence, reason: "Low confidence" }
     }
 
