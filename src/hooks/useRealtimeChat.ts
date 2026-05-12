@@ -11,29 +11,32 @@ interface UseRealtimeChatResult {
 }
 
 // Subscribe ke INSERT pada messages untuk conversation tertentu via Supabase Realtime.
-// Loading bukan loading awal saja — juga mengisi history snapshot dari REST sebelum subscribe.
+// Saat conversationId berubah: reset messages SEGERA agar UI tidak flash data lama.
 export function useRealtimeChat(conversationId: string | null): UseRealtimeChatResult {
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading]   = useState(true)
   const [error, setError]       = useState<string | null>(null)
   const seenIds = useRef<Set<string>>(new Set())
 
-  // Data-fetching effect: sync messages from DB + subscribe to realtime updates.
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
+    // Reset SEGERA saat conversation berubah supaya tidak flash data lama
+    setMessages([])
+    setError(null)
+    seenIds.current = new Set()
+
     if (!conversationId) {
-      /* eslint-disable react-hooks/set-state-in-effect */
-      setMessages([])
       setLoading(false)
-      /* eslint-enable react-hooks/set-state-in-effect */
       return
     }
+    setLoading(true)
+    /* eslint-enable react-hooks/set-state-in-effect */
+
     const id = conversationId
     let cancelled = false
     const supabase = createClient()
-    seenIds.current = new Set()
 
     async function load() {
-      setLoading(true)
       const { data, error } = await supabase
         .from("messages")
         .select("*")

@@ -51,7 +51,12 @@ export function ChatInput({ onSend, disabled, placeholder = "Tulis pesan…" }: 
         placeholder={placeholder}
         className="flex-1 resize-none rounded-lg border border-black/[0.12] bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-400/30 focus:border-teal-400"
       />
-      <button onClick={handleSend} disabled={disabled || sending || !text.trim()} className="btn-primary">
+      <button
+        onClick={handleSend}
+        disabled={disabled || sending || !text.trim()}
+        aria-label="Kirim pesan"
+        className="btn-primary"
+      >
         {sending ? "..." : "Kirim"}
       </button>
     </div>

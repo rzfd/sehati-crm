@@ -1,7 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useSmartReply } from "@/hooks/useSmartReply"
+
+interface Template {
+  id:      string
+  title:   string
+  content: string
+}
 
 interface Props {
   patientMessage: string
@@ -21,6 +27,21 @@ export function SmartReplyPanel({ patientMessage, clinicId, onUseReply }: Props)
   const { result, loading, generate, clear } = useSmartReply()
   const [edited, setEdited] = useState<string>("")
   const [active, setActive] = useState<keyof Variants>("warm")
+  const [templates, setTemplates] = useState<Template[]>([])
+
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    fetch("/api/reply-templates")
+      .then((r) => r.ok ? r.json() : [])
+      .then((d) => setTemplates(Array.isArray(d) ? d : []))
+      .catch(() => {})
+  }, [])
+  /* eslint-enable react-hooks/set-state-in-effect */
+
+  function applyTemplate(t: Template) {
+    onUseReply(t.content)
+    fetch(`/api/reply-templates/${t.id}`, { method: "POST" }).catch(() => {})
+  }
 
   function handleGenerate() {
     setEdited("")
@@ -42,6 +63,24 @@ export function SmartReplyPanel({ patientMessage, clinicId, onUseReply }: Props)
           </button>
         )}
       </div>
+
+      {templates.length > 0 && (
+        <div>
+          <p className="text-[10px] text-gray-400 uppercase mb-1">Template cepat</p>
+          <div className="flex flex-wrap gap-1">
+            {templates.slice(0, 6).map((t) => (
+              <button
+                key={t.id}
+                onClick={() => applyTemplate(t)}
+                className="pill pill-purple text-[10px] hover:bg-purple-100"
+                title={t.content}
+              >
+                {t.title}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {!result ? (
         <button onClick={handleGenerate} disabled={loading} className="btn-secondary w-full justify-center">

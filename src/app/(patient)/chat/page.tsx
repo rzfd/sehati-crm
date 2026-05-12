@@ -9,6 +9,7 @@ import { useRealtimeChat } from "@/hooks/useRealtimeChat"
 import { ChatBubble } from "@/components/chat/ChatBubble"
 import { ChatInput } from "@/components/chat/ChatInput"
 import { TypingIndicator } from "@/components/chat/TypingIndicator"
+import { EmptyChatIllustration } from "@/components/shared/Illustrations"
 import type { SenderType } from "@/lib/constants"
 
 type PipelineAction = "auto_reply" | "escalate" | "booking_request"
@@ -27,9 +28,18 @@ export default function PatientChatPage() {
   const [bootstrapping, setBootstrapping] = useState(true)
   const { messages, loading: msgLoading } = useRealtimeChat(conversationId)
   const [sending, setSending] = useState(false)
+  const [optimistic, setOptimistic] = useState<{ id: string; content: string; ts: number }[]>([])
   const [lastResult, setLastResult] = useState<PipelineSummary | null>(null)
   const [error, setError] = useState<string | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+
+  // Hapus optimistic message yang sudah ada di realtime feed
+  useEffect(() => {
+    if (optimistic.length === 0) return
+    const realContents = new Set(messages.filter((m) => m.sender_type === "patient").map((m) => m.content))
+    /* eslint-disable-next-line react-hooks/set-state-in-effect */
+    setOptimistic((prev) => prev.filter((o) => !realContents.has(o.content)))
+  }, [messages, optimistic.length])
 
   useEffect(() => {
     if (!userLoading && patient?.is_new) router.replace("/onboarding")
@@ -54,6 +64,9 @@ export default function PatientChatPage() {
 
   async function handleSend(text: string) {
     if (!conversationId) return
+    // Optimistic: tampil bubble pasien langsung
+    const tempId = `temp-${Date.now()}`
+    setOptimistic((prev) => [...prev, { id: tempId, content: text, ts: Date.now() }])
     setSending(true)
     setError(null)
     try {
@@ -65,6 +78,8 @@ export default function PatientChatPage() {
       const data = await res.json().catch(() => ({}))
       if (!res.ok) {
         setError(`[${res.status}] ${data.error ?? "Gagal kirim pesan."}`)
+        // Rollback optimistic
+        setOptimistic((prev) => prev.filter((o) => o.id !== tempId))
         return
       }
       if (data.pipeline) {
@@ -111,18 +126,38 @@ export default function PatientChatPage() {
         {msgLoading ? (
           <p className="text-sm text-gray-400 text-center">Memuat pesan…</p>
         ) : messages.length === 0 ? (
-          <p className="text-sm text-gray-400 text-center mt-8">
-            Belum ada pesan. Mulai dengan menyapa Tim Klinik 👋
-          </p>
+          <div className="flex flex-col items-center justify-center mt-8 px-4 text-center">
+            <EmptyChatIllustration className="w-48 h-auto mb-3" />
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Sapa Tim Klinik 👋</p>
+            <p className="text-xs text-gray-500 mt-1 max-w-xs">
+              Tanya jam buka, biaya, BPJS, atau apapun tentang klinik. AI siap bantu 24/7.
+            </p>
+            <div className="flex flex-wrap gap-1.5 justify-center mt-4">
+              <button onClick={() => handleSend("Apakah klinik buka hari ini?")} className="pill pill-teal text-[10px]">Jam buka?</button>
+              <button onClick={() => handleSend("Berapa biaya konsul dokter umum?")} className="pill pill-teal text-[10px]">Biaya konsul?</button>
+              <button onClick={() => handleSend("Apakah klinik menerima BPJS?")} className="pill pill-teal text-[10px]">BPJS?</button>
+            </div>
+          </div>
         ) : (
-          messages.map((m) => (
-            <ChatBubble
-              key={m.id}
-              senderType={m.sender_type as SenderType}
-              content={m.content}
-              timestamp={format(new Date(m.created_at), "HH:mm")}
-            />
-          ))
+          <>
+            {messages.map((m) => (
+              <ChatBubble
+                key={m.id}
+                senderType={m.sender_type as SenderType}
+                content={m.content}
+                timestamp={format(new Date(m.created_at), "HH:mm")}
+              />
+            ))}
+            {optimistic.map((o) => (
+              <div key={o.id} className="opacity-60">
+                <ChatBubble
+                  senderType="patient"
+                  content={o.content}
+                  timestamp={format(new Date(o.ts), "HH:mm")}
+                />
+              </div>
+            ))}
+          </>
         )}
         {sending && <TypingIndicator label="AI sedang menganalisis…" />}
         {lastResult && lastResult.action !== "auto_reply" && !sending && (
