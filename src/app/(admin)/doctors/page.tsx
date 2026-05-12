@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { ScheduleEditor } from "@/components/admin/ScheduleEditor"
 
 interface Doctor {
   id:         string
@@ -22,6 +23,7 @@ export default function AdminDoctorsPage() {
   const [error, setError]     = useState<string | null>(null)
   const [showForm, setShowForm] = useState(false)
   const [editId, setEditId]     = useState<string | null>(null)
+  const [scheduleFor, setScheduleFor] = useState<Doctor | null>(null)
 
   // form state
   const [name, setName]           = useState("")
@@ -120,7 +122,12 @@ export default function AdminDoctorsPage() {
           ) : (
             <div className="grid sm:grid-cols-2 gap-3">
               {active.map((d) => (
-                <DoctorCard key={d.id} doctor={d} onEdit={openEdit} onToggle={toggleActive} />
+                <DoctorCard
+                  key={d.id} doctor={d}
+                  onEdit={openEdit}
+                  onToggle={toggleActive}
+                  onSchedule={() => setScheduleFor(d)}
+                />
               ))}
             </div>
           )}
@@ -132,7 +139,12 @@ export default function AdminDoctorsPage() {
               </summary>
               <div className="grid sm:grid-cols-2 gap-3 mt-2">
                 {inactive.map((d) => (
-                  <DoctorCard key={d.id} doctor={d} onEdit={openEdit} onToggle={toggleActive} />
+                  <DoctorCard
+                    key={d.id} doctor={d}
+                    onEdit={openEdit}
+                    onToggle={toggleActive}
+                    onSchedule={() => setScheduleFor(d)}
+                  />
                 ))}
               </div>
             </details>
@@ -140,9 +152,17 @@ export default function AdminDoctorsPage() {
         </>
       )}
 
+      {scheduleFor && (
+        <ScheduleEditor
+          doctorId={scheduleFor.id}
+          doctorName={`${scheduleFor.title} ${scheduleFor.name}`}
+          onClose={() => setScheduleFor(null)}
+        />
+      )}
+
       {showForm && (
-        <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4" onClick={resetForm}>
-          <div className="bg-white rounded-xl p-5 w-full max-w-md space-y-3" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/30 dark:bg-black/60 modal-backdrop z-50 flex items-center justify-center p-4" onClick={resetForm}>
+          <div className="bg-white dark:bg-neutral-900 rounded-xl p-5 modal-content w-full max-w-md space-y-3" onClick={(e) => e.stopPropagation()}>
             <h2 className="text-base font-medium text-gray-700">{editId ? "Edit dokter" : "Tambah dokter"}</h2>
             <form onSubmit={submit} className="space-y-3">
               <div className="grid grid-cols-[80px_1fr] gap-2">
@@ -180,8 +200,13 @@ export default function AdminDoctorsPage() {
 }
 
 function DoctorCard({
-  doctor, onEdit, onToggle,
-}: { doctor: Doctor; onEdit: (d: Doctor) => void; onToggle: (d: Doctor) => void }) {
+  doctor, onEdit, onToggle, onSchedule,
+}: {
+  doctor: Doctor
+  onEdit: (d: Doctor) => void
+  onToggle: (d: Doctor) => void
+  onSchedule: () => void
+}) {
   return (
     <div className="card p-4 flex gap-3 items-start">
       <div className="size-10 rounded-full bg-purple-50 text-purple-500 flex items-center justify-center text-sm font-medium">
@@ -191,8 +216,10 @@ function DoctorCard({
         <p className="text-sm font-medium text-gray-700">{doctor.title} {doctor.name}</p>
         <p className="text-xs text-gray-500">{doctor.specialty}</p>
         {doctor.bio && <p className="text-[11px] text-gray-400 mt-1 line-clamp-2">{doctor.bio}</p>}
-        <div className="flex gap-1.5 mt-2">
+        <div className="flex gap-1.5 mt-2 flex-wrap">
           <button onClick={() => onEdit(doctor)} className="text-[11px] text-purple-500 hover:text-purple-700">Edit</button>
+          <span className="text-gray-300">·</span>
+          <button onClick={onSchedule} className="text-[11px] text-teal-600 hover:text-teal-700">Jadwal</button>
           <span className="text-gray-300">·</span>
           <button onClick={() => onToggle(doctor)} className="text-[11px] text-gray-400 hover:text-gray-700">
             {doctor.is_active ? "Nonaktifkan" : "Aktifkan"}

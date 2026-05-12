@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { toast } from "@/lib/toast"
 
 interface StaffMember {
   id:                string
@@ -106,7 +107,7 @@ export default function AdminStaffPage() {
 
   async function changeRole(s: StaffMember, newRole: string) {
     if (newRole === "doctor_assistant" && !s.linked_doctor_id) {
-      alert("Set link dokter dulu sebelum ubah role ke Asisten Dokter.")
+      toast.error("Set link dokter dulu sebelum ubah role ke Asisten Dokter.")
       return
     }
     await fetch(`/api/staff/${s.id}`, {
@@ -229,8 +230,8 @@ export default function AdminStaffPage() {
       )}
 
       {showForm && (
-        <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4" onClick={resetForm}>
-          <div className="bg-white rounded-xl p-5 w-full max-w-md space-y-3" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/30 dark:bg-black/60 modal-backdrop z-50 flex items-center justify-center p-4" onClick={resetForm}>
+          <div className="bg-white dark:bg-neutral-900 rounded-xl p-5 modal-content w-full max-w-md space-y-3" onClick={(e) => e.stopPropagation()}>
             <h2 className="text-base font-medium text-gray-700">Tambah staff baru</h2>
             <form onSubmit={submit} className="space-y-3">
               <div>
