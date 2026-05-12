@@ -41,7 +41,9 @@ export default function LoginPage() {
     const staffRole = (data as { role: string } | null)?.role
 
     if (staffRole) {
-      if (staffRole === "admin" || staffRole === "manager") {
+      if (staffRole === "admin") {
+        router.push("/dashboard")
+      } else if (staffRole === "manager") {
         router.push("/kb")
       } else {
         router.push("/inbox")
@@ -101,7 +103,10 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 mt-4">
+        <p className="text-center text-xs text-gray-500 mt-3">
+          <Link href="/forgot-password" className="hover:underline">Lupa password?</Link>
+        </p>
+        <p className="text-center text-sm text-gray-500 mt-2">
           Belum punya akun?{" "}
           <Link href="/register" className="text-teal-600 hover:underline font-medium">
             Daftar sebagai pasien
