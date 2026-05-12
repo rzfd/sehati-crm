@@ -143,7 +143,7 @@ export function BookingCalendar({ clinicId }: Props) {
 
       {/* Detail drawer */}
       {selected && (
-        <div className="fixed inset-0 bg-black/30 z-50 flex items-end sm:items-center justify-center" onClick={() => setSelected(null)}>
+        <div className="fixed inset-0 bg-black/30 dark:bg-black/60 modal-backdrop z-50 flex items-end sm:items-center justify-center" onClick={() => setSelected(null)}>
           <div className="bg-white w-full sm:max-w-md rounded-t-xl sm:rounded-xl p-5 m-0 sm:m-4 space-y-3" onClick={(e) => e.stopPropagation()}>
             <p className="text-base font-medium text-gray-700">{selected.doctor?.name}</p>
             <p className="text-xs text-gray-500">{selected.doctor?.specialty}</p>

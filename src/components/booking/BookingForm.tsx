@@ -33,6 +33,9 @@ export function BookingForm({ onSubmitted }: BookingFormProps) {
   const [slot, setSlot]             = useState<string | null>(null)
 
   const [notes, setNotes]           = useState("")
+  const [paymentMethod, setPaymentMethod]     = useState("self")  // self | insurance
+  const [insuranceProv, setInsuranceProv]     = useState("BPJS")
+  const [insuranceNum, setInsuranceNum]       = useState("")
   const [submitting, setSubmitting] = useState(false)
   const [error, setError]           = useState<string | null>(null)
 
@@ -72,10 +75,14 @@ export function BookingForm({ onSubmitted }: BookingFormProps) {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          doctor_id:    doctor.id,
-          booking_date: date,
-          booking_time: slot,
-          notes:        notes.trim() || undefined,
+          doctor_id:          doctor.id,
+          booking_date:       date,
+          booking_time:       slot,
+          notes:              notes.trim() || undefined,
+          payment_method:     paymentMethod,
+          payment_status:     paymentMethod === "insurance" ? "insurance_pending" : "unpaid",
+          insurance_provider: paymentMethod === "insurance" ? insuranceProv : undefined,
+          insurance_number:   paymentMethod === "insurance" ? insuranceNum : undefined,
         }),
       })
       const data = await res.json()
@@ -119,16 +126,24 @@ export function BookingForm({ onSubmitted }: BookingFormProps) {
                   type="button"
                   onClick={() => { setDoctor(d); setStep(2) }}
                   className={cn(
-                    "card-hover w-full text-left p-3 flex gap-3 items-center",
+                    "card-hover w-full text-left p-3 flex gap-3 items-start",
                     doctor?.id === d.id && "ring-2 ring-teal-400",
                   )}
                 >
-                  <div className="size-10 rounded-full bg-teal-50 flex items-center justify-center text-teal-600 text-sm">
-                    {d.name.split(" ").map((p) => p[0]).slice(0, 2).join("")}
-                  </div>
-                  <div>
+                  {d.avatar_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={d.avatar_url} alt={d.name} className="size-12 rounded-full object-cover flex-shrink-0" />
+                  ) : (
+                    <div className="size-12 rounded-full bg-teal-50 flex items-center justify-center text-teal-600 text-sm flex-shrink-0">
+                      {d.name.split(" ").map((p) => p[0]).slice(0, 2).join("")}
+                    </div>
+                  )}
+                  <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-gray-700">{d.title} {d.name}</p>
                     <p className="text-xs text-gray-500">{d.specialty}</p>
+                    {d.bio && (
+                      <p className="text-[11px] text-gray-500 mt-1 line-clamp-2">{d.bio}</p>
+                    )}
                   </div>
                 </button>
               ))}
@@ -197,6 +212,54 @@ export function BookingForm({ onSubmitted }: BookingFormProps) {
               {format(parseISO(date), "EEEE, d MMMM yyyy", { locale: idLocale })} • {slot.slice(0, 5)}
             </p>
           </div>
+
+          <div>
+            <label className="block text-xs text-gray-500 mb-1">Pembayaran</label>
+            <div className="flex gap-2">
+              <label className={cn(
+                "flex-1 cursor-pointer rounded-lg border px-3 py-2 text-xs text-center",
+                paymentMethod === "self" ? "border-teal-400 bg-teal-50 text-teal-700" : "border-black/[0.12]",
+              )}>
+                <input
+                  type="radio" name="pay" value="self" className="sr-only"
+                  checked={paymentMethod === "self"}
+                  onChange={() => setPaymentMethod("self")}
+                />
+                Bayar sendiri
+              </label>
+              <label className={cn(
+                "flex-1 cursor-pointer rounded-lg border px-3 py-2 text-xs text-center",
+                paymentMethod === "insurance" ? "border-blue-500 bg-blue-50 text-blue-700" : "border-black/[0.12]",
+              )}>
+                <input
+                  type="radio" name="pay" value="insurance" className="sr-only"
+                  checked={paymentMethod === "insurance"}
+                  onChange={() => setPaymentMethod("insurance")}
+                />
+                Asuransi
+              </label>
+            </div>
+          </div>
+
+          {paymentMethod === "insurance" && (
+            <div className="grid grid-cols-[100px_1fr] gap-2">
+              <div>
+                <label className="block text-[10px] text-gray-500 mb-0.5">Penyedia</label>
+                <select className="input text-xs" value={insuranceProv} onChange={(e) => setInsuranceProv(e.target.value)}>
+                  <option value="BPJS">BPJS</option>
+                  <option value="Mandiri Inhealth">Mandiri Inhealth</option>
+                  <option value="AXA">AXA</option>
+                  <option value="Allianz">Allianz</option>
+                  <option value="Prudential">Prudential</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-[10px] text-gray-500 mb-0.5">Nomor kartu</label>
+                <input className="input text-xs" value={insuranceNum} onChange={(e) => setInsuranceNum(e.target.value)} placeholder="No. kartu asuransi" />
+              </div>
+            </div>
+          )}
 
           <div>
             <label className="block text-xs text-gray-500 mb-1">Catatan untuk dokter <span className="text-gray-400">(opsional)</span></label>
