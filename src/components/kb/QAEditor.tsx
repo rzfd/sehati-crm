@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -15,11 +15,16 @@ interface QAEditorProps {
 }
 
 export function QAEditor({ initial }: QAEditorProps) {
-  const router = useRouter()
-  const isEdit = !!initial
+  const router       = useRouter()
+  const searchParams = useSearchParams()
+  const isEdit       = !!initial
 
-  const [question, setQuestion] = useState(initial?.question ?? "")
-  const [answer, setAnswer]     = useState(initial?.answer ?? "")
+  // Prefill dari query string (dipakai oleh KB Gaps deep-link)
+  const initialQuestion = initial?.question ?? searchParams.get("question") ?? ""
+  const initialAnswer   = initial?.answer   ?? searchParams.get("answer")   ?? ""
+
+  const [question, setQuestion] = useState(initialQuestion)
+  const [answer, setAnswer]     = useState(initialAnswer)
   const [tags, setTags]         = useState((initial?.tags ?? []).join(", "))
   const [status, setStatus]     = useState<Status>(initial?.status ?? "draft")
   const [loading, setLoading]   = useState(false)

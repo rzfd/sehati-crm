@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { toast } from "@/lib/toast"
 
 export function DocumentDeleteButton({ id }: { id: string }) {
   const router = useRouter()
@@ -14,13 +15,14 @@ export function DocumentDeleteButton({ id }: { id: string }) {
       const res = await fetch(`/api/kb/documents/${id}`, { method: "DELETE" })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))
-        alert(data.error ?? "Gagal menghapus.")
+        toast.error(data.error ?? "Gagal menghapus.")
         setLoading(false)
         return
       }
+      toast.success("Dokumen dihapus.")
       router.refresh()
     } catch {
-      alert("Terjadi kesalahan.")
+      toast.error("Terjadi kesalahan.")
       setLoading(false)
     }
   }
