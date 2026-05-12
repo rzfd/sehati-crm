@@ -1,25 +1,12 @@
+import { PatientBottomNav } from "@/components/layout/PatientBottomNav"
+
 export default function PatientLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col min-h-screen max-w-md mx-auto">
-      <main className="flex-1 pb-16">{children}</main>
-
-      {/* PatientBottomNav placeholder — Sprint 1 */}
-      <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-black/[0.08] flex">
-        {[
-          { href: "/home",     label: "Beranda" },
-          { href: "/chat",     label: "Chat" },
-          { href: "/booking",  label: "Booking" },
-          { href: "/history",  label: "Riwayat" },
-        ].map((item) => (
-          <a
-            key={item.href}
-            href={item.href}
-            className="flex-1 flex flex-col items-center justify-center py-2 text-xs text-gray-500 hover:text-teal-400 transition-colors"
-          >
-            {item.label}
-          </a>
-        ))}
-      </nav>
+    // h-[100dvh] supaya BottomNav selalu di bawah viewport + main scrollable.
+    // dvh > vh untuk mobile karena handle hide/show address bar.
+    <div className="flex flex-col h-[100dvh] max-w-md mx-auto bg-gray-50 overflow-hidden">
+      <main className="flex-1 overflow-y-auto">{children}</main>
+      <PatientBottomNav />
     </div>
   )
 }
