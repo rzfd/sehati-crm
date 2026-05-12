@@ -9,7 +9,8 @@
     "lint": "eslint",
     "migrate": "tsx supabase/migrate.ts",
     "seed": "tsx supabase/seed.ts",
-    "setup-admin": "tsx supabase/setup-admin.ts"
+    "setup-admin": "tsx supabase/setup-admin.ts",
+    "test:pipeline": "tsx scripts/test-pipeline.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.1",
