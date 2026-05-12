@@ -1,12 +1,14 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import Link from "next/link"
 import { format, parseISO } from "date-fns"
 import { id as idLocale } from "date-fns/locale"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
 import { createClient } from "@/lib/supabase/client"
+import { toast } from "@/lib/toast"
 import { cn } from "@/lib/utils"
+import { EmptyBookingIllustration } from "@/components/shared/Illustrations"
 
 interface BookingRow {
   id:            string
@@ -39,24 +41,52 @@ export default function PatientHistoryPage() {
   const [bookings, setBookings] = useState<BookingRow[]>([])
   const [loading, setLoading]   = useState(true)
 
+  const load = useCallback(async () => {
+    if (!patient) return
+    const supabase = createClient()
+    const { data } = await supabase
+      .from("bookings")
+      .select("id, booking_date, booking_time, status, notes, doctor:doctors(id, name, specialty, title)")
+      .eq("patient_id", patient.id)
+      .order("booking_date", { ascending: false })
+      .order("booking_time", { ascending: false })
+    setBookings(((data ?? []) as unknown as BookingRow[]))
+    setLoading(false)
+  }, [patient])
+
+  /* eslint-disable-next-line react-hooks/set-state-in-effect */
+  useEffect(() => { load() }, [load])
+
+  // Realtime: re-fetch saat ada booking insert/update untuk pasien ini
   useEffect(() => {
     if (!patient) return
-    let cancelled = false
     const supabase = createClient()
-    ;(async () => {
-      const { data } = await supabase
-        .from("bookings")
-        .select("id, booking_date, booking_time, status, notes, doctor:doctors(id, name, specialty, title)")
-        .eq("patient_id", patient.id)
-        .order("booking_date", { ascending: false })
-        .order("booking_time", { ascending: false })
+    const channel = supabase
+      .channel(`bookings:patient:${patient.id}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "bookings", filter: `patient_id=eq.${patient.id}` },
+        () => load(),
+      )
+      .subscribe()
+    return () => { supabase.removeChannel(channel) }
+  }, [patient, load])
 
-      if (cancelled) return
-      setBookings(((data ?? []) as unknown as BookingRow[]))
-      setLoading(false)
-    })()
-    return () => { cancelled = true }
-  }, [patient])
+  async function cancelBooking(id: string) {
+    if (!confirm("Yakin batalkan booking ini?")) return
+    const res = await fetch(`/api/booking/${id}`, {
+      method:  "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: "cancelled" }),
+    })
+    if (!res.ok) {
+      const d = await res.json().catch(() => ({}))
+      toast.error(d.error ?? "Gagal membatalkan.")
+      return
+    }
+    toast.success("Booking dibatalkan")
+    load()
+  }
 
   const today = new Date().toISOString().split("T")[0]
   const upcoming = bookings.filter(
@@ -71,9 +101,13 @@ export default function PatientHistoryPage() {
       {loading ? (
         <p className="text-sm text-gray-400">Memuat…</p>
       ) : bookings.length === 0 ? (
-        <div className="card p-6 text-center space-y-2">
-          <p className="text-sm text-gray-500">Belum ada janji.</p>
-          <Link href="/booking" className="btn-primary inline-flex">Buat janji</Link>
+        <div className="card p-8 text-center space-y-3 flex flex-col items-center">
+          <EmptyBookingIllustration className="w-44 h-auto" />
+          <div>
+            <p className="text-base font-medium text-gray-700 dark:text-gray-100">Belum ada janji</p>
+            <p className="text-xs text-gray-500 mt-1">Buat janji pertama Anda untuk mulai konsultasi.</p>
+          </div>
+          <Link href="/booking" className="btn-primary inline-flex">+ Buat janji</Link>
         </div>
       ) : (
         <>
@@ -81,7 +115,7 @@ export default function PatientHistoryPage() {
             <section>
               <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">Mendatang</p>
               <ul className="space-y-2">
-                {upcoming.map((b) => <BookingItem key={b.id} booking={b} />)}
+                {upcoming.map((b) => <BookingItem key={b.id} booking={b} onCancel={cancelBooking} />)}
               </ul>
             </section>
           )}
@@ -89,7 +123,7 @@ export default function PatientHistoryPage() {
             <section>
               <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">Riwayat</p>
               <ul className="space-y-2">
-                {past.map((b) => <BookingItem key={b.id} booking={b} />)}
+                {past.map((b) => <BookingItem key={b.id} booking={b} onCancel={cancelBooking} />)}
               </ul>
             </section>
           )}
@@ -99,7 +133,8 @@ export default function PatientHistoryPage() {
   )
 }
 
-function BookingItem({ booking }: { booking: BookingRow }) {
+function BookingItem({ booking, onCancel }: { booking: BookingRow; onCancel: (id: string) => void }) {
+  const canCancel = booking.status === "pending" || booking.status === "confirmed"
   return (
     <li className={cn("card border-l-4 p-3", STATUS_BORDER[booking.status])}>
       <div className="flex items-start justify-between gap-2">
@@ -115,6 +150,14 @@ function BookingItem({ booking }: { booking: BookingRow }) {
           </p>
           {booking.notes && (
             <p className="text-[11px] text-gray-400 mt-1.5 italic">&ldquo;{booking.notes}&rdquo;</p>
+          )}
+          {canCancel && (
+            <button
+              onClick={() => onCancel(booking.id)}
+              className="mt-2 text-[11px] text-red-500 hover:text-red-700"
+            >
+              Batalkan
+            </button>
           )}
         </div>
         <span className={cn("pill flex-shrink-0", pillFor(booking.status))}>
