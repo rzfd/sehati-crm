@@ -32,9 +32,17 @@ export function ChatListItem({ conv, active, onClick }: Props) {
       )}
     >
       <div className="flex items-center justify-between gap-2">
-        <span className="text-sm font-medium text-gray-700 truncate flex-1">
+        <span className={cn(
+          "text-sm truncate flex-1",
+          conv.unread_count > 0 ? "font-semibold text-gray-800" : "font-medium text-gray-700",
+        )}>
           {conv.patient?.name ?? "Pasien"}
         </span>
+        {conv.unread_count > 0 && (
+          <span className="flex-shrink-0 size-5 rounded-full bg-teal-500 text-white text-[10px] font-bold flex items-center justify-center">
+            {conv.unread_count > 9 ? "9+" : conv.unread_count}
+          </span>
+        )}
         <span className="text-[10px] text-gray-400 flex-shrink-0">
           {lastTime ? formatDistanceToNow(new Date(lastTime), { locale: idLocale, addSuffix: false }) : ""}
         </span>

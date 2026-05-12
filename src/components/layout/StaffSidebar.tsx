@@ -4,6 +4,10 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
+import { useUrgentCount, requestNotificationPermission } from "@/hooks/useUrgentCount"
+import { Logo } from "@/components/shared/Logo"
+import { ThemeToggle } from "@/components/shared/ThemeToggle"
+import { Avatar } from "@/components/shared/Avatar"
 
 interface NavLink {
   href:  string
@@ -21,6 +25,7 @@ export function StaffSidebar() {
   const pathname = usePathname()
   const router   = useRouter()
   const { staff } = useCurrentUser()
+  const urgent = useUrgentCount(staff?.clinic_id ?? null)
 
   const isAsdok = staff?.role === "doctor_assistant"
 
@@ -30,17 +35,13 @@ export function StaffSidebar() {
   }
 
   return (
-    <aside className="w-56 shrink-0 bg-white border-r border-black/[0.08] flex flex-col">
-      <div className="p-4 border-b border-black/[0.08]">
-        <div className="flex items-center gap-2">
-          <div className={cn(
-            "size-7 rounded-lg flex items-center justify-center",
-            isAsdok ? "bg-pink-500" : "bg-blue-500",
-          )}>
-            <span className="text-white text-xs font-bold">S</span>
-          </div>
-          <div className="min-w-0">
-            <div className="text-sm font-medium text-gray-700 truncate">
+    <aside className="w-56 shrink-0 bg-white dark:bg-neutral-900 border-r border-black/[0.08] dark:border-white/[0.06] flex flex-col">
+      <div className="p-4 border-b border-black/[0.08] dark:border-white/[0.06]">
+        <Logo size={28} withText className="mb-3" />
+        <div className="flex items-center gap-2.5">
+          <Avatar name={staff?.name ?? "?"} size="sm" status="online" />
+          <div className="min-w-0 flex-1">
+            <div className="text-sm font-medium text-gray-700 dark:text-gray-200 truncate">
               {staff?.name ?? "Sehati Staff"}
             </div>
             <span className={cn(
@@ -56,21 +57,41 @@ export function StaffSidebar() {
       <nav className="flex-1 p-2 space-y-0.5">
         {NAV.map((item) => {
           const isActive = pathname === item.href || pathname?.startsWith(item.href + "/")
+          const showUrgent = item.href === "/inbox" && urgent.total > 0
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={cn(isActive ? "nav-item-active" : "nav-item")}
+              className={cn(isActive ? "nav-item-active" : "nav-item", "justify-between")}
             >
-              {item.icon}
-              <span>{item.label}</span>
+              <span className="flex items-center gap-2.5">
+                {item.icon}
+                <span>{item.label}</span>
+              </span>
+              {showUrgent && (
+                <span className="pill pill-red text-[10px]">
+                  {urgent.total}
+                </span>
+              )}
             </Link>
           )
         })}
       </nav>
 
-      <div className="p-2 border-t border-black/[0.08]">
-        <button onClick={handleSignout} className="nav-item w-full text-left">
+      {/* Notification opt-in button */}
+      <div className="px-2 pb-1">
+        <button
+          onClick={() => requestNotificationPermission()}
+          className="text-[10px] text-gray-400 hover:text-teal-600 px-3 py-1.5 w-full text-left"
+          title="Aktifkan notifikasi browser untuk pesan urgent"
+        >
+          🔔 Aktifkan notifikasi
+        </button>
+      </div>
+
+      <div className="p-2 border-t border-black/[0.08] dark:border-white/[0.06] flex items-center gap-1">
+        <ThemeToggle />
+        <button onClick={handleSignout} className="nav-item w-full text-left flex-1">
           <SignoutIcon />
           <span>Keluar</span>
         </button>

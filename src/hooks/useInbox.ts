@@ -32,6 +32,7 @@ export function useInbox(filter: InboxFilter): UseInboxResult {
   const [conversations, setConversations] = useState<InboxConversation[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError]     = useState<string | null>(null)
+  const refreshNonce = useInboxStore((s) => s.refreshNonce)
 
   const refresh = useCallback(async () => {
     setLoading(true)
@@ -49,7 +50,7 @@ export function useInbox(filter: InboxFilter): UseInboxResult {
   }, [filter])
 
   /* eslint-disable react-hooks/set-state-in-effect */
-  useEffect(() => { refresh() }, [refresh])
+  useEffect(() => { refresh() }, [refresh, refreshNonce])
   /* eslint-enable react-hooks/set-state-in-effect */
 
   // Realtime: refetch on conversation UPDATE (status change, urgency, assignment)

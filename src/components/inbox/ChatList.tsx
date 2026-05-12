@@ -1,8 +1,12 @@
 "use client"
 
 import { ChatListItem } from "./ChatListItem"
+import { PatientSearchBar } from "./PatientSearchBar"
 import { useInbox } from "@/hooks/useInbox"
 import { useInboxStore, type InboxFilter } from "@/store/inboxStore"
+import { SkeletonListItem } from "@/components/shared/Skeleton"
+import { EmptyInboxIllustration } from "@/components/shared/Illustrations"
+import { useCurrentUser } from "@/hooks/useCurrentUser"
 import { cn } from "@/lib/utils"
 
 const FILTERS: { value: InboxFilter; label: string }[] = [
@@ -19,10 +23,18 @@ export function ChatList() {
   const activeId  = useInboxStore((s) => s.activeId)
   const setActive = useInboxStore((s) => s.setActive)
   const { conversations, loading, error } = useInbox(filter)
+  const { staff } = useCurrentUser()
+  const isAsdokUnlinked = staff?.role === "doctor_assistant" && !staff.linked_doctor_id
 
   return (
-    <div className="flex flex-col h-full bg-white border-r border-black/[0.08]">
-      <div className="p-3 border-b border-black/[0.08] flex gap-1.5 overflow-x-auto">
+    // h-full + overflow-hidden — boundary scroll. Setiap section internal: header fixed, list scroll.
+    <div className="flex flex-col h-full overflow-hidden bg-white dark:bg-neutral-900 border-r border-black/[0.08] dark:border-white/[0.06]">
+      {/* Header: search — fixed */}
+      <div className="p-3 border-b border-black/[0.08] dark:border-white/[0.06] flex-shrink-0">
+        <PatientSearchBar />
+      </div>
+      {/* Filters — fixed */}
+      <div className="px-3 py-2 border-b border-black/[0.08] dark:border-white/[0.06] flex gap-1.5 overflow-x-auto flex-shrink-0">
         {FILTERS.map((f) => {
           const active = filter === f.value
           const count = f.value === "urgent" ? conversations.filter((c) => c.urgency_level >= 3).length : null
@@ -32,7 +44,7 @@ export function ChatList() {
               onClick={() => setFilter(f.value)}
               className={cn(
                 "pill flex-shrink-0 transition-colors",
-                active ? "pill-teal ring-1 ring-teal-400" : "pill-gray hover:bg-gray-200",
+                active ? "pill-teal ring-1 ring-teal-400" : "pill-gray hover:bg-gray-200 dark:hover:bg-neutral-800",
               )}
             >
               {f.label}
@@ -42,12 +54,31 @@ export function ChatList() {
         })}
       </div>
 
-      <div className="flex-1 overflow-y-auto scrollbar-thin">
+      {/* List — flex-1 + min-h-0 + overscroll-contain agar scroll terbatas di sini saja */}
+      <div className="flex-1 min-h-0 overflow-y-auto scrollbar-thin overscroll-contain">
         {error && <p className="p-4 text-xs text-red-500">{error}</p>}
         {loading ? (
-          <p className="p-4 text-sm text-gray-400">Memuat…</p>
+          <div>{Array.from({ length: 6 }).map((_, i) => <SkeletonListItem key={i} />)}</div>
         ) : conversations.length === 0 ? (
-          <p className="p-4 text-sm text-gray-400">Tidak ada percakapan.</p>
+          isAsdokUnlinked ? (
+            <div className="p-6 text-sm text-gray-500 text-center">
+              <p className="font-medium text-gray-700 dark:text-gray-200 mb-1">Belum di-link ke dokter</p>
+              <p className="text-xs">Hubungi admin untuk link akun ini ke dokter yang Anda bantu.</p>
+            </div>
+          ) : staff?.role === "doctor_assistant" ? (
+            <div className="p-6 text-sm text-gray-500 text-center">
+              <p className="font-medium text-gray-700 dark:text-gray-200 mb-1">Belum ada chat untuk dokter Anda</p>
+              <p className="text-xs">Saat pasien tanya/booking untuk dokter yang Anda bantu, akan muncul di sini.</p>
+            </div>
+          ) : (
+            <div className="p-6 text-center flex flex-col items-center">
+              <EmptyInboxIllustration className="w-36 h-auto mb-2 opacity-80" />
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Inbox kosong</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                Belum ada percakapan dengan filter ini.
+              </p>
+            </div>
+          )
         ) : (
           conversations.map((c) => (
             <ChatListItem
