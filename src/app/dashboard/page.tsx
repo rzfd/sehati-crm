@@ -67,10 +67,24 @@ export default function StaffDashboardPage() {
       <AnomalyBanner anomalies={data.anomalies} />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <KPICard label="Total chat"  value={data.kpi.total_conversations}                       accent="teal" />
-        <KPICard label="AI handled"  value={`${data.kpi.ai_handled_pct.toFixed(0)}%`}           accent="purple" hint="Auto-reply rate" />
-        <KPICard label="Urgent"      value={data.kpi.urgent_count}                              accent="red"    hint="Level 3-4" />
-        <KPICard label="Open"        value={data.kpi.open_count}                                accent="amber"  hint="Belum resolved" />
+        <KPICard
+          label="Total chat" value={data.kpi.total_conversations} accent="teal"
+          sparkline={data.volume.map((v) => v.total)}
+        />
+        <KPICard
+          label="AI handled" value={`${data.kpi.ai_handled_pct.toFixed(0)}%`} accent="purple"
+          hint="Auto-reply rate"
+          sparkline={data.volume.map((v) => v.ai)}
+        />
+        <KPICard
+          label="Urgent" value={data.kpi.urgent_count} accent="red"
+          hint="Level 3-4"
+        />
+        <KPICard
+          label="Open" value={data.kpi.open_count} accent="amber"
+          hint="Belum resolved"
+          sparkline={data.volume.map((v) => v.staff)}
+        />
       </div>
 
       <div className="grid lg:grid-cols-3 gap-3">
