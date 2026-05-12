@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
+import { ServiceWorkerRegister } from "@/components/shared/ServiceWorkerRegister"
+import { Toaster } from "@/components/shared/Toaster"
+import { ThemeProvider } from "@/components/shared/ThemeProvider"
 
 export const metadata: Metadata = {
   title:       "Sehati CRM",
@@ -27,8 +30,14 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className="h-full antialiased">
-      <body className="min-h-full bg-gray-50 text-gray-700 font-sans">{children}</body>
+    <html lang="id" className="h-full antialiased" suppressHydrationWarning>
+      <body className="min-h-full bg-gray-50 text-gray-700 font-sans dark:bg-neutral-950 dark:text-gray-200 transition-colors">
+        <ThemeProvider>
+          <ServiceWorkerRegister />
+          <Toaster />
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }

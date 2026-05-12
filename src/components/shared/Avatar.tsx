@@ -1,50 +1,90 @@
 import { cn } from "@/lib/utils"
 
-type AvatarVariant = "teal" | "blue" | "amber" | "red" | "purple" | "pink" | "gray"
-
 interface AvatarProps {
   name:       string
-  size?:      "sm" | "md" | "lg"
-  variant?:   AvatarVariant
+  src?:       string | null
+  size?:      "xs" | "sm" | "md" | "lg" | "xl"
+  status?:    "online" | "offline" | "busy" | null
   className?: string
+  ring?:      boolean
 }
 
 const sizeClass: Record<NonNullable<AvatarProps["size"]>, string> = {
-  sm: "size-7 text-xs",
-  md: "size-9 text-sm",
-  lg: "size-12 text-base",
+  xs: "size-6  text-[10px]",
+  sm: "size-8  text-xs",
+  md: "size-10 text-sm",
+  lg: "size-14 text-base",
+  xl: "size-20 text-lg",
 }
 
-const variantClass: Record<AvatarVariant, string> = {
-  teal:   "bg-teal-50 text-teal-600",
-  blue:   "bg-blue-50 text-blue-600",
-  amber:  "bg-amber-50 text-amber-600",
-  red:    "bg-red-50 text-red-500",
-  purple: "bg-purple-50 text-purple-500",
-  pink:   "bg-pink-50 text-pink-500",
-  gray:   "bg-gray-100 text-gray-500",
+const statusSize: Record<NonNullable<AvatarProps["size"]>, string> = {
+  xs: "size-1.5",
+  sm: "size-2",
+  md: "size-2.5",
+  lg: "size-3",
+  xl: "size-3.5",
 }
 
-export function Avatar({ name, size = "md", variant = "gray", className }: AvatarProps) {
-  const initials =
-    name
-      .split(" ")
-      .filter((w) => /^[A-Za-z]/.test(w))
-      .map((w) => w[0])
-      .slice(0, 2)
-      .join("")
-      .toUpperCase() || "?"
+// Generate gradient deterministik dari nama → 2 warna brand
+const PALETTES: Array<[string, string]> = [
+  ["#1D9E75", "#5DCAA5"],  // teal
+  ["#185FA5", "#7BB5E8"],  // blue
+  ["#534AB7", "#9990F9"],  // purple
+  ["#BA7517", "#E19921"],  // amber
+  ["#993556", "#E781A5"],  // pink
+  ["#0E7490", "#67E8F9"],  // cyan
+  ["#65A30D", "#A3E635"],  // lime
+  ["#7C2D12", "#F97316"],  // orange
+]
+
+function hashName(name: string): number {
+  let h = 0
+  for (let i = 0; i < name.length; i++) {
+    h = (h * 31 + name.charCodeAt(i)) | 0
+  }
+  return Math.abs(h)
+}
+
+function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter((w) => /^[A-Za-zÀ-ÿ]/.test(w))
+  return (
+    parts.slice(0, 2).map((w) => w[0]).join("").toUpperCase() || "?"
+  )
+}
+
+export function Avatar({ name, src, size = "md", status, className, ring }: AvatarProps) {
+  const initials = getInitials(name)
+  const [c1, c2] = PALETTES[hashName(name) % PALETTES.length]
 
   return (
-    <div
-      className={cn(
-        "rounded-full flex items-center justify-center font-medium shrink-0",
-        sizeClass[size],
-        variantClass[variant],
-        className
+    <div className={cn("relative shrink-0", className)}>
+      <div
+        className={cn(
+          "rounded-full flex items-center justify-center font-semibold text-white overflow-hidden",
+          sizeClass[size],
+          ring && "ring-2 ring-white dark:ring-neutral-900 ring-offset-2 ring-offset-transparent",
+        )}
+        style={!src ? { backgroundImage: `linear-gradient(135deg, ${c1}, ${c2})` } : undefined}
+      >
+        {src ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={src} alt={name} className="size-full object-cover" />
+        ) : (
+          <span>{initials}</span>
+        )}
+      </div>
+      {status && (
+        <span
+          aria-label={status}
+          className={cn(
+            "absolute bottom-0 right-0 rounded-full ring-2 ring-white dark:ring-neutral-900",
+            statusSize[size],
+            status === "online" ? "bg-teal-400" :
+            status === "busy"   ? "bg-amber-500" :
+            "bg-gray-400",
+          )}
+        />
       )}
-    >
-      {initials}
     </div>
   )
 }
