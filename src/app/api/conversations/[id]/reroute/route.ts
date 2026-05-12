@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
+import { logAudit } from "@/lib/audit"
 
 interface RouteParams { params: Promise<{ id: string }> }
 
@@ -45,6 +46,15 @@ export async function POST(req: Request, { params }: RouteParams) {
       console.error("[reroute]", error)
       return NextResponse.json({ error: "Gagal reroute." }, { status: 500 })
     }
+
+    await logAudit(supabase, {
+      clinic_id:   staff.clinic_id,
+      actor_id:    staff.id,
+      action:      "conversation.reroute",
+      target_type: "conversation",
+      target_id:   id,
+      metadata:    update,
+    })
 
     // Audit log message (sistem) untuk transparansi
     await supabase.from("messages").insert({

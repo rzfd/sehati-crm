@@ -23,6 +23,19 @@ export async function GET(req: Request) {
     }
     const dayOfWeek = date.getDay() // 0=Minggu .. 6=Sabtu
 
+    // Cek exception untuk hari ini
+    const { data: exceptions } = await supabase
+      .from("doctor_schedule_exceptions")
+      .select("kind, start_time, end_time")
+      .eq("doctor_id", doctorId)
+      .eq("date", dateStr)
+
+    const fullDay = (exceptions ?? []).some((e) => e.kind === "full_day")
+    if (fullDay) {
+      return NextResponse.json({ slots: [], reason: "Dokter cuti hari ini" })
+    }
+    const partialBlocks = (exceptions ?? []).filter((e) => e.kind === "partial")
+
     const { data: schedules, error: schedErr } = await supabase
       .from("doctor_schedules")
       .select("start_time, end_time, slot_duration_minutes")
@@ -57,8 +70,21 @@ export async function GET(req: Request) {
       .in("status", ["pending", "confirmed"])
 
     const bookedSet = new Set((booked ?? []).map((b) => b.booking_time))
+
+    // Convert partial exceptions ke set of blocked time strings
+    const blockedSet = new Set<string>()
+    for (const block of partialBlocks) {
+      if (!block.start_time || !block.end_time) continue
+      const startBlk = toMinutes(block.start_time)
+      const endBlk   = toMinutes(block.end_time)
+      for (const slot of allSlots) {
+        const sMin = toMinutes(slot)
+        if (sMin >= startBlk && sMin < endBlk) blockedSet.add(slot)
+      }
+    }
+
     const slots = allSlots
-      .filter((s) => !bookedSet.has(s))
+      .filter((s) => !bookedSet.has(s) && !blockedSet.has(s))
       .sort((a, b) => a.localeCompare(b))
 
     return NextResponse.json({ slots })
@@ -66,4 +92,9 @@ export async function GET(req: Request) {
     console.error("[api/booking/slots]", err)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
+}
+
+function toMinutes(t: string): number {
+  const [h, m] = t.split(":").map(Number)
+  return h * 60 + m
 }

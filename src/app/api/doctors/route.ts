@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
+import { logAudit } from "@/lib/audit"
 
 async function requireAdmin() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: "Belum login.", status: 401 }
   const { data: staff, error } = await supabase
-    .from("staff_members").select("clinic_id, role").eq("user_id", user.id).maybeSingle()
+    .from("staff_members").select("id, clinic_id, role").eq("user_id", user.id).maybeSingle()
   if (error) {
     console.error("[requireAdmin]", error)
     return { error: `Query staff gagal: ${error.message}`, status: 500 }
@@ -57,5 +58,15 @@ export async function POST(req: Request) {
     .select()
     .single()
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  await logAudit(guard.supabase, {
+    clinic_id:   guard.staff.clinic_id,
+    actor_id:    guard.staff.id,
+    action:      "doctor.create",
+    target_type: "doctor",
+    target_id:   data.id,
+    metadata:    { name, specialty },
+  })
+
   return NextResponse.json(data, { status: 201 })
 }

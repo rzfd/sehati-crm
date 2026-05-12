@@ -8,7 +8,7 @@ async function requireAdmin() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: "Belum login.", status: 401 }
   const { data: staff, error } = await supabase
-    .from("staff_members").select("clinic_id, role").eq("user_id", user.id).maybeSingle()
+    .from("staff_members").select("id, clinic_id, role").eq("user_id", user.id).maybeSingle()
   if (error) return { error: `Query staff gagal: ${error.message}`, status: 500 }
   if (!staff) return { error: "Akun ini bukan staff klinik. Login sebagai admin.", status: 403 }
   if (staff.role !== "admin" && staff.role !== "manager") {

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { embedText } from "@/lib/voyage"
+import { logAudit } from "@/lib/audit"
 
 // POST /api/kb/qa — create a Q&A pair with auto-embedding
 export async function POST(req: Request) {
@@ -24,7 +25,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Pertanyaan dan jawaban wajib diisi." }, { status: 400 })
     }
 
-    // Auto-embed pada create
     const content   = `Q: ${question}\nA: ${answer}`
     const embedding = await embedText(content)
 
@@ -43,6 +43,16 @@ export async function POST(req: Request) {
       .single()
 
     if (error) throw error
+
+    await logAudit(supabase, {
+      clinic_id:   staff.clinic_id,
+      actor_id:    staff.id,
+      action:      "qa.create",
+      target_type: "kb_qa_pair",
+      target_id:   data.id,
+      metadata:    { status, tags },
+    })
+
     return NextResponse.json(data, { status: 201 })
   } catch (err) {
     console.error("[api/kb/qa POST]", err)

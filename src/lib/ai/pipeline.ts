@@ -3,6 +3,8 @@ import { runGatekeeper } from "./gatekeeper"
 import { runTriage } from "./triage"
 import { generateAutoReply } from "./auto-reply"
 import { retrieveFromKB } from "@/lib/kb"
+import { routeMessage } from "@/lib/routing/decision-tree"
+import { extractBookingSuggestion } from "./booking-extract"
 import type { PipelineRequest, PipelineResult, GatekeeperResult, KBMatch } from "@/types/ai"
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { Database } from "@/types/database"
@@ -65,27 +67,46 @@ export async function runChatPipeline(req: PipelineRequest, opts: PipelineOption
 
   // Gatekeeper minta escalate (medical/urgent/complaint/unclear/low-conf)
   if (gatekeeper.action === "escalate") {
-    const triage = await maybeRunTriage(gatekeeper, req)
+    const [triage, routing] = await Promise.all([
+      maybeRunTriage(gatekeeper, req),
+      // Routing untuk medical/urgent agar staff tahu dokter mana yang relevan
+      (gatekeeper.category === "medical" || gatekeeper.category === "urgent") && opts.supabase
+        ? routeMessage({ message: req.message, clinicId: req.clinicId, supabase: opts.supabase }).catch(() => null)
+        : Promise.resolve(null),
+    ])
     return {
-      action:     "escalate",
-      confidence: gatekeeper.confidence,
+      action:               "escalate",
+      confidence:           gatekeeper.confidence,
       gatekeeper,
       kbMatches,
       triage,
-      decidedAt:  "gatekeeper",
-      reason:     gatekeeper.reason,
+      decidedAt:            "gatekeeper",
+      reason:               gatekeeper.reason,
+      recommendedDoctorId:  routing?.recommended_doctor_id ?? null,
+      routingReason:        routing?.detail,
     }
   }
 
-  // Booking request — bukan auto-reply, juga bukan full escalate; route ke booking flow
+  // Booking request — kalau bisa, ekstrak doctor suggestion juga
   if (gatekeeper.action === "booking_request") {
+    const [routing, bookingSuggestion] = await Promise.all([
+      opts.supabase
+        ? routeMessage({ message: req.message, clinicId: req.clinicId, supabase: opts.supabase }).catch(() => null)
+        : Promise.resolve(null),
+      opts.supabase
+        ? extractBookingSuggestion(req.message, req.clinicId, opts.supabase).catch(() => null)
+        : Promise.resolve(null),
+    ])
     return {
-      action:     "booking_request",
-      confidence: gatekeeper.confidence,
+      action:              "booking_request",
+      confidence:          gatekeeper.confidence,
       gatekeeper,
       kbMatches,
-      decidedAt:  "gatekeeper",
-      reason:     gatekeeper.reason,
+      decidedAt:           "gatekeeper",
+      reason:              gatekeeper.reason,
+      recommendedDoctorId: routing?.recommended_doctor_id ?? null,
+      routingReason:       routing?.detail,
+      bookingSuggestion,
     }
   }
 

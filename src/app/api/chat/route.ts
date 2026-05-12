@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { createServiceClient } from "@/lib/supabase/service"
 import { runChatPipeline } from "@/lib/ai/pipeline"
 import { SENDER_TYPE } from "@/lib/constants"
+import { checkRateLimit, rateLimitKey } from "@/lib/rate-limit"
 
 // /api/chat — patient mengirim pesan + jalankan AI pipeline.
 //
@@ -16,6 +17,15 @@ export async function POST(req: Request) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: "Belum login." }, { status: 401 })
+
+    // Rate limit: 20 req/menit per user (refill ~0.33/s = 20/min)
+    const rl = checkRateLimit(rateLimitKey(req, user.id, "chat"), { capacity: 20, refillRate: 0.33 })
+    if (!rl.ok) {
+      return NextResponse.json(
+        { error: `Terlalu banyak request. Coba lagi ${rl.retryAfter}s.` },
+        { status: 429, headers: { "Retry-After": String(rl.retryAfter) } },
+      )
+    }
 
     const { conversationId, message } = await req.json()
     if (!conversationId || !message) {
@@ -54,10 +64,11 @@ export async function POST(req: Request) {
     }, { supabase: service })
 
     const patientMetadata = JSON.parse(JSON.stringify({
-      gatekeeper: pipeline.gatekeeper,
-      triage:     pipeline.triage ?? null,
-      decided_at: pipeline.decidedAt,
-      reason:     pipeline.reason,
+      gatekeeper:         pipeline.gatekeeper,
+      triage:             pipeline.triage ?? null,
+      decided_at:         pipeline.decidedAt,
+      reason:             pipeline.reason,
+      booking_suggestion: pipeline.bookingSuggestion ?? null,
     }))
 
     // Patient message — service role agar tidak terhalang RLS rumit di edge case
@@ -108,23 +119,21 @@ export async function POST(req: Request) {
         })
         .eq("id", conversationId)
     } else if (pipeline.action === "escalate") {
-      await service
-        .from("conversations")
-        .update({
-          status:          "open",
-          category:        pipeline.gatekeeper.category,
-          urgency_level:   pipeline.triage?.urgency_level ?? 1,
-          last_message_at: new Date().toISOString(),
-        })
-        .eq("id", conversationId)
+      const update: Record<string, unknown> = {
+        status:          "open",
+        category:        pipeline.gatekeeper.category,
+        urgency_level:   pipeline.triage?.urgency_level ?? 1,
+        last_message_at: new Date().toISOString(),
+      }
+      if (pipeline.recommendedDoctorId) update.routed_to_doctor = pipeline.recommendedDoctorId
+      await service.from("conversations").update(update).eq("id", conversationId)
     } else if (pipeline.action === "booking_request") {
-      await service
-        .from("conversations")
-        .update({
-          category:        "booking",
-          last_message_at: new Date().toISOString(),
-        })
-        .eq("id", conversationId)
+      const update: Record<string, unknown> = {
+        category:        "booking",
+        last_message_at: new Date().toISOString(),
+      }
+      if (pipeline.recommendedDoctorId) update.routed_to_doctor = pipeline.recommendedDoctorId
+      await service.from("conversations").update(update).eq("id", conversationId)
     }
 
     return NextResponse.json({

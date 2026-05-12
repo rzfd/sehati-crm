@@ -41,7 +41,10 @@ export async function POST(req: Request) {
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
     const body = await req.json()
-    const { doctor_id, booking_date, booking_time, notes, conversation_id } = body
+    const {
+      doctor_id, booking_date, booking_time, notes, conversation_id,
+      payment_method, payment_status, insurance_provider, insurance_number,
+    } = body
     if (!doctor_id || !booking_date || !booking_time) {
       return NextResponse.json({ error: "doctor_id, booking_date, booking_time wajib." }, { status: 400 })
     }
@@ -72,14 +75,18 @@ export async function POST(req: Request) {
     const { data, error } = await supabase
       .from("bookings")
       .insert({
-        clinic_id:       patient.clinic_id,
-        patient_id:      patient.id,
+        clinic_id:          patient.clinic_id,
+        patient_id:         patient.id,
         doctor_id,
         booking_date,
         booking_time,
-        notes:           notes || null,
-        conversation_id: conversation_id || null,
-        status:          "pending",
+        notes:              notes || null,
+        conversation_id:    conversation_id || null,
+        status:             "pending",
+        payment_method:     payment_method || null,
+        payment_status:     payment_status || "unpaid",
+        insurance_provider: insurance_provider || null,
+        insurance_number:   insurance_number || null,
       })
       .select()
       .single()

@@ -77,13 +77,25 @@ export interface PipelineRequest {
   history?:        string[]
 }
 
+export interface BookingSuggestionExtract {
+  doctor_id:   string | null
+  doctor_name: string | null
+  specialty:   string | null
+  date:        string | null
+  time:        string | null
+  reason:      string
+}
+
 export interface PipelineResult {
-  action:     "auto_reply" | "escalate" | "booking_request"
-  reply?:     string
-  confidence: number
-  gatekeeper: GatekeeperResult
-  kbMatches:  KBMatch[]
-  triage?:    TriageResult
-  decidedAt:  PipelineLayer
-  reason:     string
+  action:                "auto_reply" | "escalate" | "booking_request"
+  reply?:                string
+  confidence:            number
+  gatekeeper:            GatekeeperResult
+  kbMatches:             KBMatch[]
+  triage?:               TriageResult
+  decidedAt:             PipelineLayer
+  reason:                string
+  recommendedDoctorId?:  string | null
+  routingReason?:        string
+  bookingSuggestion?:    BookingSuggestionExtract | null
 }

@@ -46,10 +46,10 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    // Tambahkan last_message preview (1 query per conv kalau banyak — OK untuk 100)
     const convs = data ?? []
     const ids = convs.map((c) => c.id)
     const previewMap = new Map<string, { content: string; sender_type: string; created_at: string }>()
+    const allMessages: { conversation_id: string; sender_type: string; created_at: string }[] = []
 
     if (ids.length > 0) {
       const { data: messages } = await supabase
@@ -58,6 +58,7 @@ export async function GET(req: Request) {
         .in("conversation_id", ids)
         .order("created_at", { ascending: false })
       for (const m of messages ?? []) {
+        allMessages.push(m as { conversation_id: string; sender_type: string; created_at: string })
         if (!previewMap.has(m.conversation_id)) {
           previewMap.set(m.conversation_id, {
             content: m.content, sender_type: m.sender_type, created_at: m.created_at,
@@ -66,11 +67,39 @@ export async function GET(req: Request) {
       }
     }
 
-    const result = convs.map((c) => ({
-      ...c,
-      last_message: previewMap.get(c.id) ?? null,
-      unread_count: 0,  // TODO: kalkulasi based on last_read_at (belum di schema)
-    }))
+    // Unread count per conversation untuk staff ini
+    // conversation_reads belum di-generate type. Cast lewat any.
+    const readsMap = new Map<string, string>()
+    if (ids.length > 0) {
+      const { data: reads } = await (supabase as unknown as {
+        from: (t: string) => {
+          select: (cols: string) => {
+            eq: (k: string, v: string) => {
+              in: (k: string, v: string[]) => Promise<{ data: { conversation_id: string; last_read_at: string }[] | null }>
+            }
+          }
+        }
+      })
+        .from("conversation_reads")
+        .select("conversation_id, last_read_at")
+        .eq("staff_id", staff.id)
+        .in("conversation_id", ids)
+      for (const r of reads ?? []) readsMap.set(r.conversation_id, r.last_read_at)
+    }
+
+    const result = convs.map((c) => {
+      const lastReadAt = readsMap.get(c.id)
+      const unreadCount = allMessages.filter((m) =>
+        m.conversation_id === c.id
+        && m.sender_type === "patient"  // hanya hitung pasien message sebagai "unread"
+        && (!lastReadAt || m.created_at > lastReadAt)
+      ).length
+      return {
+        ...c,
+        last_message: previewMap.get(c.id) ?? null,
+        unread_count: unreadCount,
+      }
+    })
 
     return NextResponse.json(result)
   } catch (err) {

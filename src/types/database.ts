@@ -131,6 +131,7 @@ export type Database = {
           primary_doctor_id: string | null
           is_new:            boolean
           tags:              string[]
+          deleted_at:        string | null
           created_at:        string
           updated_at:        string
         }
@@ -144,6 +145,7 @@ export type Database = {
           primary_doctor_id?: string | null
           is_new?:            boolean
           tags?:              string[]
+          deleted_at?:        string | null
           created_at?:        string
           updated_at?:        string
         }
@@ -201,6 +203,7 @@ export type Database = {
           content:         string
           metadata:        Json | null
           is_read:         boolean
+          is_internal:     boolean
           created_at:      string
         }
         Insert: {
@@ -211,6 +214,7 @@ export type Database = {
           content:          string
           metadata?:        Json | null
           is_read?:         boolean
+          is_internal?:     boolean
           created_at?:      string
         }
         Update: Partial<Database["public"]["Tables"]["messages"]["Insert"]>
@@ -221,30 +225,38 @@ export type Database = {
 
       bookings: {
         Row: {
-          id:              string
-          clinic_id:       string
-          patient_id:      string
-          doctor_id:       string
-          conversation_id: string | null
-          booking_date:    string
-          booking_time:    string
-          status:          "pending" | "confirmed" | "completed" | "no_show" | "cancelled"
-          notes:           string | null
-          created_at:      string
-          updated_at:      string
+          id:                 string
+          clinic_id:          string
+          patient_id:         string
+          doctor_id:          string
+          conversation_id:    string | null
+          booking_date:       string
+          booking_time:       string
+          status:             "pending" | "confirmed" | "completed" | "no_show" | "cancelled"
+          notes:              string | null
+          payment_status:     "unpaid" | "paid" | "insurance_pending" | "insurance_covered" | "waived" | null
+          payment_method:     string | null
+          insurance_provider: string | null
+          insurance_number:   string | null
+          created_at:         string
+          updated_at:         string
         }
         Insert: {
-          id?:              string
-          clinic_id:        string
-          patient_id:       string
-          doctor_id:        string
-          conversation_id?: string | null
-          booking_date:     string
-          booking_time:     string
-          status?:          "pending" | "confirmed" | "completed" | "no_show" | "cancelled"
-          notes?:           string | null
-          created_at?:      string
-          updated_at?:      string
+          id?:                 string
+          clinic_id:           string
+          patient_id:          string
+          doctor_id:           string
+          conversation_id?:    string | null
+          booking_date:        string
+          booking_time:        string
+          status?:             "pending" | "confirmed" | "completed" | "no_show" | "cancelled"
+          notes?:              string | null
+          payment_status?:     "unpaid" | "paid" | "insurance_pending" | "insurance_covered" | "waived" | null
+          payment_method?:     string | null
+          insurance_provider?: string | null
+          insurance_number?:   string | null
+          created_at?:         string
+          updated_at?:         string
         }
         Update: Partial<Database["public"]["Tables"]["bookings"]["Insert"]>
         Relationships: [
@@ -377,6 +389,104 @@ export type Database = {
         ]
       }
 
+      conversation_reads: {
+        Row: {
+          conversation_id: string
+          staff_id:        string
+          last_read_at:    string
+        }
+        Insert: {
+          conversation_id: string
+          staff_id:        string
+          last_read_at?:   string
+        }
+        Update: Partial<Database["public"]["Tables"]["conversation_reads"]["Insert"]>
+        Relationships: [
+          { foreignKeyName: "conversation_reads_conversation_id_fkey"; columns: ["conversation_id"]; referencedRelation: "conversations";  referencedColumns: ["id"] },
+          { foreignKeyName: "conversation_reads_staff_id_fkey";        columns: ["staff_id"];        referencedRelation: "staff_members"; referencedColumns: ["id"] }
+        ]
+      }
+
+      doctor_schedule_exceptions: {
+        Row: {
+          id:         string
+          doctor_id:  string
+          clinic_id:  string
+          date:       string
+          kind:       "full_day" | "partial"
+          start_time: string | null
+          end_time:   string | null
+          reason:     string | null
+          created_by: string | null
+          created_at: string
+        }
+        Insert: {
+          id?:         string
+          doctor_id:   string
+          clinic_id:   string
+          date:        string
+          kind:        "full_day" | "partial"
+          start_time?: string | null
+          end_time?:   string | null
+          reason?:     string | null
+          created_by?: string | null
+          created_at?: string
+        }
+        Update: Partial<Database["public"]["Tables"]["doctor_schedule_exceptions"]["Insert"]>
+        Relationships: [
+          { foreignKeyName: "dse_doctor_id_fkey"; columns: ["doctor_id"]; referencedRelation: "doctors"; referencedColumns: ["id"] },
+          { foreignKeyName: "dse_clinic_id_fkey"; columns: ["clinic_id"]; referencedRelation: "clinics"; referencedColumns: ["id"] }
+        ]
+      }
+
+      reply_templates: {
+        Row: {
+          id:          string
+          clinic_id:   string
+          title:       string
+          content:     string
+          category:    string | null
+          usage_count: number
+          created_by:  string | null
+          created_at:  string
+          updated_at:  string
+        }
+        Insert: {
+          id?:          string
+          clinic_id:    string
+          title:        string
+          content:      string
+          category?:    string | null
+          usage_count?: number
+          created_by?:  string | null
+          created_at?:  string
+          updated_at?:  string
+        }
+        Update: Partial<Database["public"]["Tables"]["reply_templates"]["Insert"]>
+        Relationships: [
+          { foreignKeyName: "reply_templates_clinic_id_fkey"; columns: ["clinic_id"]; referencedRelation: "clinics"; referencedColumns: ["id"] }
+        ]
+      }
+
+      booking_reminders_log: {
+        Row: {
+          id:         string
+          booking_id: string
+          kind:       "h-1" | "h-0"
+          sent_at:    string
+        }
+        Insert: {
+          id?:        string
+          booking_id: string
+          kind:       "h-1" | "h-0"
+          sent_at?:   string
+        }
+        Update: Partial<Database["public"]["Tables"]["booking_reminders_log"]["Insert"]>
+        Relationships: [
+          { foreignKeyName: "brl_booking_id_fkey"; columns: ["booking_id"]; referencedRelation: "bookings"; referencedColumns: ["id"] }
+        ]
+      }
+
       kb_query_logs: {
         Row: {
           id:              string
@@ -429,6 +539,18 @@ export type Database = {
       get_my_clinic_id:  { Args: Record<string, never>; Returns: string }
       get_my_role:       { Args: Record<string, never>; Returns: string }
       get_my_patient_id: { Args: Record<string, never>; Returns: string }
+      bookings_needing_reminder: {
+        Args: Record<string, never>
+        Returns: {
+          booking_id:    string
+          clinic_id:     string
+          patient_name:  string
+          patient_phone: string | null
+          doctor_name:   string
+          booking_date:  string
+          booking_time:  string
+        }[]
+      }
     }
 
     Enums: { [_ in never]: never }
@@ -451,4 +573,8 @@ export type KBQAPair        = Tables["kb_qa_pairs"]["Row"]
 export type KBDocument      = Tables["kb_documents"]["Row"]
 export type KBDocumentChunk = Tables["kb_document_chunks"]["Row"]
 export type AuditLog        = Tables["audit_log"]["Row"]
-export type KBQueryLog      = Tables["kb_query_logs"]["Row"]
+export type KBQueryLog              = Tables["kb_query_logs"]["Row"]
+export type ConversationRead        = Tables["conversation_reads"]["Row"]
+export type DoctorScheduleException = Tables["doctor_schedule_exceptions"]["Row"]
+export type ReplyTemplate           = Tables["reply_templates"]["Row"]
+export type BookingReminderLog      = Tables["booking_reminders_log"]["Row"]
