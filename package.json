@@ -10,13 +10,19 @@
     "migrate": "tsx supabase/migrate.ts",
     "seed": "tsx supabase/seed.ts",
     "setup-admin": "tsx supabase/setup-admin.ts",
-    "test:pipeline": "tsx scripts/test-pipeline.ts"
+    "test:pipeline": "tsx scripts/test-pipeline.ts",
+    "backfill:embeddings": "tsx scripts/backfill-embeddings.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.1",
     "@supabase/auth-helpers-nextjs": "^0.15.0",
     "@supabase/supabase-js": "^2.78.0",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/pdf-parse": "^1.1.5",
+    "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "mammoth": "^1.12.0",
@@ -25,11 +31,13 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "recharts": "^3.8.1",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",
     "voyageai": "^0.2.1",
     "zustand": "^5.0.13"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/pg": "^8.20.0",
