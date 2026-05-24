@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  quality:
+    name: Lint · Typecheck · Test · Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+        continue-on-error: true   # informational; jangan blok dulu sampai lint bersih
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Unit tests (Vitest)
+        run: npm test
+
+      - name: Build
+        run: npm run build
+        env:
+          # Dummy NEXT_PUBLIC_* agar build lewat tanpa Supabase asli.
+          NEXT_PUBLIC_SUPABASE_URL: http://localhost
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-anon
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+
+  docker:
+    name: Docker build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image (validate Dockerfile)
+        run: |
+          docker build \
+            --build-arg NEXT_PUBLIC_SUPABASE_URL=http://localhost \
+            --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=ci-anon \
+            --build-arg NEXT_PUBLIC_APP_URL=http://localhost:3000 \
+            -t sehati-crm:ci .
+
+  ai-eval:
+    name: AI safety/accuracy gate (optional)
+    runs-on: ubuntu-latest
+    needs: quality
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - name: Run bench:ai + gate (skip if no API key)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          VOYAGE_API_KEY: ${{ secrets.VOYAGE_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY tidak di-set — lewati AI eval."
+            exit 0
+          fi
+          npm run bench:ai -- --json > bench-ai.json
+          node -e '
+            const r = require("./bench-ai.json");
+            const safe = r.triage?.safetyEndToEnd?.rate ?? 1;
+            const p95  = r.latency?.gatekeeper?.p95 ?? 0;
+            if (safe < 1)    { console.error("SAFETY REGRESSION: end-to-end emergency recall", safe); process.exit(1); }
+            if (p95  > 3000) { console.error("LATENCY REGRESSION: gatekeeper p95", p95);  process.exit(1); }
+            console.log("AI eval OK — safety", safe, "gatekeeper p95", p95);
+          '

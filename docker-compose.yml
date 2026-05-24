@@ -1,0 +1,23 @@
+# Jalankan: docker compose --env-file .env.local up --build
+# --env-file .env.local diperlukan agar NEXT_PUBLIC_* terbaca sebagai build args.
+services:
+  web:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+    image: sehati-crm
+    ports:
+      - "3000:3000"
+    # Secret server-only (runtime) — Anthropic/Voyage/Service-role/Database/Upstash.
+    env_file:
+      - .env.local
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/login').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
