@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=DM+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FAF6EE;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#773217",
+                        "on-secondary": "#ffffff",
+                        "accent-soft": "#F0D9CB",
+                        "on-tertiary-fixed-variant": "#234b5e",
+                        "border": "#E8E0CC",
+                        "warning": "#C97B2C",
+                        "on-primary-fixed-variant": "#334d34",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "ink-muted": "#6F665A",
+                        "surface-container-high": "#f0e7db",
+                        "warning-soft": "#F4E1CC",
+                        "secondary-fixed-dim": "#ffb59b",
+                        "on-secondary-container": "#773217",
+                        "primary-fixed": "#ccebc9",
+                        "outline-variant": "#c3c8bf",
+                        "surface-dim": "#EEE7D5",
+                        "info-soft": "#D6E1E7",
+                        "ink-dim": "#A39A8B",
+                        "background": "#FAF6EE",
+                        "tertiary": "#385f73",
+                        "primary-fixed-dim": "#b0cfae",
+                        "error-container": "#ffdad6",
+                        "primary-soft": "#EAEFE3",
+                        "secondary-container": "#fe9d7a",
+                        "surface-container-low": "#fcf2e6",
+                        "secondary-fixed": "#ffdbcf",
+                        "tertiary-container": "#51788d",
+                        "tertiary-fixed-dim": "#a4cce3",
+                        "inverse-primary": "#b0cfae",
+                        "surface-container-highest": "#eae1d5",
+                        "primary-dim": "#D9E1D2",
+                        "primary-container": "#5e7a5e",
+                        "on-error": "#ffffff",
+                        "outline": "#737971",
+                        "on-tertiary-container": "#f6fbff",
+                        "on-primary-container": "#edffe9",
+                        "surface": "#FFFFFF",
+                        "inverse-on-surface": "#f9efe3",
+                        "on-surface-variant": "#434841",
+                        "on-secondary-fixed": "#380d00",
+                        "secondary": "#95492b",
+                        "on-background": "#1f1b14",
+                        "border-soft": "#F0E9D6",
+                        "surface-container": "#f6ece1",
+                        "surface-alt": "#F2EDE0",
+                        "error": "#ba1a1a",
+                        "primary": "#466147",
+                        "on-surface": "#1f1b14",
+                        "danger-soft": "#F2D6D3",
+                        "surface-tint": "#4a654a",
+                        "surface-bright": "#fff8f2",
+                        "inverse-surface": "#343028",
+                        "surface-variant": "#eae1d5",
+                        "on-tertiary": "#ffffff",
+                        "danger": "#A8443E",
+                        "tertiary-fixed": "#c1e8ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#07200c",
+                        "on-tertiary-fixed": "#001e2b"
+                    },
+                    "spacing": {
+                        "mobile-margin": "16px",
+                        "gutter": "16px",
+                        "sidebar-width": "224px",
+                        "stack-sm": "8px",
+                        "stack-md": "12px",
+                        "stack-lg": "24px",
+                        "desktop-margin": "24px",
+                        "topbar-height": "56px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "eyebrow": ["Plus Jakarta Sans"],
+                        "card-title": ["Plus Jakarta Sans"],
+                        "caption": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "code-mono": ["DM Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["13px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "body-sm": ["12px", {"lineHeight": "18px", "fontWeight": "500"}],
+                        "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "eyebrow": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "card-title": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "caption": ["11px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "code-mono": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background antialiased overflow-hidden">
+<!-- Sidebar (Staff Workspace) -->
+<aside class="fixed left-0 top-0 h-screen w-[224px] bg-surface-alt dark:bg-surface-dim border-r border-border dark:border-outline-variant flex flex-col py-stack-lg z-50">
+<div class="px-6 mb-8">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary-dim">Sehati CRM</h1>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted dark:text-ink-dim hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-body-md text-body-md">Antrean Pesan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted dark:text-ink-dim hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-md text-body-md">Tugas Tim</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted dark:text-ink-dim hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-body-md text-body-md">Knowledge Base</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 bg-surface dark:bg-surface-container font-bold text-primary border-l-[3px] border-primary" href="#">
+<span class="material-symbols-outlined">recent_patient</span>
+<span class="font-body-md text-body-md">Database Pasien</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted dark:text-ink-dim hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md text-body-md">Laporan Sesi</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted dark:text-ink-dim hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Pengaturan</span>
+</a>
+</nav>
+<div class="px-4 mt-auto space-y-4">
+<button class="w-full bg-primary text-on-primary py-2 px-4 rounded-xl font-body-md text-body-md flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+                Buka Asisten AI
+            </button>
+<div class="pt-4 border-t border-border">
+<div class="flex items-center gap-3 px-2">
+<img alt="Staff Profile Picture" class="w-8 h-8 rounded-full object-cover" data-alt="A professional portrait of a young male Indonesian hospital administrator with a warm smile, wearing a clean white clinical staff uniform. The background is a soft, blurred modern hospital lobby with warm lighting and wooden accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyVNMkwbZ47A6Y5wmPVG5VjlnErxMrQ7DSsleT-BOTlQcZnv0FUJm-uB_NlCsd9tggscd20gOdMPodhJ__tnuFpBeI_cNk1_zZPGO_KILe5id7VItk2zv_4kUpBBed6t8tlM7UVRulT4MOptwABcJtFzje8g74K_En2_11igmT9CiihUWEe1P0si1K-LcU39EvjS294jPNMzE31kdPgusmBkVOXkAQYTVqhqQem_R4kWfNbgkgML_8eHRBxQ1yYsU2I1appxzQfsc"/>
+<div>
+<p class="font-body-md text-body-md font-bold">Budi Santoso</p>
+<p class="font-caption text-caption text-ink-muted">Staff Admin</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Top NavBar -->
+<header class="fixed top-0 right-0 h-[56px] w-[calc(100%-224px)] bg-surface dark:bg-surface-container-lowest border-b border-border dark:border-outline-variant flex justify-between items-center px-gutter z-40">
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-ink-dim text-[20px]">search</span>
+<input class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-1.5 text-body-sm w-[320px] focus:ring-2 focus:ring-primary/20" placeholder="Cari pasien atau dokumen..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors text-ink-muted">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors text-ink-muted">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[224px] mt-[56px] h-[calc(100vh-56px)] overflow-y-auto p-desktop-margin hide-scrollbar">
+<div class="max-w-[1200px] mx-auto grid grid-cols-12 gap-6">
+<!-- Hero Card: Profile Overview -->
+<section class="col-span-12 bg-surface rounded-xl p-6 shadow-[0_1px_2px_rgba(45,30,10,0.05)] border border-border flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+<div class="flex items-center gap-6">
+<img alt="Ibu Siti Aminah Profile" class="w-[72px] h-[72px] rounded-full object-cover border-2 border-primary-soft" data-alt="A dignified middle-aged Indonesian woman named Ibu Siti Aminah with a gentle expression and traditional hijab, looking at the camera. The lighting is soft and natural, emphasizing a calm, empathetic healthcare environment. High-quality portrait photography with a clean, warm-toned background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCz0Bk2bn6hr1x280fSMxc2Q-Odz06qc2XgdoIHSjrOxhmb-Dulid4VLxbLg3fI1_7SbgXQT09gNzEqsr0Wac-T4pFUhzoO6a6-5VflG6ox5tnbF9sGVxa7CYM3CKV9Ho6gjPMZ2VaiE_8b9RNSHa1QYCRIx_kbLJHhHhMv2MDkOQYieO25FmM66fxlHVPXtyH0bPHz_dnNSWsL_98NT4E0LOYO64pin6sQ12I6BCPjZTR9D4604KfdZCPRKisLTTmKBXHsJ9B2Ypc"/>
+<div class="space-y-1">
+<div class="flex items-center gap-3">
+<h2 class="font-headline-md text-headline-md">Ibu Siti Aminah</h2>
+<span class="px-3 py-0.5 rounded-full bg-primary-soft text-primary font-caption text-caption">Pasien aktif</span>
+<span class="px-3 py-0.5 rounded-full bg-info-soft text-tertiary font-caption text-caption">BPJS Kelas 2</span>
+</div>
+<div class="flex items-center gap-4 text-ink-muted font-body-sm text-body-sm">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">female</span> 52 Tahun</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">id_card</span> 000123456789</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">call</span> +62 812-3456-7890</span>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface-alt hover:bg-surface-container border border-border text-on-background px-4 py-2 rounded-lg font-body-md text-body-md flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+                        Buka chat
+                    </button>
+<button class="bg-primary hover:opacity-90 text-on-primary px-4 py-2 rounded-lg font-body-md text-body-md flex items-center gap-2 transition-opacity">
+<span class="material-symbols-outlined text-[20px]">calendar_add_on</span>
+                        Buat janji
+                    </button>
+</div>
+</section>
+<!-- Quick Stats -->
+<section class="col-span-12 grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="bg-surface p-4 rounded-xl border border-border flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-soft flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">event_available</span>
+</div>
+<div>
+<p class="text-ink-muted font-caption text-caption">Kunjungan Terakhir</p>
+<p class="font-card-title text-card-title">12 Okt 2023</p>
+</div>
+</div>
+<div class="bg-surface p-4 rounded-xl border border-border flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-danger-soft flex items-center justify-center text-danger">
+<span class="material-symbols-outlined">emergency_home</span>
+</div>
+<div>
+<p class="text-ink-muted font-caption text-caption">Alergi</p>
+<p class="font-card-title text-card-title">Penisilin, Seafood</p>
+</div>
+</div>
+<div class="bg-surface p-4 rounded-xl border border-border flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-info-soft flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<div>
+<p class="text-ink-muted font-caption text-caption">Status BPJS</p>
+<p class="font-card-title text-card-title">Aktif (Verifikasi OK)</p>
+</div>
+</div>
+<div class="bg-surface p-4 rounded-xl border border-border flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-warning-soft flex items-center justify-center text-warning">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div>
+<p class="text-ink-muted font-caption text-caption">Total Tagihan</p>
+<p class="font-card-title text-card-title">Rp 450.000</p>
+</div>
+</div>
+</section>
+<!-- Main Content Area: Tabs + Table -->
+<div class="col-span-12 lg:col-span-8 space-y-6">
+<!-- Underline Tabs -->
+<div class="bg-surface border-b border-border flex items-center gap-8 px-2 overflow-x-auto hide-scrollbar">
+<button class="py-4 border-b-2 border-primary text-primary font-bold font-body-md text-body-md transition-all">Riwayat</button>
+<button class="py-4 border-b-2 border-transparent text-ink-muted hover:text-on-background font-body-md text-body-md transition-all">Chat</button>
+<button class="py-4 border-b-2 border-transparent text-ink-muted hover:text-on-background font-body-md text-body-md transition-all">Lab</button>
+<button class="py-4 border-b-2 border-transparent text-ink-muted hover:text-on-background font-body-md text-body-md transition-all">Resep</button>
+<button class="py-4 border-b-2 border-transparent text-ink-muted hover:text-on-background font-body-md text-body-md transition-all">Catatan</button>
+</div>
+<!-- Timeline Table -->
+<div class="bg-surface rounded-xl border border-border overflow-hidden">
+<table class="w-full text-left">
+<thead class="bg-surface-alt font-eyebrow text-eyebrow text-ink-muted uppercase tracking-wider">
+<tr>
+<th class="px-6 py-3">Tanggal &amp; Sesi</th>
+<th class="px-6 py-3">Diagnosis / Keluhan</th>
+<th class="px-6 py-3">Dokter</th>
+<th class="px-6 py-3">Status</th>
+<th class="px-6 py-3 text-right">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-soft">
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="px-6 py-4">
+<div class="font-card-title text-card-title">12 Okt 2023</div>
+<div class="font-caption text-caption text-ink-muted">Poli Penyakit Dalam</div>
+</td>
+<td class="px-6 py-4">
+<div class="font-body-sm text-body-sm text-on-background">Hipertensi Tahap 1</div>
+<div class="font-caption text-caption text-ink-muted">Kontrol rutin</div>
+</td>
+<td class="px-6 py-4 font-body-sm text-body-sm">dr. Hartono, Sp.PD</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-primary-soft text-primary font-caption text-caption">Selesai</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-surface-container rounded transition-colors"><span class="material-symbols-outlined text-ink-dim">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-6 py-4">
+<div class="font-card-title text-card-title">28 Sep 2023</div>
+<div class="font-caption text-caption text-ink-muted">Laboratorium</div>
+</td>
+<td class="px-6 py-4">
+<div class="font-body-sm text-body-sm text-on-background">Cek Kolesterol &amp; Gula</div>
+<div class="font-caption text-caption text-ink-muted">Puasa 10 jam</div>
+</td>
+<td class="px-6 py-4 font-body-sm text-body-sm">-</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-primary-soft text-primary font-caption text-caption">Selesai</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-surface-container rounded transition-colors"><span class="material-symbols-outlined text-ink-dim">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-6 py-4">
+<div class="font-card-title text-card-title">15 Agt 2023</div>
+<div class="font-caption text-caption text-ink-muted">Poli Umum</div>
+</td>
+<td class="px-6 py-4">
+<div class="font-body-sm text-body-sm text-on-background">ISPA (Flu Ringan)</div>
+<div class="font-caption text-caption text-ink-muted">Demam 2 hari</div>
+</td>
+<td class="px-6 py-4 font-body-sm text-body-sm">dr. Siti Rahma</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-primary-soft text-primary font-caption text-caption">Selesai</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-surface-container rounded transition-colors"><span class="material-symbols-outlined text-ink-dim">more_vert</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="px-6 py-3 bg-surface-alt border-t border-border flex justify-between items-center">
+<span class="font-caption text-caption text-ink-muted">Menampilkan 3 dari 12 kunjungan</span>
+<button class="text-primary font-bold font-body-sm text-body-sm hover:underline">Lihat Semua Riwayat</button>
+</div>
+</div>
+</div>
+<!-- Right Rail -->
+<aside class="col-span-12 lg:col-span-4 space-y-6">
+<!-- AI Summary Block -->
+<div class="bg-primary-soft border border-primary-dim rounded-xl p-5 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-3">
+<span class="material-symbols-outlined text-primary/30 text-[40px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary text-[18px]">auto_awesome</span>
+<h3 class="font-card-title text-card-title text-primary">Ringkasan Asisten AI</h3>
+</div>
+<p class="font-body-sm text-body-sm text-primary-container mb-4">
+                        Pasien memiliki riwayat hipertensi yang terkontrol. Perlu pemantauan rutin untuk asupan sodium. Hasil lab terakhir menunjukkan peningkatan kolesterol LDL (160 mg/dL). Disarankan edukasi gaya hidup sehat sebelum kunjungan berikutnya.
+                    </p>
+<div class="flex gap-2">
+<span class="bg-white/50 px-2 py-1 rounded-lg font-caption text-[10px] text-primary-container border border-primary-dim">Hipertensi</span>
+<span class="bg-white/50 px-2 py-1 rounded-lg font-caption text-[10px] text-primary-container border border-primary-dim">LDL Tinggi</span>
+</div>
+</div>
+<!-- Active Prescriptions -->
+<div class="bg-surface border border-border rounded-xl p-5">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-card-title text-card-title">Resep Aktif</h3>
+<span class="material-symbols-outlined text-ink-dim text-[20px]">medication</span>
+</div>
+<div class="space-y-4">
+<div class="p-3 bg-surface-alt rounded-lg border-l-4 border-primary">
+<div class="flex justify-between">
+<p class="font-body-md text-body-md font-bold">Amlodipine 5mg</p>
+<p class="font-caption text-caption text-ink-muted">1x1 hari</p>
+</div>
+<p class="font-caption text-caption text-ink-muted mt-1">Sisa: 12 Tablet • Berakhir 24 Okt</p>
+</div>
+<div class="p-3 bg-surface-alt rounded-lg border-l-4 border-primary">
+<div class="flex justify-between">
+<p class="font-body-md text-body-md font-bold">Simvastatin 20mg</p>
+<p class="font-caption text-caption text-ink-muted">1x1 malam</p>
+</div>
+<p class="font-caption text-caption text-ink-muted mt-1">Sisa: 10 Tablet • Berakhir 22 Okt</p>
+</div>
+</div>
+</div>
+<!-- Upcoming Appointments -->
+<div class="bg-surface border border-border rounded-xl p-5">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-card-title text-card-title">Janji Mendatang</h3>
+<button class="text-primary font-bold font-body-sm text-body-sm hover:underline">Kelola</button>
+</div>
+<div class="flex gap-4 items-start border-b border-border-soft pb-4 mb-4">
+<div class="bg-primary-soft text-primary rounded-lg flex flex-col items-center justify-center min-w-[48px] h-[48px]">
+<span class="font-bold text-[16px]">25</span>
+<span class="font-caption text-[10px] uppercase">Okt</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold">Kontrol Penyakit Dalam</p>
+<p class="font-caption text-caption text-ink-muted">09:00 - 10:00 • dr. Hartono</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<div class="bg-surface-alt text-ink-muted rounded-lg flex flex-col items-center justify-center min-w-[48px] h-[48px]">
+<span class="font-bold text-[16px]">02</span>
+<span class="font-caption text-[10px] uppercase">Nov</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold">Cek Lab Rutin</p>
+<p class="font-caption text-caption text-ink-muted">08:00 - 08:30 • Lab Utama</p>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<script>
+        // Simple micro-interaction for tabs
+        const tabs = document.querySelectorAll('.border-b-2');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => {
+                    t.classList.remove('border-primary', 'text-primary', 'font-bold');
+                    t.classList.add('border-transparent', 'text-ink-muted');
+                });
+                tab.classList.remove('border-transparent', 'text-ink-muted');
+                tab.classList.add('border-primary', 'text-primary', 'font-bold');
+            });
+        });
+
+        // Add a subtle entrance animation to cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.bg-surface, .bg-primary-soft');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(10px)';
+                card.style.transition = `all 0.4s ease-out ${index * 0.05}s`;
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 50);
+            });
+        });
+    </script>
+</body></html>

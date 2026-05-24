@@ -1,0 +1,294 @@
+<html class="light" lang="id"><head></head><body class="bg-background text-on-surface antialiased flex flex-col min-h-screen max-w-[360px] mx-auto overflow-x-hidden shadow-2xl relative border-x border-border">```html
+
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=DM+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FAF6EE;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .premium-card-gradient {
+            background: linear-gradient(135deg, #1f1b14 0%, #2d2a22 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#773217",
+                        "on-secondary": "#ffffff",
+                        "accent-soft": "#F0D9CB",
+                        "on-tertiary-fixed-variant": "#234b5e",
+                        "border": "#E8E0CC",
+                        "warning": "#C97B2C",
+                        "on-primary-fixed-variant": "#334d34",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "ink-muted": "#6F665A",
+                        "surface-container-high": "#f0e7db",
+                        "warning-soft": "#F4E1CC",
+                        "secondary-fixed-dim": "#ffb59b",
+                        "on-secondary-container": "#773217",
+                        "primary-fixed": "#ccebc9",
+                        "outline-variant": "#c3c8bf",
+                        "surface-dim": "#EEE7D5",
+                        "info-soft": "#D6E1E7",
+                        "ink-dim": "#A39A8B",
+                        "background": "#FAF6EE",
+                        "tertiary": "#385f73",
+                        "primary-fixed-dim": "#b0cfae",
+                        "error-container": "#ffdad6",
+                        "primary-soft": "#EAEFE3",
+                        "secondary-container": "#fe9d7a",
+                        "surface-container-low": "#fcf2e6",
+                        "secondary-fixed": "#ffdbcf",
+                        "tertiary-container": "#51788d",
+                        "tertiary-fixed-dim": "#a4cce3",
+                        "inverse-primary": "#b0cfae",
+                        "surface-container-highest": "#eae1d5",
+                        "primary-dim": "#D9E1D2",
+                        "primary-container": "#5e7a5e",
+                        "on-error": "#ffffff",
+                        "outline": "#737971",
+                        "on-tertiary-container": "#f6fbff",
+                        "on-primary-container": "#edffe9",
+                        "surface": "#FFFFFF",
+                        "inverse-on-surface": "#f9efe3",
+                        "on-surface-variant": "#434841",
+                        "on-secondary-fixed": "#380d00",
+                        "secondary": "#95492b",
+                        "on-background": "#1f1b14",
+                        "border-soft": "#F0E9D6",
+                        "surface-container": "#f6ece1",
+                        "surface-alt": "#F2EDE0",
+                        "error": "#ba1a1a",
+                        "primary": "#466147",
+                        "on-surface": "#1f1b14",
+                        "danger-soft": "#F2D6D3",
+                        "surface-tint": "#4a654a",
+                        "surface-bright": "#fff8f2",
+                        "inverse-surface": "#343028",
+                        "surface-variant": "#eae1d5",
+                        "on-tertiary": "#ffffff",
+                        "danger": "#A8443E",
+                        "tertiary-fixed": "#c1e8ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#07200c",
+                        "on-tertiary-fixed": "#001e2b",
+                        "ink": "#1f1b14",
+                        "clay": "#B05E3F"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "mobile-margin": "16px",
+                        "gutter": "16px",
+                        "stack-sm": "8px",
+                        "stack-md": "12px",
+                        "stack-lg": "24px",
+                        "topbar-height": "64px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "eyebrow": ["Plus Jakarta Sans"],
+                        "card-title": ["Plus Jakarta Sans"],
+                        "caption": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "code-mono": ["DM Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["13px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "body-sm": ["12px", {"lineHeight": "18px", "fontWeight": "500"}],
+                        "body-md-mobile": ["12px", {"lineHeight": "18px", "fontWeight": "500"}],
+                        "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "eyebrow": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "card-title": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "caption": ["11px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "code-mono": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<!-- Top AppBar -->
+<header class="h-topbar-height flex items-center px-mobile-margin bg-background/80 backdrop-blur-md z-20 sticky top-0">
+<h1 class="font-headline-sm text-headline-sm text-primary">Profil Saya</h1>
+<div class="ml-auto flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+</div>
+</header>
+<main class="flex-1 px-mobile-margin py-stack-md overflow-y-auto pb-32">
+<!-- Identity Card (Main) -->
+<section class="mb-stack-lg">
+<div class="premium-card-gradient rounded-xl p-stack-lg relative overflow-hidden shadow-xl border border-outline/10">
+<!-- Abstract aesthetic element -->
+<div class="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-primary/10 blur-3xl"></div>
+<div class="absolute -left-16 -bottom-16 w-32 h-32 rounded-full bg-secondary/5 blur-2xl"></div>
+<div class="flex items-start justify-between relative z-10 mb-8">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-full border-2 border-primary-fixed/30 p-0.5 overflow-hidden">
+<img alt="Portrait of Ibu Sari" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVvsMNV26ttNTiGSjCviOXxtcSfljuftC6NhantcVPK-FdnclOTniLD7kDgojsOK6H2XryXB7dOnGekpxqDcBfc3Owg-Ttqca0MM3b3GWHerhkI-3MQK4zxKvtiNp6hQXtuiYXczx9Q2M4N2iwoi37cq4f_YXz9ARol3c8Hflrd3JINMhZkRDAFmugQR4_pZXY4WFGAmSlJ_QLXuTps5-LmeUFTI22mTbl9tw0lrbwx30WQ8UEbdjQyfuvDIDQyQZDBeMF7yPuoLI"/>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-surface leading-tight">Ibu Sari</h2>
+<p class="font-code-mono text-[10px] text-ink-dim tracking-[0.1em] uppercase mt-1 opacity-80">ID: SEH-2024-8812</p>
+</div>
+</div>
+<div class="bg-surface/10 p-2.5 rounded-xl border border-surface/20 backdrop-blur-sm">
+<span class="material-symbols-outlined text-primary-fixed text-xl" data-icon="qr_code_2">qr_code_2</span>
+</div>
+</div>
+<div class="flex items-end justify-between relative z-10">
+<div class="flex gap-8">
+<div>
+<p class="font-eyebrow text-eyebrow text-ink-dim uppercase mb-1 opacity-70">Golongan Darah</p>
+<p class="font-headline-sm text-headline-sm text-surface">O+</p>
+</div>
+<div>
+<p class="font-eyebrow text-eyebrow text-ink-dim uppercase mb-1 opacity-70">Usia</p>
+<p class="font-headline-sm text-headline-sm text-surface">45 Thn</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-3 py-1 rounded-full bg-primary-fixed/20 text-primary-fixed border border-primary-fixed/30 font-caption text-[10px] uppercase tracking-wider font-bold">Member Aktif</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Asuransi Section -->
+<section class="mb-stack-lg">
+<h3 class="font-eyebrow text-eyebrow text-ink-muted uppercase tracking-widest mb-stack-sm px-1">Asuransi &amp; Jaminan</h3>
+<div class="bg-primary-soft rounded-xl p-4 border border-border flex items-center gap-4 active:scale-[0.98] transition-all">
+<div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center border border-primary-fixed/50 shadow-sm">
+<span class="material-symbols-outlined text-primary" data-icon="health_and_safety">health_and_safety</span>
+</div>
+<div class="flex-1">
+<h4 class="font-card-title text-card-title text-on-surface">BPJS Kesehatan</h4>
+<p class="font-code-mono text-[12px] text-ink-muted">0001234567890</p>
+</div>
+<span class="material-symbols-outlined text-ink-dim" data-icon="chevron_right">chevron_right</span>
+</div>
+</section>
+<!-- Keluarga Section -->
+<section class="mb-stack-lg">
+<div class="flex items-center justify-between mb-stack-sm px-1">
+<h3 class="font-eyebrow text-eyebrow text-ink-muted uppercase tracking-widest">Anggota Keluarga</h3>
+<button class="text-primary font-body-sm text-body-sm flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[18px]" data-icon="add_circle">add_circle</span>
+                    Tambah
+                </button>
+</div>
+<div class="bg-surface rounded-xl border border-border divide-y divide-border-soft overflow-hidden shadow-sm">
+<!-- Member 1 -->
+<div class="p-4 flex items-center gap-4 active:bg-surface-container-low transition-colors">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed/50 flex items-center justify-center border border-secondary-fixed">
+<span class="material-symbols-outlined text-on-secondary-fixed-variant" data-icon="person_4">person_4</span>
+</div>
+<div class="flex-1">
+<h4 class="font-body-md text-body-md text-on-surface">Bpk. Agus (Suami)</h4>
+<p class="font-caption text-caption text-secondary font-medium italic">Kontak Darurat Utama</p>
+</div>
+<span class="material-symbols-outlined text-ink-dim" data-icon="chevron_right">chevron_right</span>
+</div>
+<!-- Member 2 -->
+<div class="p-4 flex items-center gap-4 active:bg-surface-container-low transition-colors">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed/50 flex items-center justify-center border border-tertiary-fixed">
+<span class="material-symbols-outlined text-on-tertiary-fixed-variant" data-icon="child_care">child_care</span>
+</div>
+<div class="flex-1">
+<h4 class="font-body-md text-body-md text-on-surface">Rina (Anak)</h4>
+<p class="font-caption text-caption text-ink-muted">ID: SEH-2024-9901</p>
+</div>
+<span class="material-symbols-outlined text-ink-dim" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Settings Section -->
+<section>
+<h3 class="font-eyebrow text-eyebrow text-ink-muted uppercase tracking-widest mb-stack-sm px-1">Pengaturan &amp; Akun</h3>
+<div class="bg-surface rounded-xl border border-border divide-y divide-border-soft overflow-hidden shadow-sm">
+<div class="p-4 flex items-center gap-4 active:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+<span class="flex-1 font-body-md text-body-md">Notifikasi</span>
+<div class="w-8 h-4 bg-primary rounded-full relative">
+<div class="absolute right-0.5 top-0.5 w-3 h-3 bg-white rounded-full"></div>
+</div>
+</div>
+<div class="p-4 flex items-center gap-4 active:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="language">language</span>
+<div class="flex-1">
+<p class="font-body-md text-body-md">Bahasa</p>
+<p class="font-caption text-caption text-ink-muted">Bahasa Indonesia</p>
+</div>
+<span class="material-symbols-outlined text-ink-dim" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="p-4 flex items-center gap-4 active:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="security">security</span>
+<span class="flex-1 font-body-md text-body-md">Keamanan Akun</span>
+<span class="material-symbols-outlined text-ink-dim" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="p-4 flex items-center gap-4 active:bg-danger-soft transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-clay" data-icon="logout">logout</span>
+<span class="flex-1 font-body-md text-body-md text-clay font-bold">Keluar Sesi</span>
+</div>
+</div>
+<!-- Refined Footer -->
+<div class="mt-12 mb-8 flex flex-col items-center">
+<p class="font-caption text-caption text-ink-dim opacity-60">Versi 2.4.1 (Stable)</p>
+<p class="font-caption text-[10px] text-ink-dim uppercase tracking-tighter opacity-60">Sehati CRM Indonesia</p>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[360px] bg-white/95 backdrop-blur-sm h-[68px] flex items-center justify-around px-2 z-30 border-t border-border-soft">
+<button class="flex flex-col items-center gap-1 text-ink-muted flex-1 transition-all">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-caption text-[10px]">Beranda</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-ink-muted flex-1 transition-all">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-caption text-[10px]">Janji</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-ink-muted flex-1 transition-all">
+<span class="material-symbols-outlined" data-icon="clinical_notes">clinical_notes</span>
+<span class="font-caption text-[10px]">Catatan</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary flex-1 transition-all">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-caption text-[10px] font-bold">Profil</span>
+</button>
+</nav>
+<script>
+    // Micro-interactions
+    document.querySelectorAll('.active\\:bg-surface-container-low, .active\\:scale-\\[0\\.98\\]').forEach(item => {
+        item.addEventListener('touchstart', () => {
+            if (!item.classList.contains('active:scale-[0.98]')) {
+                item.style.backgroundColor = 'rgba(246, 236, 225, 0.5)';
+            }
+        });
+        item.addEventListener('touchend', () => {
+            if (!item.classList.contains('active:scale-[0.98]')) {
+                item.style.backgroundColor = '';
+            }
+        });
+    });
+</script>
+```</body></html>

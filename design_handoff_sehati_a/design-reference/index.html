@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<title>Sehati · Direction A — design reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded&display=block" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  body {
+    /* Plus Jakarta Sans dipakai di codebase Sehati real — kita switch dari
+       Poppins yang dipakai eksplorasi awal supaya preview ini setara dengan
+       hasil port. */
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background: #ECE6D7;
+  }
+  .intro {
+    position: fixed; left: 24px; top: 24px; z-index: 50;
+    background: #FAF6EE; padding: 14px 18px; border-radius: 12px; border: 1px solid #E8E0CC;
+    box-shadow: 0 4px 16px rgba(40,30,12,0.06); max-width: 380px;
+  }
+  .intro .eyebrow { font-size: 10px; font-weight: 700; color: #B0613F; letter-spacing: 1.4px; text-transform: uppercase; }
+  .intro h1 { font-size: 18px; font-weight: 600; margin: 4px 0 6px; color: #1F1B14; letter-spacing: -0.3px; }
+  .intro p { margin: 0; font-size: 11.5px; color: #6F665A; line-height: 1.55; }
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <div class="eyebrow">Sehati · Design Reference</div>
+  <h1>Direction A — Sand & Sage</h1>
+  <p>12 layar siap implementasi: 6 patient app + 6 dashboard. Klik artboard untuk fokus, lihat README.md untuk panduan port ke Next.js + Tailwind + shadcn/ui.</p>
+</div>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script src="data.js"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="android-frame.jsx"></script>
+<script type="text/babel" src="ui.jsx"></script>
+<script type="text/babel" src="direction-a-phone.jsx"></script>
+<script type="text/babel" src="direction-a-booking.jsx"></script>
+<script type="text/babel" src="direction-a-phone-extra.jsx"></script>
+<script type="text/babel" src="direction-a-dash-inbox.jsx"></script>
+<script type="text/babel" src="direction-a-dash-other.jsx"></script>
+<script type="text/babel" src="direction-a-dash-extra.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+function App() {
+  return (
+    <DesignCanvas>
+      <DCSection id="phone" title="Patient App · Android" subtitle="6 layar utama pasien">
+        <DCArtboard id="home" label="Beranda" width={360} height={720}><SaSPhoneHome /></DCArtboard>
+        <DCArtboard id="chat" label="Chat → AI escalation" width={360} height={720}><SaSPhoneChat /></DCArtboard>
+        <DCArtboard id="book" label="Booking dokter" width={360} height={720}><SaSPhoneBooking /></DCArtboard>
+        <DCArtboard id="confirm" label="Tiket booking" width={360} height={720}><SaSPhoneConfirm /></DCArtboard>
+        <DCArtboard id="riwayat" label="Riwayat" width={360} height={720}><SaSPhoneRiwayat /></DCArtboard>
+        <DCArtboard id="profile" label="Profil" width={360} height={720}><SaSPhoneProfile /></DCArtboard>
+      </DCSection>
+      <DCSection id="dash" title="Staff Dashboard" subtitle="6 layar inti dashboard">
+        <DCArtboard id="overview" label="Overview — manager" width={1280} height={800}><SaSDashOverview /></DCArtboard>
+        <DCArtboard id="inbox" label="Inbox — AI assist panel" width={1280} height={800}><SaSDashInbox /></DCArtboard>
+        <DCArtboard id="cal" label="Kalender minggu" width={1280} height={800}><SaSDashCalendar /></DCArtboard>
+        <DCArtboard id="pasien" label="Pasien detail" width={1280} height={800}><SaSDashPasien /></DCArtboard>
+        <DCArtboard id="dokter" label="Dokter management" width={1280} height={800}><SaSDashDokter /></DCArtboard>
+        <DCArtboard id="kb" label="Knowledge Base" width={1280} height={800}><SaSDashKB /></DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

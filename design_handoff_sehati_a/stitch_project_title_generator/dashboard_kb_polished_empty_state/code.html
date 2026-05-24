@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Knowledge Base - Sehati CRM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=DM+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FAF6EE;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #E8E0CC;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "info-soft": "#D6E1E7",
+                      "danger": "#A8443E",
+                      "accent-soft": "#F0D9CB",
+                      "on-tertiary-fixed": "#001e2b",
+                      "on-surface-variant": "#434841",
+                      "tertiary-container": "#51788d",
+                      "on-secondary-fixed": "#380d00",
+                      "error-container": "#ffdad6",
+                      "surface-alt": "#F2EDE0",
+                      "outline": "#737971",
+                      "border": "#E8E0CC",
+                      "on-tertiary": "#ffffff",
+                      "danger-soft": "#F2D6D3",
+                      "primary-fixed": "#ccebc9",
+                      "ink-muted": "#6F665A",
+                      "border-soft": "#F0E9D6",
+                      "on-secondary-fixed-variant": "#773217",
+                      "warning": "#C97B2C",
+                      "surface-container": "#f6ece1",
+                      "primary-container": "#5e7a5e",
+                      "error": "#ba1a1a",
+                      "warning-soft": "#F4E1CC",
+                      "inverse-on-surface": "#f9efe3",
+                      "secondary-container": "#fe9d7a",
+                      "primary-dim": "#D9E1D2",
+                      "on-error": "#ffffff",
+                      "surface": "#FFFFFF",
+                      "inverse-primary": "#b0cfae",
+                      "surface-dim": "#e2d9cd",
+                      "tertiary": "#385f73",
+                      "surface-container-low": "#fcf2e6",
+                      "on-surface": "#1f1b14",
+                      "inverse-surface": "#343028",
+                      "tertiary-fixed": "#c1e8ff",
+                      "surface-tint": "#4a654a",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed-dim": "#a4cce3",
+                      "on-tertiary-fixed-variant": "#234b5e",
+                      "on-secondary": "#ffffff",
+                      "background": "#FAF6EE",
+                      "primary": "#466147",
+                      "on-background": "#1f1b14",
+                      "primary-fixed-dim": "#b0cfae",
+                      "surface-bright": "#fff8f2",
+                      "ink-dim": "#A39A8B",
+                      "on-primary": "#ffffff",
+                      "outline-variant": "#c3c8bf",
+                      "surface-container-high": "#f0e7db",
+                      "on-primary-fixed": "#07200c",
+                      "surface-variant": "#eae1d5",
+                      "secondary-fixed-dim": "#ffb59b",
+                      "on-primary-container": "#edffe9",
+                      "surface-container-highest": "#eae1d5",
+                      "on-tertiary-container": "#f6fbff",
+                      "on-primary-fixed-variant": "#334d34",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-soft": "#EAEFE3",
+                      "secondary-fixed": "#ffdbcf",
+                      "on-secondary-container": "#773217",
+                      "secondary": "#95492b",
+                      "ink": "#1F1B14"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-md": "12px",
+                      "desktop-margin": "24px",
+                      "topbar-height": "56px",
+                      "stack-lg": "24px",
+                      "gutter": "16px",
+                      "sidebar-width": "224px",
+                      "stack-sm": "8px",
+                      "mobile-margin": "16px"
+              },
+              "fontFamily": {
+                      "body-md": ["Plus Jakarta Sans"],
+                      "card-title": ["Plus Jakarta Sans"],
+                      "body-sm": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "headline-sm": ["Plus Jakarta Sans"],
+                      "headline-md": ["Plus Jakarta Sans"],
+                      "code-mono": ["DM Mono"],
+                      "caption": ["Plus Jakarta Sans"],
+                      "eyebrow": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "body-md": ["13px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "card-title": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                      "body-sm": ["12px", {"lineHeight": "18px", "fontWeight": "500"}],
+                      "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                      "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "code-mono": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                      "caption": ["11px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "eyebrow": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background">
+<!-- Sidebar Shell -->
+<aside class="fixed left-0 top-0 h-screen w-[224px] bg-surface-alt dark:bg-surface-dim border-r border-border dark:border-outline-variant z-50 flex flex-col py-stack-lg">
+<div class="px-6 mb-8">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary-dim">Sehati CRM</h1>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted dark:text-ink-dim hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-body-md text-body-md">Antrean Pesan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted dark:text-ink-dim hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-body-md text-body-md">Tugas Tim</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 bg-surface dark:bg-surface-container font-bold text-primary border-l-[3px] border-primary" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+<span class="font-body-md text-body-md">Knowledge Base</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted dark:text-ink-dim hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="recent_patients">recent_patient</span>
+<span class="font-body-md text-body-md">Database Pasien</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted dark:text-ink-dim hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-body-md text-body-md">Laporan Sesi</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted dark:text-ink-dim hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Pengaturan</span>
+</a>
+</nav>
+<div class="mt-auto px-4 space-y-4">
+<button class="w-full py-3 px-4 bg-primary text-on-primary rounded-xl flex items-center justify-center gap-2 font-bold active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined text-[18px]" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-body-md text-body-md">Buka Asisten AI</span>
+</button>
+<div class="pt-4 border-t border-border">
+<div class="flex items-center gap-3 px-2 mb-4">
+<img alt="Staff Profile Picture" class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdj2siGldU5kgZAX5JFx14ZEAuc2cEPVHhD0FmWaNRBIKDdVeAsiJpYpJpQjB2vblJUqRLlmf9a0qvFtY1ELTZSXB_Dyd81UUhrd95PYeeV-2akqoJmPDatY0PdWgOI3DQXfMI-4Ujlnhevpt15het13yA7zv6ehaBvtB4Oia133ydk6Q70dQrQTbHj9pGpGqX6bnl4Zf-5-aLpJdkyVyHP-7dCjzY6UUSMTg12bLmtUZAyzndG7FYNYdN8oKqpa9-QZ_ABFalI30"/>
+<div>
+<p class="font-body-md text-body-md font-bold text-on-surface leading-tight">Budi Santoso</p>
+<p class="font-caption text-caption text-ink-muted">Staff Admin</p>
+</div>
+</div>
+<a class="flex items-center gap-3 px-2 py-2 text-ink-muted hover:text-primary transition-colors text-body-sm font-body-sm" href="#">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+<span class="">Status Sistem</span>
+</a>
+<a class="flex items-center gap-3 px-2 py-2 text-ink-muted hover:text-primary transition-colors text-body-sm font-body-sm" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="">Bantuan</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 right-0 h-[56px] w-[calc(100%-224px)] bg-surface dark:bg-surface-container-lowest border-b border-border dark:border-outline-variant z-40 flex justify-between items-center px-gutter">
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-ink-dim" data-icon="search">search</span>
+<input class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-1.5 text-body-sm font-body-sm w-64 focus:ring-1 focus:ring-primary-container" placeholder="Cari konten KB..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center text-ink-muted hover:bg-surface-container transition-colors rounded-full cursor-pointer active:opacity-70">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-ink-muted hover:bg-surface-container transition-colors rounded-full cursor-pointer active:opacity-70">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[224px] mt-[56px] p-desktop-margin min-h-[calc(100vh-56px)]">
+<!-- Breadcrumbs & Header -->
+<div class="mb-8 flex justify-between items-end">
+<div>
+<nav class="flex items-center gap-2 mb-2">
+<span class="font-caption text-caption text-ink-muted">Klinik Pusat</span>
+<span class="material-symbols-outlined text-[14px] text-ink-dim" data-icon="chevron_right">chevron_right</span>
+<span class="font-caption text-caption text-primary font-bold">Knowledge Base</span>
+</nav>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Manajemen Pengetahuan</h2>
+</div>
+<div class="flex gap-3">
+<button class="border border-primary text-primary px-5 py-2.5 rounded-xl font-bold font-body-md text-body-md flex items-center gap-2 hover:bg-primary-soft active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+                Unduh Laporan
+            </button>
+<button class="bg-ink text-white px-6 py-2.5 rounded-xl font-bold font-body-md text-body-md flex items-center gap-2 active:scale-95 transition-transform shadow-sm">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                + Q&amp;A Baru
+            </button>
+</div>
+</div>
+<!-- KPI Strip (Asymmetric Row) -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+<div class="bg-surface p-5 rounded-2xl border border-border shadow-sm group hover:border-primary transition-all">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 bg-primary-soft rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+</div>
+<span class="font-caption text-caption text-primary px-2 py-0.5 bg-primary-soft rounded-full">+12%</span>
+</div>
+<p class="font-eyebrow text-eyebrow text-ink-muted uppercase mb-1">Q&amp;A Aktif</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">124</h3>
+</div>
+<div class="bg-surface p-5 rounded-2xl border border-border shadow-sm group hover:border-primary transition-all">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 bg-info-soft rounded-lg flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+</div>
+</div>
+<p class="font-eyebrow text-eyebrow text-ink-muted uppercase mb-1">Dokumen PDF/URL</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">18</h3>
+</div>
+<div class="bg-warning-soft/30 p-5 rounded-2xl border-2 border-warning shadow-sm group hover:bg-warning-soft/50 transition-all">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 bg-warning rounded-lg flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined" data-icon="target">target</span>
+</div>
+<span class="font-caption text-caption text-warning px-2 py-0.5 bg-white rounded-full font-bold shadow-sm">Good</span>
+</div>
+<p class="font-eyebrow text-eyebrow text-warning/80 uppercase mb-1 font-bold">Retrieval Acc.</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">94%</h3>
+</div>
+<div class="bg-primary p-5 rounded-2xl border border-primary-container shadow-md group transition-all text-white">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+</div>
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-primary bg-primary-dim"></div>
+<div class="w-6 h-6 rounded-full border-2 border-primary bg-white/20"></div>
+</div>
+</div>
+<p class="font-eyebrow text-eyebrow text-primary-fixed-dim uppercase mb-1">Performa AI</p>
+<h3 class="font-headline-md text-headline-md text-white font-bold">Sangat Baik</h3>
+</div>
+</section>
+<!-- Main Body Grid (60/40 Split) -->
+<div class="grid grid-cols-1 lg:grid-cols-10 gap-gutter items-start mb-gutter">
+<!-- Left: Q&A Table (6/10) -->
+<section class="lg:col-span-6 bg-surface rounded-2xl border border-border shadow-sm overflow-hidden h-fit">
+<div class="p-5 border-b border-border flex justify-between items-center">
+<h4 class="font-card-title text-card-title text-on-surface">Daftar Pertanyaan &amp; Jawaban</h4>
+<div class="flex gap-2">
+<button class="p-2 text-ink-muted hover:bg-surface-container rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-lowest">
+<tr>
+<th class="px-6 py-4 font-eyebrow text-eyebrow text-ink-muted">QUESTION</th>
+<th class="px-6 py-4 font-eyebrow text-eyebrow text-ink-muted">TAGS</th>
+<th class="px-6 py-4 font-eyebrow text-eyebrow text-ink-muted">STATUS</th>
+<th class="px-6 py-4 font-eyebrow text-eyebrow text-ink-muted">30D HITS</th>
+<th class="px-6 py-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-soft">
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="px-6 py-4">
+<p class="font-body-md text-body-md text-on-surface font-bold">Bagaimana cara reservasi dokter umum?</p>
+<p class="font-caption text-caption text-ink-dim truncate w-64">Pasien bisa menggunakan menu chat atau...</p>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 bg-surface-alt rounded font-caption text-caption text-ink-muted italic">#Admin</span>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-primary-soft text-primary rounded-full font-caption text-caption flex items-center gap-1 w-fit">
+<span class="w-1.5 h-1.5 bg-primary rounded-full"></span> Published
+                                </span>
+</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">1,240</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-ink-dim opacity-0 group-hover:opacity-100 transition-opacity" data-icon="more_vert">more_vert</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="px-6 py-4">
+<p class="font-body-md text-body-md text-on-surface font-bold">Syarat klaim asuransi Prudential</p>
+<p class="font-caption text-caption text-ink-dim truncate w-64">Menyertakan foto KTP dan kartu peserta...</p>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 bg-surface-alt rounded font-caption text-caption text-ink-muted italic">#Asuransi</span>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-warning-soft text-warning rounded-full font-caption text-caption flex items-center gap-1 w-fit">
+<span class="w-1.5 h-1.5 bg-warning rounded-full"></span> Needs Review
+                                </span>
+</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">856</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-ink-dim opacity-0 group-hover:opacity-100 transition-opacity" data-icon="more_vert">more_vert</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="px-6 py-4">
+<p class="font-body-md text-body-md text-on-surface font-bold">Jadwal dokter spesialis kandungan</p>
+<p class="font-caption text-caption text-ink-dim truncate w-64">Senin - Jumat, pukul 08:00 sampai...</p>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 bg-surface-alt rounded font-caption text-caption text-ink-muted italic">#Jadwal</span>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-primary-soft text-primary rounded-full font-caption text-caption flex items-center gap-1 w-fit">
+<span class="w-1.5 h-1.5 bg-primary rounded-full"></span> Published
+                                </span>
+</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">2,102</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-ink-dim opacity-0 group-hover:opacity-100 transition-opacity" data-icon="more_vert">more_vert</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-border-soft flex justify-center">
+<button class="text-primary font-bold font-body-sm text-body-sm hover:underline">Lihat Semua Data</button>
+</div>
+</section>
+<!-- Right Column (4/10) -->
+<div class="lg:col-span-4 space-y-gutter">
+<!-- RAG Simulator Panel -->
+<section class="bg-surface rounded-2xl border border-border shadow-sm overflow-hidden border-t-[4px] border-t-primary">
+<div class="p-5">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="robot_2">robot_2</span>
+<h4 class="font-card-title text-card-title text-on-surface">RAG Simulator</h4>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted mb-4">Uji bagaimana AI mengambil data dari KB Anda.</p>
+<div class="relative mb-4">
+<input class="w-full border-border rounded-xl px-4 py-3 font-body-md text-body-md focus:ring-primary focus:border-primary" placeholder="Masukkan pertanyaan simulasi..." type="text"/>
+<button class="absolute right-2 top-1.5 bg-primary text-on-primary p-1.5 rounded-lg active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+</button>
+</div>
+<div class="bg-primary-soft p-4 rounded-xl border border-primary-dim">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="verified_user">verified_user</span>
+<span class="font-eyebrow text-eyebrow text-primary">AI PREDICTION</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface italic leading-relaxed">"Tanyakan ke user tentang asuransi spesifiknya, lalu ambil data dari dokumen 'Klaim_Insurance_2024.pdf'..."</p>
+</div>
+</div>
+</section>
+<!-- AI Performance Analysis -->
+<section class="bg-surface rounded-2xl border border-border shadow-sm overflow-hidden">
+<div class="p-5 border-b border-border-soft bg-primary-soft/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="monitoring">monitoring</span>
+<h4 class="font-card-title text-card-title text-on-surface">Analisis Performa AI</h4>
+</div>
+</div>
+<div class="p-5 space-y-4">
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-xl border border-border">
+<div>
+<p class="font-caption text-caption text-ink-muted">Akurasi Jawaban</p>
+<p class="font-body-md text-body-md font-bold text-on-surface">92.4%</p>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-xl border border-border">
+<div>
+<p class="font-caption text-caption text-ink-muted">Rata-rata Waktu Respon</p>
+<p class="font-body-md text-body-md font-bold text-on-surface">1.2 detik</p>
+</div>
+<span class="material-symbols-outlined text-tertiary" data-icon="timer">timer</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-xl border border-border">
+<div>
+<p class="font-caption text-caption text-ink-muted">Total Sesi Bulan Ini</p>
+<p class="font-body-md text-body-md font-bold text-on-surface">4,582</p>
+</div>
+<span class="material-symbols-outlined text-secondary" data-icon="forum">forum</span>
+</div>
+</div>
+</section>
+<!-- KB Gaps Preview -->
+<section class="bg-surface rounded-2xl border border-border shadow-sm overflow-hidden">
+<div class="p-5 border-b border-border-soft bg-warning-soft/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-warning" data-icon="lightbulb">lightbulb</span>
+<h4 class="font-card-title text-card-title text-on-surface">KB Gaps Terkini</h4>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="p-2.5 bg-surface-container-low rounded-lg border border-border hover:border-warning transition-all cursor-pointer">
+<p class="font-body-sm text-body-sm text-on-surface font-bold truncate">"Bisa pakai BPJS untuk scaling gigi?"</p>
+<p class="font-caption text-caption text-ink-muted">12 kali tidak terjawab</p>
+</div>
+<button class="w-full py-2 font-body-sm text-body-sm text-primary font-bold hover:bg-primary-soft rounded-lg transition-colors">Kelola Semua Gaps</button>
+</div>
+</section>
+</div>
+</div>
+<!-- AI Session Detail Reports -->
+<section class="bg-surface rounded-2xl border border-border shadow-sm overflow-hidden w-full">
+<div class="p-5 border-b border-border flex justify-between items-center bg-surface-container-lowest">
+<h4 class="font-card-title text-card-title text-on-surface">Laporan Detail Sesi AI</h4>
+<div class="flex items-center gap-3">
+<div class="relative flex items-center">
+<button class="flex items-center gap-2 bg-surface-container-low border border-border rounded-lg px-3 py-1.5 text-caption font-caption text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[16px] text-ink-dim" data-icon="calendar_today">calendar_today</span>
+<span class="">Pilih Tanggal</span>
+<span class="material-symbols-outlined text-[14px] text-ink-dim" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
+</button>
+</div><div class="relative">
+<input class="bg-surface-container-low border border-border rounded-lg pl-8 pr-4 py-1.5 text-caption font-caption w-48 focus:ring-1 focus:ring-primary" placeholder="Cari Sesi ID..." type="text"/>
+<span class="absolute left-2.5 top-1/2 -translate-y-1/2 material-symbols-outlined text-ink-dim text-[16px]" data-icon="search">search</span>
+</div>
+<button class="p-2 text-ink-muted hover:bg-surface-container rounded-lg">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low/50">
+<tr>
+<th class="px-6 py-4 font-eyebrow text-eyebrow text-ink-muted">TANGGAL</th>
+<th class="px-6 py-4 font-eyebrow text-eyebrow text-ink-muted">SESI ID</th>
+<th class="px-6 py-4 font-eyebrow text-eyebrow text-ink-muted">TOPIK</th>
+<th class="px-6 py-4 font-eyebrow text-eyebrow text-ink-muted">SKOR RELEVANSI</th>
+<th class="px-6 py-4 font-eyebrow text-eyebrow text-ink-muted">STATUS</th>
+<th class="px-6 py-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-soft"><tr class="bg-surface">
+<td class="px-6 py-16" colspan="6">
+<div class="flex flex-col items-center text-center">
+<div class="w-24 h-24 bg-surface-container rounded-full flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-[48px] text-primary/40" data-icon="manage_search">manage_search</span>
+</div>
+<h5 class="font-headline-sm text-headline-sm text-on-surface mb-1">Sesi Tidak Ditemukan</h5>
+<p class="font-body-md text-body-md text-ink-muted max-w-xs mx-auto mb-6">
+Tidak ada laporan sesi AI yang sesuai dengan filter atau kata kunci pencarian Anda saat ini.
+</p>
+<button class="px-4 py-2 bg-primary-soft text-primary font-bold rounded-lg hover:bg-primary transition-colors hover:text-white">
+Bersihkan Filter
+</button>
+</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<div class="p-4 border-t border-border-soft flex justify-between items-center px-6">
+<span class="font-caption text-caption text-ink-muted">Menampilkan 3 dari 1,240 data laporan</span>
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center border border-border rounded-lg text-ink-muted hover:bg-surface-container"><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-lg text-caption font-bold">1</button>
+<button class="w-8 h-8 flex items-center justify-center border border-border rounded-lg text-ink-muted hover:bg-surface-container"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+</div>
+</div>
+</section>
+</main>
+<script>
+    // Simple Interaction logic
+    document.querySelectorAll('.active\\:scale-95').forEach(btn => {
+        btn.addEventListener('mousedown', () => {
+            btn.style.transform = 'scale(0.95)';
+        });
+        btn.addEventListener('mouseup', () => {
+            btn.style.transform = 'scale(1)';
+        });
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'scale(1)';
+        });
+    });
+
+    // Search Bar Focus Effect
+    const topSearch = document.querySelector('header input');
+    topSearch.addEventListener('focus', () => {
+        topSearch.parentElement.classList.add('ring-2', 'ring-primary-container');
+    });
+    topSearch.addEventListener('blur', () => {
+        topSearch.parentElement.classList.remove('ring-2', 'ring-primary-container');
+    });
+</script>
+</body></html>

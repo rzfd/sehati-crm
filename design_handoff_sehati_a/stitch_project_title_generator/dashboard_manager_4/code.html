@@ -1,0 +1,428 @@
+<!DOCTYPE html><html class="light" lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Sehati CRM - Manager Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=DM+Mono&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "warning-soft": "#F4E1CC",
+                        "on-secondary-container": "#773217",
+                        "danger": "#A8443E",
+                        "primary-container": "#5e7a5e",
+                        "surface": "#FFFFFF",
+                        "ink-muted": "#6F665A",
+                        "tertiary-container": "#51788d",
+                        "warning": "#C97B2C",
+                        "on-primary-container": "#edffe9",
+                        "on-primary-fixed": "#07200c",
+                        "on-primary-fixed-variant": "#334d34",
+                        "background": "#FAF6EE",
+                        "surface-tint": "#4a654a",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#f0e7db",
+                        "surface-bright": "#fff8f2",
+                        "tertiary-fixed": "#c1e8ff",
+                        "tertiary-fixed-dim": "#a4cce3",
+                        "surface-container": "#f6ece1",
+                        "surface-dim": "#e2d9cd",
+                        "info-soft": "#D6E1E7",
+                        "on-error-container": "#93000a",
+                        "danger-soft": "#F2D6D3",
+                        "primary-soft": "#EAEFE3",
+                        "on-tertiary-container": "#f6fbff",
+                        "on-surface": "#1f1b14",
+                        "tertiary": "#385f73",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#c3c8bf",
+                        "on-surface-variant": "#434841",
+                        "secondary-fixed-dim": "#ffb59b",
+                        "border-soft": "#F0E9D6",
+                        "outline": "#737971",
+                        "primary-fixed": "#ccebc9",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#eae1d5",
+                        "border": "#E8E0CC",
+                        "on-secondary-fixed-variant": "#773217",
+                        "ink-dim": "#A39A8B",
+                        "inverse-on-surface": "#f9efe3",
+                        "secondary-fixed": "#ffdbcf",
+                        "on-tertiary-fixed": "#001e2b",
+                        "surface-container-low": "#fcf2e6",
+                        "on-tertiary-fixed-variant": "#234b5e",
+                        "primary": "#466147",
+                        "accent-soft": "#F0D9CB",
+                        "inverse-surface": "#343028",
+                        "secondary-container": "#fe9d7a",
+                        "on-primary": "#ffffff",
+                        "secondary": "#95492b",
+                        "error": "#ba1a1a",
+                        "primary-dim": "#D9E1D2",
+                        "on-background": "#1f1b14",
+                        "on-secondary-fixed": "#380d00",
+                        "primary-fixed-dim": "#b0cfae",
+                        "inverse-primary": "#b0cfae",
+                        "surface-alt": "#F2EDE0",
+                        "surface-container-highest": "#eae1d5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-md": "12px",
+                        "gutter": "16px",
+                        "mobile-margin": "16px",
+                        "stack-lg": "24px",
+                        "sidebar-width": "224px",
+                        "topbar-height": "56px",
+                        "desktop-margin": "24px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "card-title": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "caption": ["Plus Jakarta Sans"],
+                        "code-mono": ["DM Mono"],
+                        "eyebrow": ["Plus Jakarta Sans"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #FAF6EE;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #1f1b14;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .ai-shimmer {
+            background: linear-gradient(90deg, rgba(70, 97, 71, 0.05) 0%, rgba(70, 97, 71, 0.15) 50%, rgba(70, 97, 71, 0.05) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body class="bg-background">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-screen w-[224px] bg-surface-alt border-r border-border flex flex-col py-stack-lg z-50">
+<div class="px-6 mb-8">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">Sehati CRM</h1>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Active State Logic: Overview/Dashboard is current -->
+<a class="flex items-center gap-3 px-4 py-2 bg-surface font-bold text-primary border-l-[3px] border-primary transition-transform active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-body-md text-body-md">Ringkasan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-body-md text-body-md">Antrean Pesan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-body-md text-body-md">Tugas Tim</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-body-md text-body-md">Knowledge Base</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="recent_patients">recent_patient</span>
+<span class="font-body-md text-body-md">Database Pasien</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Pengaturan</span>
+</a>
+</nav>
+<div class="mt-auto px-4 space-y-4">
+<button class="w-full py-3 px-4 rounded-xl bg-primary text-on-primary font-bold flex items-center justify-center gap-2 shadow-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-body-sm text-body-sm">Buka Asisten AI</span>
+</button>
+<div class="pt-4 border-t border-border space-y-1">
+<div class="flex items-center gap-3 px-2 py-2">
+<img alt="Staff Profile" class="w-8 h-8 rounded-full border border-border" data-alt="A professional headshot of a friendly Indonesian male staff member in a clean, modern medical office setting. He is wearing a minimalist professional outfit, with soft natural lighting and a warm, blurred clinic background in earthy tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZOoFhmOYs5v8i8l7sNT4KUp_2Mk7FR_pDI9oy1UTO1IOkQoOIKQQl_8BI5PVQpQJ474pqTf3O50b_8rzalgzezGbXIWgVWnb_xr0x_cqRwWbYo6CnwHyAZ3D1e4c4ZW_mFAjPHMBvolboP4k9UxHRM5MGD-ClEpILwut1znoM7E51TJwtidESxU91RLLlpCKs1FtqtU5fouH9gr2EUNf9dAHp_qBHGR2td4Hd1qFQBAt9beYvO_23rISIXSzytOQyAnY6Qm5QDnQ">
+<div>
+<p class="font-body-sm text-body-sm font-bold text-on-surface leading-none">Budi Santoso</p>
+<p class="font-caption text-caption text-ink-muted">Staff Admin</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 right-0 h-[56px] w-[calc(100%-224px)] bg-surface border-b border-border flex justify-between items-center px-gutter z-40">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted text-[18px]" data-icon="search">search</span>
+<input class="w-full bg-surface-alt border border-border rounded-lg py-1.5 pl-10 pr-4 font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Cari laporan atau aktivitas..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-ink-muted hover:text-primary transition-colors cursor-pointer active:opacity-70">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-ink-muted hover:text-primary transition-colors cursor-pointer active:opacity-70">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-[224px] mt-[56px] p-desktop-margin min-h-screen">
+<!-- Header & Control -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-stack-lg mb-stack-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Halo, Budi</h2>
+<p class="font-body-md text-body-md text-ink-muted">Berikut adalah ringkasan performa sistem hari ini.</p>
+</div>
+<div class="flex bg-surface-alt p-1 rounded-lg border border-border">
+<button class="px-4 py-1.5 rounded-md font-body-sm text-body-sm bg-surface text-primary font-bold shadow-sm">Hari ini</button>
+<button class="px-4 py-1.5 rounded-md font-body-sm text-body-sm text-ink-muted hover:bg-surface-container-low transition-colors">7 hari</button>
+<button class="px-4 py-1.5 rounded-md font-body-sm text-body-sm text-ink-muted hover:bg-surface-container-low transition-colors">30 hari</button>
+</div>
+</div>
+<!-- KPI Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-stack-lg">
+<!-- Card 1 -->
+<div class="bg-surface p-5 rounded-xl border border-border flex flex-col gap-1">
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-tertiary" data-icon="mail">mail</span>
+<span class="px-2 py-0.5 rounded-full bg-primary-soft text-primary font-caption text-caption">+12%</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted">Pesan Masuk</p>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">1,284</h3>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface p-5 rounded-xl border border-border flex flex-col gap-1">
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="px-2 py-0.5 rounded-full bg-primary-soft text-primary font-caption text-caption">+5%</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted">Auto-resolved %</p>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">84.2%</h3>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface p-5 rounded-xl border border-border flex flex-col gap-1">
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-warning" data-icon="priority_high">priority_high</span>
+<span class="px-2 py-0.5 rounded-full bg-warning-soft text-warning font-caption text-caption">-2%</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted">Escalated</p>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">42</h3>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface p-5 rounded-xl border border-border flex flex-col gap-1">
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-info-soft text-on-tertiary-fixed-variant" data-icon="timer">timer</span>
+<span class="px-2 py-0.5 rounded-full bg-info-soft text-tertiary font-caption text-caption">Stabil</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted">Avg Response</p>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">1m 42s</h3>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter items-start">
+<!-- Volume Chart Section -->
+<div class="lg:col-span-2 space-y-gutter">
+<div class="bg-surface rounded-xl border border-border overflow-hidden">
+<div class="p-6 border-b border-border flex justify-between items-center">
+<h4 class="font-card-title text-card-title text-on-surface">Volume Mingguan</h4>
+<span class="material-symbols-outlined text-ink-dim cursor-pointer" data-icon="more_horiz">more_horiz</span>
+</div>
+<div class="p-6 h-[320px] flex items-end justify-between gap-4">
+<!-- Simplified Bar Chart Visual -->
+<div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-full bg-surface-container rounded-t-lg relative h-40 transition-all group-hover:bg-primary-soft"></div>
+<span class="font-caption text-caption text-ink-muted">Sen</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-full bg-surface-container rounded-t-lg relative h-56 transition-all group-hover:bg-primary-soft"></div>
+<span class="font-caption text-caption text-ink-muted">Sel</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-full bg-surface-container rounded-t-lg relative h-32 transition-all group-hover:bg-primary-soft"></div>
+<span class="font-caption text-caption text-ink-muted">Rab</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-full bg-primary rounded-t-lg relative h-64 shadow-md">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-inverse-surface text-on-primary font-body-sm text-body-sm px-2 py-1 rounded">241</div>
+</div>
+<span class="font-caption text-caption text-primary font-bold">Kam</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-full bg-surface-container rounded-t-lg relative h-48 transition-all group-hover:bg-primary-soft"></div>
+<span class="font-caption text-caption text-ink-muted">Jum</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-full bg-surface-container rounded-t-lg relative h-24 transition-all group-hover:bg-primary-soft"></div>
+<span class="font-caption text-caption text-ink-muted">Sab</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-full bg-surface-container rounded-t-lg relative h-16 transition-all group-hover:bg-primary-soft"></div>
+<span class="font-caption text-caption text-ink-muted">Min</span>
+</div>
+</div>
+<!-- AI Insight Footer -->
+<div class="bg-primary-soft p-4 flex items-start gap-3 border-t border-primary-dim ai-shimmer">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<div>
+<p class="font-body-sm text-body-sm font-bold text-primary">Insight AI</p>
+<p class="font-body-md text-body-md text-primary leading-snug">Volume pesan meningkat 15% setiap Kamis pagi pukul 09:00. Disarankan menambah kuota staff asisten dokter pada jam tersebut untuk menjaga retensi pasien.</p>
+</div>
+</div>
+</div>
+<!-- Secondary Bento Layer (Quick Actions or More stats) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="bg-surface p-5 rounded-xl border border-border flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-accent-soft flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="health_and_safety">health_and_safety</span>
+</div>
+<div>
+<p class="font-caption text-caption text-ink-muted uppercase tracking-wider">Kapasitas Dokter</p>
+<p class="font-headline-sm text-headline-sm font-bold text-on-surface">92% Terpakai</p>
+</div>
+</div>
+<div class="bg-surface p-5 rounded-xl border border-border flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-info-soft flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" data-icon="history_edu">history_edu</span>
+</div>
+<div>
+<p class="font-caption text-caption text-ink-muted uppercase tracking-wider">Laporan Selesai</p>
+<p class="font-headline-sm text-headline-sm font-bold text-on-surface">128 Berkas</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Live AI Activity Timeline -->
+<div class="bg-surface rounded-xl border border-border h-full flex flex-col">
+<div class="p-6 border-b border-border">
+<div class="flex items-center justify-between">
+<h4 class="font-card-title text-card-title text-on-surface">Aktivitas AI Langsung</h4>
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+</div>
+</div>
+<div class="p-6 flex-1 space-y-8 relative">
+<!-- Vertical Timeline Line -->
+<div class="absolute left-[31px] top-6 bottom-6 w-[1px] bg-border-soft"></div>
+<!-- Activity Item 1 -->
+<div class="relative flex gap-4">
+<div class="z-10 w-8 h-8 rounded-full bg-primary flex items-center justify-center ring-4 ring-surface">
+<span class="material-symbols-outlined text-on-primary text-[16px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex-1 pt-1">
+<div class="flex justify-between items-start mb-1">
+<p class="font-body-md text-body-md font-bold">Auto-resolved: Janji Temu</p>
+<span class="font-caption text-caption text-ink-dim">Baru saja</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted mb-2">Pasien Ibu Siti telah dikonfirmasi untuk sesi Poli Umum pukul 14:00 besok.</p>
+<div class="w-full bg-surface-alt h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[85%]"></div>
+</div>
+<p class="font-eyebrow text-eyebrow text-ink-dim mt-1">SENTIMEN: POSITIF (0.85)</p>
+</div>
+</div>
+<!-- Activity Item 2 -->
+<div class="relative flex gap-4">
+<div class="z-10 w-8 h-8 rounded-full bg-warning flex items-center justify-center ring-4 ring-surface">
+<span class="material-symbols-outlined text-on-primary text-[16px]" data-icon="forward_to_inbox" style="font-variation-settings: 'FILL' 1;">forward_to_inbox</span>
+</div>
+<div class="flex-1 pt-1">
+<div class="flex justify-between items-start mb-1">
+<p class="font-body-md text-body-md font-bold">Eskalasi: Darurat Ringan</p>
+<span class="font-caption text-caption text-ink-dim">2m lalu</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted mb-2">Mendeteksi keluhan nyeri dada. AI meneruskan percakapan ke Dokter Jantung.</p>
+<div class="w-full bg-surface-alt h-1.5 rounded-full overflow-hidden">
+<div class="bg-warning h-full w-[92%]"></div>
+</div>
+<p class="font-eyebrow text-eyebrow text-warning mt-1">PRIORITAS: TINGGI (URGENT)</p>
+</div>
+</div>
+<!-- Activity Item 3 -->
+<div class="relative flex gap-4">
+<div class="z-10 w-8 h-8 rounded-full bg-tertiary flex items-center justify-center ring-4 ring-surface">
+<span class="material-symbols-outlined text-on-primary text-[16px]" data-icon="smart_toy" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div class="flex-1 pt-1">
+<div class="flex justify-between items-start mb-1">
+<p class="font-body-md text-body-md font-bold">Analisis Rekam Medis</p>
+<span class="font-caption text-caption text-ink-dim">15m lalu</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted mb-2">Sinkronisasi 24 profil pasien baru dari sistem Lab ke Database Sehati.</p>
+<div class="w-full bg-surface-alt h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-[40%]"></div>
+</div>
+<p class="font-eyebrow text-eyebrow text-ink-dim mt-1">PROGRESS: 40% COMPLETE</p>
+</div>
+</div>
+<!-- Activity Item 4 -->
+<div class="relative flex gap-4 opacity-60">
+<div class="z-10 w-8 h-8 rounded-full bg-primary-soft border border-primary flex items-center justify-center ring-4 ring-surface">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="help" style="font-variation-settings: 'FILL' 0;">help</span>
+</div>
+<div class="flex-1 pt-1">
+<div class="flex justify-between items-start mb-1">
+<p class="font-body-md text-body-md font-bold">Tanya Jawab FAQ</p>
+<span class="font-caption text-caption text-ink-dim">22m lalu</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted">Memberikan informasi biaya rawat inap Kelas 1 kepada Bpk. Rahman.</p>
+</div>
+</div>
+</div>
+<div class="p-4 bg-surface-container-low border-t border-border">
+<button class="w-full text-center font-body-sm text-body-sm text-primary font-bold hover:underline">Lihat Semua Aktivitas</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button (Contextual for Dashboard) -->
+<button class="fixed bottom-6 right-6 w-14 h-14 bg-inverse-surface text-on-primary rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-50 group">
+<span class="material-symbols-outlined text-[28px]" data-icon="add">add</span>
+<span class="absolute right-16 bg-inverse-surface text-white px-3 py-1.5 rounded-lg font-body-sm text-body-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Buat Laporan Baru</span>
+</button>
+<script>
+        // Simple micro-interaction for active period switching
+        const periodButtons = document.querySelectorAll('.bg-surface-alt button');
+        periodButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                periodButtons.forEach(b => {
+                    b.classList.remove('bg-surface', 'text-primary', 'font-bold', 'shadow-sm');
+                    b.classList.add('text-ink-muted');
+                });
+                btn.classList.add('bg-surface', 'text-primary', 'font-bold', 'shadow-sm');
+                btn.classList.remove('text-ink-muted');
+                
+                // Simulate data reload
+                const main = document.querySelector('main');
+                main.style.opacity = '0.7';
+                setTimeout(() => main.style.opacity = '1', 300);
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=DM+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#773217",
+                    "on-secondary": "#ffffff",
+                    "accent-soft": "#F0D9CB",
+                    "on-tertiary-fixed-variant": "#234b5e",
+                    "border": "#E8E0CC",
+                    "warning": "#C97B2C",
+                    "on-primary-fixed-variant": "#334d34",
+                    "on-error-container": "#93000a",
+                    "on-primary": "#ffffff",
+                    "ink-muted": "#6F665A",
+                    "surface-container-high": "#f0e7db",
+                    "warning-soft": "#F4E1CC",
+                    "secondary-fixed-dim": "#ffb59b",
+                    "on-secondary-container": "#773217",
+                    "primary-fixed": "#ccebc9",
+                    "outline-variant": "#c3c8bf",
+                    "surface-dim": "#EEE7D5",
+                    "info-soft": "#D6E1E7",
+                    "ink-dim": "#A39A8B",
+                    "background": "#FAF6EE",
+                    "tertiary": "#385f73",
+                    "primary-fixed-dim": "#b0cfae",
+                    "error-container": "#ffdad6",
+                    "primary-soft": "#EAEFE3",
+                    "secondary-container": "#fe9d7a",
+                    "surface-container-low": "#fcf2e6",
+                    "secondary-fixed": "#ffdbcf",
+                    "tertiary-container": "#51788d",
+                    "tertiary-fixed-dim": "#a4cce3",
+                    "inverse-primary": "#b0cfae",
+                    "surface-container-highest": "#eae1d5",
+                    "primary-dim": "#D9E1D2",
+                    "primary-container": "#5e7a5e",
+                    "on-error": "#ffffff",
+                    "outline": "#737971",
+                    "on-tertiary-container": "#f6fbff",
+                    "on-primary-container": "#edffe9",
+                    "surface": "#FFFFFF",
+                    "inverse-on-surface": "#f9efe3",
+                    "on-surface-variant": "#434841",
+                    "on-secondary-fixed": "#380d00",
+                    "secondary": "#95492b",
+                    "on-background": "#1f1b14",
+                    "border-soft": "#F0E9D6",
+                    "surface-container": "#f6ece1",
+                    "surface-alt": "#F2EDE0",
+                    "error": "#ba1a1a",
+                    "primary": "#466147",
+                    "on-surface": "#1f1b14",
+                    "danger-soft": "#F2D6D3",
+                    "surface-tint": "#4a654a",
+                    "surface-bright": "#fff8f2",
+                    "inverse-surface": "#343028",
+                    "surface-variant": "#eae1d5",
+                    "on-tertiary": "#ffffff",
+                    "danger": "#A8443E",
+                    "tertiary-fixed": "#c1e8ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed": "#07200c",
+                    "on-tertiary-fixed": "#001e2b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "mobile-margin": "16px",
+                    "gutter": "16px",
+                    "sidebar-width": "224px",
+                    "stack-sm": "8px",
+                    "stack-md": "12px",
+                    "stack-lg": "24px",
+                    "desktop-margin": "24px",
+                    "topbar-height": "56px"
+            },
+            "fontFamily": {
+                    "body-md": ["Plus Jakarta Sans"],
+                    "body-sm": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "eyebrow": ["Plus Jakarta Sans"],
+                    "card-title": ["Plus Jakarta Sans"],
+                    "caption": ["Plus Jakarta Sans"],
+                    "headline-sm": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "code-mono": ["DM Mono"]
+            },
+            "fontSize": {
+                    "body-md": ["13px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "body-sm": ["12px", {"lineHeight": "18px", "fontWeight": "500"}],
+                    "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "eyebrow": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "card-title": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "caption": ["11px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "code-mono": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { background-color: #FAF6EE; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .doctor-card {
+            box-shadow: 0 1px 2px rgba(45,30,10,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .doctor-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(45,30,10,0.06);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-background">
+<!-- Fixed SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-[224px] bg-surface-alt border-r border-border flex flex-col py-stack-lg z-50">
+<div class="px-6 mb-10">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">Sehati CRM</h1>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-body-md text-body-md">Antrean Pesan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-md text-body-md">Tugas Tim</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-body-md text-body-md">Knowledge Base</span>
+</a>
+<!-- Active State for Database Pasien (mapping to Dokter screen as a close administrative neighbor) -->
+<a class="flex items-center gap-3 px-4 py-2 bg-surface font-bold text-primary border-l-[3px] border-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">recent_patient</span>
+<span class="font-body-md text-body-md">Database Pasien</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md text-body-md">Laporan Sesi</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Pengaturan</span>
+</a>
+</nav>
+<div class="px-4 mt-auto space-y-4">
+<button class="w-full bg-primary text-on-primary py-2.5 rounded-lg flex items-center justify-center gap-2 font-bold text-body-md hover:opacity-90 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+                Buka Asisten AI
+            </button>
+<div class="pt-4 border-t border-border">
+<div class="flex items-center gap-3 px-2 py-2">
+<img alt="Staff Profile Picture" class="w-8 h-8 rounded-full object-cover border border-border" data-alt="A professional close-up portrait of a male Indonesian administrative staff member in a clean, modern clinic environment. He is wearing a crisp white polo shirt with a subtle medical logo. The lighting is bright and warm, reflecting a professional yet approachable healthcare atmosphere with soft-focus medical equipment in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9gSYGK0uiQ0FBopdFYtf5mTHUbb8bI4z8NxZEOFbd-zj01bZF2imH3VwFlm0gIyxxUa7KGku4H36DXh5qkH4OA3TIwfQcMTBrj1bzQuugGLM_kLl__aKnaNz-pDxNr6ILmt6_gXb9gOf2Pv39EpvPFau2nvjVfUYKuIXBGzUVd4MMRt05U8qj4xPj_Sgjagc54uUyekz07-aH2St99kxIK2E718tguYtAt2p_4GfQahiBqBccLSuOTOul2tRPcKAPSG0u6c_4Go0"/>
+<div class="flex flex-col">
+<span class="font-bold text-body-sm text-on-surface">Budi Santoso</span>
+<span class="text-caption text-ink-muted">Staff Admin</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 h-[56px] w-[calc(100%-224px)] bg-surface border-b border-border flex justify-between items-center px-gutter z-40">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-ink-dim text-[20px]">search</span>
+<input class="w-full bg-surface-alt border-none rounded-lg py-2 pl-10 pr-4 text-body-sm focus:ring-1 focus:ring-primary transition-all" placeholder="Cari nama dokter atau spesialisasi..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center text-ink-muted hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-ink-muted hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-[224px] mt-[56px] p-stack-lg min-h-screen">
+<!-- Header Section -->
+<div class="flex justify-between items-end mb-stack-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-1">Manajemen Dokter</h2>
+<p class="text-body-md text-ink-muted">Kelola jadwal dan pantau ketersediaan tim medis secara real-time.</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 border border-border rounded-lg text-body-md font-bold text-on-surface flex items-center gap-2 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[20px]">file_download</span>
+                    Ekspor Laporan
+                </button>
+<button class="px-4 py-2 bg-on-background text-on-primary rounded-lg text-body-md font-bold flex items-center gap-2 hover:opacity-90 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                    Tambah Dokter
+                </button>
+</div>
+</div>
+<!-- Filter Chips -->
+<div class="flex items-center gap-3 mb-stack-lg">
+<button class="px-4 py-1.5 bg-primary text-on-primary rounded-full text-body-sm font-bold">Semua</button>
+<button class="px-4 py-1.5 bg-surface border border-border text-ink-muted rounded-full text-body-sm font-bold hover:bg-surface-container-low">Online (12)</button>
+<button class="px-4 py-1.5 bg-surface border border-border text-ink-muted rounded-full text-body-sm font-bold hover:bg-surface-container-low">Off duty (4)</button>
+<div class="h-4 w-px bg-border mx-2"></div>
+<button class="px-3 py-1.5 text-body-sm font-bold text-primary flex items-center gap-1 hover:bg-primary-soft rounded-lg">
+<span class="material-symbols-outlined text-[18px]">filter_alt</span>
+                Filter Spesialisasi
+            </button>
+</div>
+<!-- Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Doctor Card 1 -->
+<div class="doctor-card bg-surface rounded-xl p-stack-md flex flex-col border border-border-soft">
+<div class="flex justify-between items-start mb-4">
+<div class="flex gap-3">
+<img alt="dr. Lukman Hakim" class="w-[48px] h-[48px] rounded-full object-cover" data-alt="A portrait of a male Indonesian doctor in his 40s, wearing a white clinical lab coat over a formal blue shirt. He has a warm, confident smile and a professional stethoscope around his neck. The setting is a brightly lit, clean medical clinic with soft, warm wooden accents and a blurred plant in the background, creating a comforting atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC73EG98ryeTX1VODij0yT7ATdIT0I8sVoLoBgG1oDMIr24KYEuENvuqBbO0eGEkkHVXhwK-fZgC26bulpNmQMBK7ZeREqXEqNhRse8Yl9VE4KlIOHxn3jgfFjsdZaSpm2OvVX-FGn56iLpv3xc-n8enx7oXhy9NGYZzIGuc0DFAFFuv2XlyNLY58s1RQO3JtWdbubutKSaCSREICIardkPH1mGWTpLjmoyiPuAeS25IvblsjSbLH-DTygCKofLZZfnAVqSRZB5gQ0"/>
+<div>
+<h3 class="font-card-title text-card-title text-on-surface">dr. Lukman Hakim</h3>
+<p class="text-caption text-ink-muted">Spesialis Bedah Umum</p>
+</div>
+</div>
+<span class="px-2 py-0.5 bg-primary-soft text-primary rounded-full text-[10px] font-bold uppercase tracking-wider">Online</span>
+</div>
+<div class="grid grid-cols-3 gap-2 mb-4">
+<div class="bg-surface-alt rounded-lg p-2 text-center">
+<p class="text-[10px] text-ink-muted uppercase font-bold">Janji</p>
+<p class="font-bold text-body-md text-on-surface">12</p>
+</div>
+<div class="bg-surface-alt rounded-lg p-2 text-center">
+<p class="text-[10px] text-ink-muted uppercase font-bold">Match</p>
+<p class="font-bold text-body-md text-on-surface">94%</p>
+</div>
+<div class="bg-surface-alt rounded-lg p-2 text-center">
+<p class="text-[10px] text-ink-muted uppercase font-bold">Respon</p>
+<p class="font-bold text-body-md text-on-surface">2m</p>
+</div>
+</div>
+<div class="mb-4">
+<p class="text-[10px] text-ink-muted font-bold uppercase mb-2">Jadwal Minggu Ini</p>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-1 bg-surface-container rounded text-[11px] font-bold text-primary">Sen</span>
+<span class="px-2 py-1 bg-surface-container rounded text-[11px] font-bold text-primary">Sel</span>
+<span class="px-2 py-1 bg-surface-container-highest rounded text-[11px] font-bold text-ink-dim">Rab</span>
+<span class="px-2 py-1 bg-surface-container rounded text-[11px] font-bold text-primary">Kam</span>
+<span class="px-2 py-1 bg-surface-container rounded text-[11px] font-bold text-primary">Jum</span>
+</div>
+</div>
+<div class="flex gap-2 mt-auto">
+<button class="flex-1 py-2 border border-border rounded-lg text-body-sm font-bold hover:bg-surface-alt transition-colors">Edit</button>
+<button class="flex-1 py-2 bg-on-background text-on-primary rounded-lg text-body-sm font-bold hover:opacity-90 transition-all">Jadwal</button>
+<button class="p-2 border border-border rounded-lg hover:bg-surface-alt">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Doctor Card 2 -->
+<div class="doctor-card bg-surface rounded-xl p-stack-md flex flex-col border border-border-soft">
+<div class="flex justify-between items-start mb-4">
+<div class="flex gap-3">
+<img alt="dr. Sarah Wijaya" class="w-[48px] h-[48px] rounded-full object-cover" data-alt="A portrait of a female Indonesian doctor in her late 30s, wearing a white medical coat and a stethoscope. She has a friendly, professional expression. The background is a clean, modern medical facility with soft sunlight filtering through windows, incorporating warm beige and sage green tones consistent with the brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC55q45W76jAZ0BQ412Wn4qkw0OGYrLK9FEeD5mFKK9MWVQzMIaB0hzl9ZnTSfhiu6EyJwxNySveq4QDQJeX7EomWdWZVQEFQq6Sx77oFUFIc5aJGApVRqWk18lwzfqLpJ35sWPR3EJkvJhNGbirCYS7XGNOGK_rnZqTaLLbgVFZiroJGwcIJ-a5Rr0lBf5hQbpSEVlaeLVGZcbyKcswK2X7ma5AJGbsS9XOI9sslS-GrDxUI1KEMUaZqVB6nd-BQhMZbE_EpbNtVk"/>
+<div>
+<h3 class="font-card-title text-card-title text-on-surface">dr. Sarah Wijaya</h3>
+<p class="text-caption text-ink-muted">Spesialis Anak</p>
+</div>
+</div>
+<span class="px-2 py-0.5 bg-danger-soft text-danger rounded-full text-[10px] font-bold uppercase tracking-wider">Off Duty</span>
+</div>
+<div class="grid grid-cols-3 gap-2 mb-4">
+<div class="bg-surface-alt rounded-lg p-2 text-center">
+<p class="text-[10px] text-ink-muted uppercase font-bold">Janji</p>
+<p class="font-bold text-body-md text-on-surface">08</p>
+</div>
+<div class="bg-surface-alt rounded-lg p-2 text-center">
+<p class="text-[10px] text-ink-muted uppercase font-bold">Match</p>
+<p class="font-bold text-body-md text-on-surface">98%</p>
+</div>
+<div class="bg-surface-alt rounded-lg p-2 text-center">
+<p class="text-[10px] text-ink-muted uppercase font-bold">Respon</p>
+<p class="font-bold text-body-md text-on-surface">5m</p>
+</div>
+</div>
+<div class="mb-4">
+<p class="text-[10px] text-ink-muted font-bold uppercase mb-2">Jadwal Minggu Ini</p>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-1 bg-surface-container-highest rounded text-[11px] font-bold text-ink-dim">Sen</span>
+<span class="px-2 py-1 bg-surface-container rounded text-[11px] font-bold text-primary">Sel</span>
+<span class="px-2 py-1 bg-surface-container-highest rounded text-[11px] font-bold text-ink-dim">Rab</span>
+<span class="px-2 py-1 bg-surface-container rounded text-[11px] font-bold text-primary">Kam</span>
+<span class="px-2 py-1 bg-surface-container-highest rounded text-[11px] font-bold text-ink-dim">Jum</span>
+</div>
+</div>
+<div class="flex gap-2 mt-auto">
+<button class="flex-1 py-2 border border-border rounded-lg text-body-sm font-bold hover:bg-surface-alt transition-colors">Edit</button>
+<button class="flex-1 py-2 bg-on-background text-on-primary rounded-lg text-body-sm font-bold hover:opacity-90 transition-all">Jadwal</button>
+<button class="p-2 border border-border rounded-lg hover:bg-surface-alt">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- AI Doctor Routing Promo Card -->
+<div class="relative overflow-hidden doctor-card bg-primary text-on-primary rounded-xl p-stack-md flex flex-col border border-primary-container">
+<div class="absolute -right-10 -top-10 opacity-10">
+<span class="material-symbols-outlined text-[180px]">auto_awesome</span>
+</div>
+<div class="z-10">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary-fixed">bolt</span>
+<span class="text-eyebrow uppercase tracking-widest text-primary-fixed">Fitur Premium</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm mb-2 leading-tight">AI Doctor Routing</h3>
+<p class="text-body-sm text-primary-soft mb-6">Optimalkan antrean pasien secara otomatis berdasarkan spesialisasi dan beban kerja dokter saat ini.</p>
+<div class="space-y-3 mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-primary-fixed">check_circle</span>
+<span class="text-body-sm">Routing Pasien Otomatis</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-primary-fixed">check_circle</span>
+<span class="text-body-sm">Prediksi Waktu Tunggu</span>
+</div>
+</div>
+<button class="w-full bg-surface text-primary py-2.5 rounded-lg font-bold text-body-sm hover:bg-primary-soft transition-colors flex items-center justify-center gap-2">
+                        Konfigurasi AI
+                        <span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+</div>
+<!-- Doctor Card 3 -->
+<div class="doctor-card bg-surface rounded-xl p-stack-md flex flex-col border border-border-soft">
+<div class="flex justify-between items-start mb-4">
+<div class="flex gap-3">
+<img alt="dr. Ahmad Sujadi" class="w-[48px] h-[48px] rounded-full object-cover" data-alt="A close-up professional portrait of a senior Indonesian doctor in his 50s. He has salt-and-pepper hair and wears a clean doctor's uniform. His expression is calm and experienced. The lighting is soft and high-key, emphasizing trust and reliability within a modern medical context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKbDBIRdLy116p9WylmQZBQNmPCsoTXfkdpCT1NwgnwctKvNulj4eCSAMhLSYfK5sRhfPxMv5TnfdNeBzbgbk18WUnSoBaCHN3xsEP_u9TSwDlWLkdVxl_VXkrEqC1m3Zgckomfe4-ABrv1B_L-OoHFMO2b_9318hAO3sdSwMGVzsGGQjirdAr7gEltUSWZOgBCRZGvHdWHOe_5-TAttcmoO59Q3FL53toDMlqVQtiTLYh4HXsdrMbXrf1fUHqzvgd9soonyj2gJY"/>
+<div>
+<h3 class="font-card-title text-card-title text-on-surface">dr. Ahmad Sujadi</h3>
+<p class="text-caption text-ink-muted">Spesialis Penyakit Dalam</p>
+</div>
+</div>
+<span class="px-2 py-0.5 bg-primary-soft text-primary rounded-full text-[10px] font-bold uppercase tracking-wider">Online</span>
+</div>
+<div class="grid grid-cols-3 gap-2 mb-4">
+<div class="bg-surface-alt rounded-lg p-2 text-center">
+<p class="text-[10px] text-ink-muted uppercase font-bold">Janji</p>
+<p class="font-bold text-body-md text-on-surface">15</p>
+</div>
+<div class="bg-surface-alt rounded-lg p-2 text-center">
+<p class="text-[10px] text-ink-muted uppercase font-bold">Match</p>
+<p class="font-bold text-body-md text-on-surface">91%</p>
+</div>
+<div class="bg-surface-alt rounded-lg p-2 text-center">
+<p class="text-[10px] text-ink-muted uppercase font-bold">Respon</p>
+<p class="font-bold text-body-md text-on-surface">4m</p>
+</div>
+</div>
+<div class="mb-4">
+<p class="text-[10px] text-ink-muted font-bold uppercase mb-2">Jadwal Minggu Ini</p>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-1 bg-surface-container rounded text-[11px] font-bold text-primary">Sen</span>
+<span class="px-2 py-1 bg-surface-container rounded text-[11px] font-bold text-primary">Sel</span>
+<span class="px-2 py-1 bg-surface-container rounded text-[11px] font-bold text-primary">Rab</span>
+<span class="px-2 py-1 bg-surface-container rounded text-[11px] font-bold text-primary">Kam</span>
+<span class="px-2 py-1 bg-surface-container rounded text-[11px] font-bold text-primary">Jum</span>
+</div>
+</div>
+<div class="flex gap-2 mt-auto">
+<button class="flex-1 py-2 border border-border rounded-lg text-body-sm font-bold hover:bg-surface-alt transition-colors">Edit</button>
+<button class="flex-1 py-2 bg-on-background text-on-primary rounded-lg text-body-sm font-bold hover:opacity-90 transition-all">Jadwal</button>
+<button class="p-2 border border-border rounded-lg hover:bg-surface-alt">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Doctor Card 4 -->
+<div class="doctor-card bg-surface rounded-xl p-stack-md flex flex-col border border-border-soft">
+<div class="flex justify-between items-start mb-4">
+<div class="flex gap-3">
+<img alt="dr. Indah Permata" class="w-[48px] h-[48px] rounded-full object-cover" data-alt="A portrait of a young Indonesian female doctor in her late 20s. She is wearing a modern hijab under her doctor's coat, presenting a professional and inclusive medical appearance. She looks into the camera with a bright, welcoming smile. The clinic interior is out of focus with warm, gentle lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIhP84eMZKgUwRkxTeDkflaAf9uhBVvNkkX3Ol2S7uPAjq-OETiOI517bUhLnY8G4CASPAMBaH7XpxBsheIU4739j9jOsxgQcKl3Z1zxX6PygbZTEVrBwKEkekg_B6ZKC0huJwExhffND9zhrE2Swm6EMCHMYVr4jGv6J6gSxnEPvfN3x-3zeR4jpAmzPzox5Pt1h8dhsPdJ_BCQb1JigDKWhmIVXIB9cZYquMGqAMPRDWU6O8Y3KqY_9QQs4yxlNVS8UVgTWRgLo"/>
+<div>
+<h3 class="font-card-title text-card-title text-on-surface">dr. Indah Permata</h3>
+<p class="text-caption text-ink-muted">Spesialis Kandungan</p>
+</div>
+</div>
+<span class="px-2 py-0.5 bg-primary-soft text-primary rounded-full text-[10px] font-bold uppercase tracking-wider">Online</span>
+</div>
+<div class="grid grid-cols-3 gap-2 mb-4">
+<div class="bg-surface-alt rounded-lg p-2 text-center">
+<p class="text-[10px] text-ink-muted uppercase font-bold">Janji</p>
+<p class="font-bold text-body-md text-on-surface">20</p>
+</div>
+<div class="bg-surface-alt rounded-lg p-2 text-center">
+<p class="text-[10px] text-ink-muted uppercase font-bold">Match</p>
+<p class="font-bold text-body-md text-on-surface">96%</p>
+</div>
+<div class="bg-surface-alt rounded-lg p-2 text-center">
+<p class="text-[10px] text-ink-muted uppercase font-bold">Respon</p>
+<p class="font-bold text-body-md text-on-surface">1m</p>
+</div>
+</div>
+<div class="mb-4">
+<p class="text-[10px] text-ink-muted font-bold uppercase mb-2">Jadwal Minggu Ini</p>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-1 bg-surface-container rounded text-[11px] font-bold text-primary">Sen</span>
+<span class="px-2 py-1 bg-surface-container rounded text-[11px] font-bold text-primary">Sel</span>
+<span class="px-2 py-1 bg-surface-container-highest rounded text-[11px] font-bold text-ink-dim">Rab</span>
+<span class="px-2 py-1 bg-surface-container rounded text-[11px] font-bold text-primary">Kam</span>
+<span class="px-2 py-1 bg-surface-container-highest rounded text-[11px] font-bold text-ink-dim">Jum</span>
+</div>
+</div>
+<div class="flex gap-2 mt-auto">
+<button class="flex-1 py-2 border border-border rounded-lg text-body-sm font-bold hover:bg-surface-alt transition-colors">Edit</button>
+<button class="flex-1 py-2 bg-on-background text-on-primary rounded-lg text-body-sm font-bold hover:opacity-90 transition-all">Jadwal</button>
+<button class="p-2 border border-border rounded-lg hover:bg-surface-alt">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Add Doctor Placeholder Card -->
+<button class="doctor-card bg-surface-alt rounded-xl p-stack-md flex flex-col items-center justify-center border-2 border-dashed border-border group hover:bg-surface-container-low transition-all">
+<div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-ink-dim">person_add</span>
+</div>
+<p class="font-bold text-body-md text-on-surface">Tambah Rekan Baru</p>
+<p class="text-caption text-ink-muted">Daftarkan dokter ke sistem</p>
+</button>
+</div>
+</main>
+<script>
+        // Simple micro-interactions
+        document.querySelectorAll('.doctor-card').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'translateY(-2px)';
+            });
+        });
+
+        // Filter chip selection logic
+        const chips = document.querySelectorAll('.filter-chip');
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                chips.forEach(c => {
+                    c.classList.remove('bg-primary', 'text-on-primary');
+                    c.classList.add('bg-surface', 'border', 'border-border', 'text-ink-muted');
+                });
+                chip.classList.add('bg-primary', 'text-on-primary');
+                chip.classList.remove('bg-surface', 'border', 'border-border', 'text-ink-muted');
+            });
+        });
+    </script>
+</body></html>

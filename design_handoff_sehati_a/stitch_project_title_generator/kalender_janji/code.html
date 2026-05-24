@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sehati CRM - Kalender</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=DM+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #FAF6EE;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: 60px repeat(7, 1fr);
+        }
+        .time-row {
+            height: 80px;
+            border-bottom: 1px solid #F0E9D6;
+        }
+        .event-card {
+            transition: transform 0.1s ease-out;
+        }
+        .event-card:active {
+            transform: scale(0.98);
+        }
+        /* Custom Scrollbar for staff workspace */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F2EDE0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D9E1D2;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-fixed-variant": "#773217",
+                      "on-secondary": "#ffffff",
+                      "accent-soft": "#F0D9CB",
+                      "on-tertiary-fixed-variant": "#234b5e",
+                      "border": "#E8E0CC",
+                      "warning": "#C97B2C",
+                      "on-primary-fixed-variant": "#334d34",
+                      "on-error-container": "#93000a",
+                      "on-primary": "#ffffff",
+                      "ink-muted": "#6F665A",
+                      "surface-container-high": "#f0e7db",
+                      "warning-soft": "#F4E1CC",
+                      "secondary-fixed-dim": "#ffb59b",
+                      "on-secondary-container": "#773217",
+                      "primary-fixed": "#ccebc9",
+                      "outline-variant": "#c3c8bf",
+                      "surface-dim": "#EEE7D5",
+                      "info-soft": "#D6E1E7",
+                      "ink-dim": "#A39A8B",
+                      "background": "#FAF6EE",
+                      "tertiary": "#385f73",
+                      "primary-fixed-dim": "#b0cfae",
+                      "error-container": "#ffdad6",
+                      "primary-soft": "#EAEFE3",
+                      "secondary-container": "#fe9d7a",
+                      "surface-container-low": "#fcf2e6",
+                      "secondary-fixed": "#ffdbcf",
+                      "tertiary-container": "#51788d",
+                      "tertiary-fixed-dim": "#a4cce3",
+                      "inverse-primary": "#b0cfae",
+                      "surface-container-highest": "#eae1d5",
+                      "primary-dim": "#D9E1D2",
+                      "primary-container": "#5e7a5e",
+                      "on-error": "#ffffff",
+                      "outline": "#737971",
+                      "on-tertiary-container": "#f6fbff",
+                      "on-primary-container": "#edffe9",
+                      "surface": "#FFFFFF",
+                      "inverse-on-surface": "#f9efe3",
+                      "on-surface-variant": "#434841",
+                      "on-secondary-fixed": "#380d00",
+                      "secondary": "#95492b",
+                      "on-background": "#1f1b14",
+                      "border-soft": "#F0E9D6",
+                      "surface-container": "#f6ece1",
+                      "surface-alt": "#F2EDE0",
+                      "error": "#ba1a1a",
+                      "primary": "#466147",
+                      "on-surface": "#1f1b14",
+                      "danger-soft": "#F2D6D3",
+                      "surface-tint": "#4a654a",
+                      "surface-bright": "#fff8f2",
+                      "inverse-surface": "#343028",
+                      "surface-variant": "#eae1d5",
+                      "on-tertiary": "#ffffff",
+                      "danger": "#A8443E",
+                      "tertiary-fixed": "#c1e8ff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed": "#07200c",
+                      "on-tertiary-fixed": "#001e2b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "mobile-margin": "16px",
+                      "gutter": "16px",
+                      "sidebar-width": "224px",
+                      "stack-sm": "8px",
+                      "stack-md": "12px",
+                      "stack-lg": "24px",
+                      "desktop-margin": "24px",
+                      "topbar-height": "56px"
+              },
+              "fontFamily": {
+                      "body-md": ["Plus Jakarta Sans"],
+                      "body-sm": ["Plus Jakarta Sans"],
+                      "headline-md": ["Plus Jakarta Sans"],
+                      "eyebrow": ["Plus Jakarta Sans"],
+                      "card-title": ["Plus Jakarta Sans"],
+                      "caption": ["Plus Jakarta Sans"],
+                      "headline-sm": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "code-mono": ["DM Mono"]
+              },
+              "fontSize": {
+                      "body-md": ["13px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "body-sm": ["12px", {"lineHeight": "18px", "fontWeight": "500"}],
+                      "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "eyebrow": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "card-title": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                      "caption": ["11px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                      "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "code-mono": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface">
+<!-- SIDEBAR -->
+<aside class="fixed left-0 top-0 h-screen w-[224px] bg-surface-alt border-r border-border flex flex-col py-stack-lg z-50">
+<div class="px-6 mb-8">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">Sehati CRM</h1>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-body-md text-body-md">Antrean Pesan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 bg-surface font-bold text-primary border-l-[3px] border-primary" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-body-md text-body-md">Kalender</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-body-md text-body-md">Tugas Tim</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-body-md text-body-md">Knowledge Base</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="recent_patients">recent_patient</span>
+<span class="font-body-md text-body-md">Database Pasien</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-body-md text-body-md">Laporan Sesi</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Pengaturan</span>
+</a>
+</nav>
+<div class="px-4 mt-auto space-y-4">
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-white py-2.5 rounded-lg font-body-md text-body-md transition-transform active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px]" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                Buka Asisten AI
+            </button>
+<div class="pt-4 border-t border-border space-y-1">
+<div class="flex items-center gap-3 px-2 py-1.5">
+<img alt="Staff Profile Picture" class="w-8 h-8 rounded-full object-cover" data-alt="A professional headshot of a friendly male Indonesian clinical administrator wearing a clean, modern white medical lab coat over a light sage-green polo shirt. He is smiling warmly in a bright, modern healthcare office with soft natural lighting and warm minimalist interior design. The focus is sharp on his face with a soft-focus clinical background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfwZtQtBariYi6OVQBaKDewKFqz2ZkzqdEIjWdFHPzLUAWw06UjDRf1kraMjvMdriwfcmTRkNUXIoM_TQbGGP3755Z9c0QtIqQD6M0M5TfN5MRVs5x8_u2idTm-oLfRsK-HK_utDKeaDK8siJR9OooGZ2pAVoFslry680IjSkB598i2Zv9VYSJgLBUMQ71KO23fOrnRMZTQNQ-yaOtgjImTJWZ4Hg3m-J5mOGqk0bpZGBzDD412z5Z_FPfjntMF1ciQiLq2nKF_ZY"/>
+<div>
+<p class="font-body-sm text-body-sm font-bold text-on-surface">Budi Santoso</p>
+<p class="text-[10px] text-ink-muted">Staff Admin</p>
+</div>
+</div>
+<a class="flex items-center gap-3 px-4 py-2 text-ink-muted hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+<span class="font-body-md text-body-md">Status Sistem</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- TOP NAVBAR -->
+<header class="fixed top-0 right-0 h-[56px] w-[calc(100%-224px)] bg-surface border-b border-border flex justify-between items-center px-gutter z-40">
+<div class="flex items-center gap-6">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">Kalender</span>
+<div class="flex items-center bg-surface-alt px-3 py-1.5 rounded-full border border-border w-[320px]">
+<span class="material-symbols-outlined text-ink-muted text-[18px]" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm font-body-sm w-full placeholder:text-ink-dim" placeholder="Cari janji atau pasien..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-ink-muted hover:text-primary transition-colors cursor-pointer active:opacity-70">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-ink-muted hover:text-primary transition-colors cursor-pointer active:opacity-70">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+</div>
+</header>
+<!-- MAIN CONTENT -->
+<main class="ml-[224px] mt-[56px] min-h-screen">
+<!-- CALENDAR TOOLBAR -->
+<div class="p-stack-lg bg-surface flex flex-col gap-6">
+<div class="flex justify-between items-center">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-background">Kalender</h2>
+<p class="font-body-md text-body-md text-ink-muted">11 Mei – 17 Mei 2026 · <span class="font-bold text-on-surface">28 janji minggu ini</span></p>
+</div>
+<div class="flex items-center gap-4">
+<!-- Segmented View Control -->
+<div class="flex bg-surface-alt p-1 rounded-lg border border-border">
+<button class="px-4 py-1.5 font-body-sm text-body-sm text-ink-muted hover:text-on-surface">Hari</button>
+<button class="px-4 py-1.5 font-body-sm text-body-sm bg-surface shadow-sm border border-border rounded-md font-bold text-primary">Minggu</button>
+<button class="px-4 py-1.5 font-body-sm text-body-sm text-ink-muted hover:text-on-surface">Bulan</button>
+</div>
+<!-- Prev/Today/Next -->
+<div class="flex items-center bg-surface-alt rounded-lg border border-border divide-x divide-border">
+<button class="p-2 hover:bg-surface-container-low"><span class="material-symbols-outlined text-[20px]" data-icon="chevron_left">chevron_left</span></button>
+<button class="px-4 py-1.5 font-body-sm text-body-sm font-bold text-on-surface hover:bg-surface-container-low">Hari ini</button>
+<button class="p-2 hover:bg-surface-container-low"><span class="material-symbols-outlined text-[20px]" data-icon="chevron_right">chevron_right</span></button>
+</div>
+<button class="bg-on-background text-white px-5 py-2.5 rounded-lg flex items-center gap-2 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+<span class="font-body-md text-body-md font-bold">Janji baru</span>
+</button>
+</div>
+</div>
+<!-- Doctor Legend -->
+<div class="flex items-center gap-6 pb-2">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span class="font-body-sm text-body-sm text-on-surface">dr. Siti Aminah</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-tertiary"></div>
+<span class="font-body-sm text-body-sm text-on-surface">dr. Budi Raharjo</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+<span class="font-body-sm text-body-sm text-on-surface">dr. Kevin Wijaya</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-warning"></div>
+<span class="font-body-sm text-body-sm text-on-surface">dr. Laila Sari</span>
+</div>
+</div>
+</div>
+<!-- CALENDAR GRID CONTAINER -->
+<div class="px-stack-lg pb-stack-lg">
+<div class="bg-surface rounded-xl shadow-sm border border-border overflow-hidden">
+<!-- GRID HEADER -->
+<div class="calendar-grid bg-surface-alt border-b border-border">
+<div class="time-col"></div>
+<div class="py-4 text-center">
+<p class="font-eyebrow text-eyebrow text-ink-muted uppercase">Sen</p>
+<p class="font-headline-sm text-headline-sm text-on-surface">11</p>
+</div>
+<div class="py-4 text-center">
+<p class="font-eyebrow text-eyebrow text-ink-muted uppercase">Sel</p>
+<p class="font-headline-sm text-headline-sm text-on-surface">12</p>
+</div>
+<div class="py-4 text-center bg-primary-soft border-x border-primary/10">
+<p class="font-eyebrow text-eyebrow text-primary uppercase">Rab</p>
+<p class="font-headline-sm text-headline-sm text-primary">13</p>
+</div>
+<div class="py-4 text-center">
+<p class="font-eyebrow text-eyebrow text-ink-muted uppercase">Kam</p>
+<p class="font-headline-sm text-headline-sm text-on-surface">14</p>
+</div>
+<div class="py-4 text-center">
+<p class="font-eyebrow text-eyebrow text-ink-muted uppercase">Jum</p>
+<p class="font-headline-sm text-headline-sm text-on-surface">15</p>
+</div>
+<div class="py-4 text-center">
+<p class="font-eyebrow text-eyebrow text-ink-muted uppercase">Sab</p>
+<p class="font-headline-sm text-headline-sm text-on-surface">16</p>
+</div>
+<div class="py-4 text-center">
+<p class="font-eyebrow text-eyebrow text-ink-muted uppercase">Min</p>
+<p class="font-headline-sm text-headline-sm text-on-surface">17</p>
+</div>
+</div>
+<!-- GRID CONTENT -->
+<div class="relative max-h-[calc(100vh-320px)] overflow-y-auto scroll-smooth">
+<!-- CURRENT TIME LINE -->
+<div class="absolute w-[calc(100%-60px)] left-[60px] border-t-2 border-on-secondary-fixed-variant z-10 pointer-events-none" style="top: 340px;">
+<div class="absolute -left-1.5 -top-[5px] w-2.5 h-2.5 rounded-full bg-on-secondary-fixed-variant"></div>
+</div>
+<!-- TIME SLOTS -->
+<div class="calendar-grid relative">
+<!-- TIME COLUMN -->
+<div class="flex flex-col">
+<div class="time-row pr-3 flex justify-end items-start pt-2 font-caption text-caption text-ink-dim">08:00</div>
+<div class="time-row pr-3 flex justify-end items-start pt-2 font-caption text-caption text-ink-dim">09:00</div>
+<div class="time-row pr-3 flex justify-end items-start pt-2 font-caption text-caption text-ink-dim">10:00</div>
+<div class="time-row pr-3 flex justify-end items-start pt-2 font-caption text-caption text-ink-dim">11:00</div>
+<div class="time-row pr-3 flex justify-end items-start pt-2 font-caption text-caption text-ink-dim">12:00</div>
+<div class="time-row pr-3 flex justify-end items-start pt-2 font-caption text-caption text-ink-dim">13:00</div>
+<div class="time-row pr-3 flex justify-end items-start pt-2 font-caption text-caption text-ink-dim">14:00</div>
+<div class="time-row pr-3 flex justify-end items-start pt-2 font-caption text-caption text-ink-dim">15:00</div>
+<div class="time-row pr-3 flex justify-end items-start pt-2 font-caption text-caption text-ink-dim">16:00</div>
+<div class="time-row pr-3 flex justify-end items-start pt-2 font-caption text-caption text-ink-dim">17:00</div>
+</div>
+<!-- DAY COLUMNS -->
+<!-- Column 1 (Mon) -->
+<div class="border-r border-border-soft h-full relative">
+<!-- Appointment -->
+<div class="absolute top-[80px] left-1 right-1 h-[150px] bg-primary-soft rounded-lg border-l-[3px] border-primary p-2 event-card cursor-pointer shadow-sm">
+<p class="font-card-title text-[11px] leading-tight text-primary font-bold">Andi Wijaya</p>
+<p class="text-[10px] text-primary/80">Check-up Rutin</p>
+<p class="text-[10px] mt-1 font-bold">09:00 - 10:45</p>
+</div>
+</div>
+<!-- Column 2 (Tue) -->
+<div class="border-r border-border-soft h-full relative">
+<div class="absolute top-[240px] left-1 right-1 h-[70px] bg-info-soft rounded-lg border-l-[3px] border-tertiary p-2 event-card cursor-pointer shadow-sm">
+<p class="font-card-title text-[11px] leading-tight text-tertiary font-bold">Susi Susanti</p>
+<p class="text-[10px] text-tertiary/80">Konsultasi</p>
+</div>
+</div>
+<!-- Column 3 (Wed - TODAY) -->
+<div class="bg-primary-soft/30 border-x border-primary/10 h-full relative">
+<div class="absolute top-[160px] left-1 right-1 h-[120px] bg-accent-soft rounded-lg border-l-[3px] border-secondary p-2 event-card cursor-pointer shadow-sm">
+<p class="font-card-title text-[11px] leading-tight text-secondary font-bold">Bambang P.</p>
+<p class="text-[10px] text-secondary/80">Fisioterapi</p>
+<p class="text-[10px] mt-1 font-bold">10:00 - 11:30</p>
+</div>
+<div class="absolute top-[400px] left-1 right-1 h-[80px] bg-primary-soft rounded-lg border-l-[3px] border-primary p-2 event-card cursor-pointer shadow-sm">
+<p class="font-card-title text-[11px] leading-tight text-primary font-bold">Anita Dewi</p>
+<p class="text-[10px] text-primary/80">Lab Result</p>
+</div>
+</div>
+<!-- Column 4 (Thu) -->
+<div class="border-r border-border-soft h-full relative">
+<div class="absolute top-[320px] left-1 right-1 h-[140px] bg-warning-soft rounded-lg border-l-[3px] border-warning p-2 event-card cursor-pointer shadow-sm">
+<p class="font-card-title text-[11px] leading-tight text-warning font-bold">Citra Kirana</p>
+<p class="text-[10px] text-warning/80">USG Kandungan</p>
+<p class="text-[10px] mt-1 font-bold">12:00 - 13:45</p>
+</div>
+</div>
+<!-- Column 5 (Fri) -->
+<div class="border-r border-border-soft h-full relative"></div>
+<!-- Column 6 (Sat) -->
+<div class="border-r border-border-soft h-full bg-surface-alt/20"></div>
+<!-- Column 7 (Sun) -->
+<div class="h-full bg-surface-alt/20"></div>
+<!-- Horizontal Grid Lines Layer -->
+<div class="absolute inset-0 pointer-events-none">
+<div class="time-row"></div>
+<div class="time-row"></div>
+<div class="time-row"></div>
+<div class="time-row"></div>
+<div class="time-row"></div>
+<div class="time-row"></div>
+<div class="time-row"></div>
+<div class="time-row"></div>
+<div class="time-row"></div>
+<div class="time-row"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB (Suppressed as per rules on Detail/Cal screens but keeping for task completeness if intent is primary dashboard. Since this is the primary Kalender screen, we will keep the 'Janji baru' in toolbar only as requested) -->
+<script>
+        // Simple micro-interaction for calendar navigation
+        document.querySelectorAll('.event-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('z-20');
+                card.style.transform = 'translateY(-2px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('z-20');
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Current time line update logic simulation
+        function updateTimeLine() {
+            const now = new Date();
+            const startHour = 8;
+            const hourHeight = 80;
+            const currentHour = now.getHours() + (now.getMinutes() / 60);
+            
+            if(currentHour >= 8 && currentHour <= 18) {
+                const topOffset = (currentHour - startHour) * hourHeight;
+                const line = document.querySelector('.border-on-secondary-fixed-variant');
+                if(line) line.style.top = topOffset + 'px';
+            }
+        }
+        setInterval(updateTimeLine, 60000);
+        updateTimeLine();
+    </script>
+</body></html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sehati CRM - Chat Pasien</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=DM+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#773217",
+                    "on-secondary": "#ffffff",
+                    "accent-soft": "#F0D9CB",
+                    "on-tertiary-fixed-variant": "#234b5e",
+                    "border": "#E8E0CC",
+                    "warning": "#C97B2C",
+                    "on-primary-fixed-variant": "#334d34",
+                    "on-error-container": "#93000a",
+                    "on-primary": "#ffffff",
+                    "ink-muted": "#6F665A",
+                    "surface-container-high": "#f0e7db",
+                    "warning-soft": "#F4E1CC",
+                    "secondary-fixed-dim": "#ffb59b",
+                    "on-secondary-container": "#773217",
+                    "primary-fixed": "#ccebc9",
+                    "outline-variant": "#c3c8bf",
+                    "surface-dim": "#EEE7D5",
+                    "info-soft": "#D6E1E7",
+                    "ink-dim": "#A39A8B",
+                    "background": "#FAF6EE",
+                    "tertiary": "#385f73",
+                    "primary-fixed-dim": "#b0cfae",
+                    "error-container": "#ffdad6",
+                    "primary-soft": "#EAEFE3",
+                    "secondary-container": "#fe9d7a",
+                    "surface-container-low": "#fcf2e6",
+                    "secondary-fixed": "#ffdbcf",
+                    "tertiary-container": "#51788d",
+                    "tertiary-fixed-dim": "#a4cce3",
+                    "inverse-primary": "#b0cfae",
+                    "surface-container-highest": "#eae1d5",
+                    "primary-dim": "#D9E1D2",
+                    "primary-container": "#5e7a5e",
+                    "on-error": "#ffffff",
+                    "outline": "#737971",
+                    "on-tertiary-container": "#f6fbff",
+                    "on-primary-container": "#edffe9",
+                    "surface": "#FFFFFF",
+                    "inverse-on-surface": "#f9efe3",
+                    "on-surface-variant": "#434841",
+                    "on-secondary-fixed": "#380d00",
+                    "secondary": "#95492b",
+                    "on-background": "#1f1b14",
+                    "border-soft": "#F0E9D6",
+                    "surface-container": "#f6ece1",
+                    "surface-alt": "#F2EDE0",
+                    "error": "#ba1a1a",
+                    "primary": "#466147",
+                    "on-surface": "#1f1b14",
+                    "danger-soft": "#F2D6D3",
+                    "surface-tint": "#4a654a",
+                    "surface-bright": "#fff8f2",
+                    "inverse-surface": "#343028",
+                    "surface-variant": "#eae1d5",
+                    "on-tertiary": "#ffffff",
+                    "danger": "#A8443E",
+                    "tertiary-fixed": "#c1e8ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed": "#07200c",
+                    "on-tertiary-fixed": "#001e2b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "mobile-margin": "16px",
+                    "gutter": "16px",
+                    "sidebar-width": "224px",
+                    "stack-sm": "8px",
+                    "stack-md": "12px",
+                    "stack-lg": "24px",
+                    "desktop-margin": "24px",
+                    "topbar-height": "56px"
+            },
+            "fontFamily": {
+                    "body-md": ["Plus Jakarta Sans"],
+                    "body-sm": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "eyebrow": ["Plus Jakarta Sans"],
+                    "card-title": ["Plus Jakarta Sans"],
+                    "caption": ["Plus Jakarta Sans"],
+                    "headline-sm": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "code-mono": ["DM Mono"]
+            },
+            "fontSize": {
+                    "body-md": ["13px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "body-sm": ["12px", {"lineHeight": "18px", "fontWeight": "500"}],
+                    "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "eyebrow": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "card-title": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "caption": ["11px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "code-mono": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .online-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .4; }
+        }
+        .chat-scroll {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .chat-scroll::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased overflow-hidden flex justify-center">
+<!-- Mobile Container (360x720) -->
+<div class="w-[360px] h-[720px] bg-background flex flex-col relative shadow-2xl border-x border-border">
+<!-- Header -->
+<header class="h-[56px] flex items-center px-4 bg-surface border-b border-border z-10">
+<button class="mr-3 text-on-surface active:scale-95 transition-transform">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex items-center gap-3 flex-1 overflow-hidden">
+<div class="relative">
+<img alt="Clinic Avatar" class="w-9 h-9 rounded-full bg-surface-alt" data-alt="A clean, professional circular avatar of a modern healthcare clinic logo, featuring minimalist organic shapes in sage green and earthy tones. The lighting is soft and high-key, consistent with a warm minimalist medical aesthetic. The background is a soft beige color." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCopmwu8BDCu1eV5CyQdDmTGD5xisD_O8iwNmzVgGOM_gjTAdzIVfmoS10nkHsOCMyAXDkvNvOqg9OHWp7uRlHactz6BQKcldposM2hgsjG2sx99Jc2ygYCG0NzN6F6yT0CYdpI_FSjEVF9tZnNdtZ-dqSx-rMvqttCQgNs_e3t9WZEYojDFlmSXwCF94ZftpfkwfDun15WTNcbkACyKePKgB7kHje3Y9PHIusUG4MY4dyaUTd0zV5n43zjuwMtANQxkfAvRlEA5EM"/>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-primary border-2 border-surface rounded-full online-dot"></span>
+</div>
+<div class="flex flex-col">
+<span class="font-card-title text-card-title truncate">Klinik Sehati Pratama</span>
+<span class="font-caption text-caption text-primary">Aktif sekarang</span>
+</div>
+</div>
+<button class="text-ink-muted">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</header>
+<!-- Message Area -->
+<main class="flex-1 overflow-y-auto chat-scroll px-4 py-4 flex flex-col gap-4">
+<!-- Date Separator -->
+<div class="flex justify-center my-2">
+<span class="font-caption text-caption px-3 py-1 bg-surface-alt rounded-full text-ink-muted">
+                    Hari ini · Kam 14 Mei 2026
+                </span>
+</div>
+<!-- AI Message -->
+<div class="flex flex-col items-end gap-1 max-w-[85%] self-end">
+<div class="flex items-center gap-1 mb-0.5">
+<span class="material-symbols-outlined text-[14px] text-on-primary-fixed-variant" style="font-variation-settings: 'FILL' 1, 'wght' 700;">auto_awesome</span>
+<span class="font-eyebrow text-eyebrow uppercase text-on-primary-fixed-variant font-bold">Asisten AI</span>
+</div>
+<div class="bg-primary-soft border border-primary-dim p-3 rounded-xl rounded-tr-none shadow-sm bg-primary/10 border-primary/30">
+<p class="font-body-md text-body-md text-on-background">
+                        Halo Budi! Saya adalah Asisten AI Klinik Sehati. Ada yang bisa saya bantu terkait jadwal konsultasi atau keluhan kesehatan Anda hari ini?
+                    </p>
+</div>
+<span class="font-caption text-caption text-ink-dim mt-1">09:00</span>
+</div>
+<!-- Patient Message -->
+<div class="flex flex-col items-start gap-1 max-w-[85%] self-start">
+<div class="bg-surface-dim p-3 rounded-xl rounded-tl-none shadow-sm">
+<p class="font-body-md text-body-md text-on-background">
+                        Halo. Saya merasa pusing hebat sejak tadi pagi dan dada terasa sedikit sesak. Apakah ini berbahaya?
+                    </p>
+</div>
+<span class="font-caption text-caption text-ink-dim mt-1">09:12</span>
+</div>
+<!-- AI Urgent Detection -->
+<div class="flex flex-col items-end gap-1 max-w-[85%] self-end">
+<div class="flex items-center gap-1 mb-0.5">
+<span class="material-symbols-outlined text-[14px] text-on-primary-fixed-variant" style="font-variation-settings: 'FILL' 1, 'wght' 700;">auto_awesome</span>
+<span class="font-eyebrow text-eyebrow uppercase text-on-primary-fixed-variant font-bold">Asisten AI</span>
+</div>
+<div class="bg-primary-soft border border-primary-dim p-3 rounded-xl rounded-tr-none shadow-sm bg-primary/10 border-primary/30">
+<p class="font-body-md text-body-md text-on-background">
+                        Terima kasih atas informasinya. Gejala sesak dada perlu ditangani segera oleh tim medis kami. Saya telah meneruskan pesan ini ke staf klinik prioritas.
+                    </p>
+</div>
+</div>
+<!-- Urgent Triage Card -->
+<div class="bg-danger-soft border border-danger/20 p-4 rounded-xl flex items-start gap-3 my-2">
+<div class="w-10 h-10 rounded-full bg-danger/10 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-danger">emergency</span>
+</div>
+<div>
+<h4 class="font-card-title text-card-title text-danger">Triage Darurat Aktif</h4>
+<p class="font-body-sm text-body-sm text-on-error-container mt-1">Pesanmu sedang ditangani staff klinik secara prioritas. Mohon tetap tenang dan tunggu instruksi selanjutnya.</p>
+</div>
+</div>
+<!-- Staff Message -->
+<div class="flex flex-col items-end gap-1 max-w-[85%] self-end">
+<div class="flex items-center gap-1 mb-0.5">
+<span class="font-eyebrow text-eyebrow text-tertiary uppercase text-on-primary-fixed-variant font-bold">Admin - Sarah</span>
+</div>
+<div class="bg-info-soft border border-tertiary-fixed-dim p-3 rounded-xl rounded-tr-none shadow-sm">
+<p class="font-body-md text-body-md text-on-background">
+                        Bapak Budi, saya Sarah dari bagian pendaftaran. Mohon segera menuju IGD Klinik Sehati atau hubungi ambulans kami di 021-12345 jika sesak memberat. Dokter sudah kami informasikan.
+                    </p>
+</div>
+<span class="font-caption text-caption text-ink-dim mt-1">09:15</span>
+</div>
+</main>
+<!-- Composer -->
+<div class="px-4 py-3 bg-surface border-t border-border flex items-center gap-3">
+<button class="text-ink-muted active:scale-90 transition-transform">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+<div class="flex-1 bg-surface-alt border border-border rounded-full px-4 py-2 flex items-center">
+<input class="bg-transparent border-none focus:ring-0 w-full font-body-md text-on-background p-0 placeholder-ink-dim" placeholder="Tulis pesan..." type="text"/>
+<button class="ml-2 text-ink-muted">
+<span class="material-symbols-outlined text-[20px]">mood</span>
+</button>
+</div>
+<button class="w-10 h-10 bg-primary text-on-primary rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+<!-- Bottom Navigation -->
+<nav class="h-[64px] bg-surface flex items-center justify-around px-2 border-t border-border-soft">
+<div class="flex flex-col items-center gap-1 text-ink-muted cursor-pointer hover:text-primary transition-colors">
+<span class="material-symbols-outlined">home</span>
+<span class="font-caption text-[10px]">Beranda</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-ink-muted cursor-pointer hover:text-primary transition-colors">
+<span class="material-symbols-outlined">event_note</span>
+<span class="font-caption text-[10px]">Janji</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-primary cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<span class="font-caption text-[10px] font-bold">Pesan</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-ink-muted cursor-pointer hover:text-primary transition-colors">
+<span class="material-symbols-outlined">person</span>
+<span class="font-caption text-[10px]">Profil</span>
+</div>
+</nav>
+</div>
+<script>
+        // Simple micro-interaction for sending message appearance (visual only)
+        document.querySelector('input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const text = this.value;
+                if (text.trim()) {
+                    console.log('Sending message:', text);
+                    this.value = '';
+                    // In a real app, this would append a bubble and scroll down
+                }
+            }
+        });
+    </script>
+</body></html>

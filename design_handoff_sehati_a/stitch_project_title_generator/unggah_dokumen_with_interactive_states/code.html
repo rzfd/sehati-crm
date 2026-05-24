@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Upload Dokumen | Sehati CRM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=DM+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .processing-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        .drag-active {
+            border-color: #466147 !important;
+            background-color: #EAEFE3 !important;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "info-soft": "#D6E1E7",
+                      "danger": "#A8443E",
+                      "accent-soft": "#F0D9CB",
+                      "on-tertiary-fixed": "#001e2b",
+                      "on-surface-variant": "#434841",
+                      "tertiary-container": "#51788d",
+                      "on-secondary-fixed": "#380d00",
+                      "error-container": "#ffdad6",
+                      "surface-alt": "#F2EDE0",
+                      "outline": "#737971",
+                      "border": "#E8E0CC",
+                      "on-tertiary": "#ffffff",
+                      "danger-soft": "#F2D6D3",
+                      "primary-fixed": "#ccebc9",
+                      "ink-muted": "#6F665A",
+                      "border-soft": "#F0E9D6",
+                      "on-secondary-fixed-variant": "#773217",
+                      "warning": "#C97B2C",
+                      "surface-container": "#f6ece1",
+                      "primary-container": "#5e7a5e",
+                      "error": "#ba1a1a",
+                      "warning-soft": "#F4E1CC",
+                      "inverse-on-surface": "#f9efe3",
+                      "secondary-container": "#fe9d7a",
+                      "primary-dim": "#D9E1D2",
+                      "on-error": "#ffffff",
+                      "surface": "#FFFFFF",
+                      "inverse-primary": "#b0cfae",
+                      "surface-dim": "#e2d9cd",
+                      "tertiary": "#385f73",
+                      "surface-container-low": "#fcf2e6",
+                      "on-surface": "#1f1b14",
+                      "inverse-surface": "#343028",
+                      "tertiary-fixed": "#c1e8ff",
+                      "surface-tint": "#4a654a",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed-dim": "#a4cce3",
+                      "on-tertiary-fixed-variant": "#234b5e",
+                      "on-secondary": "#ffffff",
+                      "background": "#FAF6EE",
+                      "primary": "#466147",
+                      "on-background": "#1f1b14",
+                      "primary-fixed-dim": "#b0cfae",
+                      "surface-bright": "#fff8f2",
+                      "ink-dim": "#A39A8B",
+                      "on-primary": "#ffffff",
+                      "outline-variant": "#c3c8bf",
+                      "surface-container-high": "#f0e7db",
+                      "on-primary-fixed": "#07200c",
+                      "surface-variant": "#eae1d5",
+                      "secondary-fixed-dim": "#ffb59b",
+                      "on-primary-container": "#edffe9",
+                      "surface-container-highest": "#eae1d5",
+                      "on-tertiary-container": "#f6fbff",
+                      "on-primary-fixed-variant": "#334d34",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-soft": "#EAEFE3",
+                      "secondary-fixed": "#ffdbcf",
+                      "on-secondary-container": "#773217",
+                      "secondary": "#95492b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-md": "12px",
+                      "desktop-margin": "24px",
+                      "topbar-height": "56px",
+                      "stack-lg": "24px",
+                      "gutter": "16px",
+                      "sidebar-width": "224px",
+                      "stack-sm": "8px",
+                      "mobile-margin": "16px"
+              },
+              "fontFamily": {
+                      "body-md": ["Plus Jakarta Sans"],
+                      "card-title": ["Plus Jakarta Sans"],
+                      "body-sm": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "headline-sm": ["Plus Jakarta Sans"],
+                      "headline-md": ["Plus Jakarta Sans"],
+                      "code-mono": ["DM Mono"],
+                      "caption": ["Plus Jakarta Sans"],
+                      "eyebrow": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "body-md": ["13px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "card-title": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                      "body-sm": ["12px", {"lineHeight": "18px", "fontWeight": "500"}],
+                      "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                      "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "code-mono": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                      "caption": ["11px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "eyebrow": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-hidden h-screen flex">
+<!-- SideNavBar (Authority: JSON) -->
+<aside class="fixed left-0 top-0 h-screen w-[224px] bg-surface-alt dark:bg-surface-dim border-r border-border dark:border-outline-variant flex flex-col py-stack-lg z-30">
+<div class="px-gutter mb-8">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary-dim">Sehati CRM</h1>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="flex items-center gap-3 px-4 py-2 text-ink-muted dark:text-ink-dim hover:bg-surface-container-low transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[20px]" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-body-md text-body-md">Antrean Pesan</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-2 text-ink-muted dark:text-ink-dim hover:bg-surface-container-low transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[20px]" data-icon="group">group</span>
+<span class="font-body-md text-body-md">Tugas Tim</span>
+</div>
+<!-- Active Tab: Knowledge Base (closest match to Document Upload) -->
+<div class="flex items-center gap-3 px-4 py-2 bg-surface dark:bg-surface-container font-bold text-primary border-l-[3px] border-primary cursor-pointer active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="auto_stories">auto_stories</span>
+<span class="font-body-md text-body-md">Knowledge Base</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-2 text-ink-muted dark:text-ink-dim hover:bg-surface-container-low transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[20px]" data-icon="recent_patients">recent_patient</span>
+<span class="font-body-md text-body-md">Database Pasien</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-2 text-ink-muted dark:text-ink-dim hover:bg-surface-container-low transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[20px]" data-icon="analytics">analytics</span>
+<span class="font-body-md text-body-md">Laporan Sesi</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-2 text-ink-muted dark:text-ink-dim hover:bg-surface-container-low transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Pengaturan</span>
+</div>
+</nav>
+<div class="mt-auto px-gutter space-y-4">
+<button class="w-full bg-primary text-on-primary py-3 px-4 rounded-xl flex items-center justify-center gap-2 font-card-title hover:shadow-lg transition-all active:scale-95">
+<span class="material-symbols-outlined text-[18px]" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                Buka Asisten AI
+            </button>
+<div class="flex items-center gap-3 py-2 border-t border-border pt-4">
+<img alt="Staff Profile Picture" class="w-8 h-8 rounded-full border border-border" data-alt="A professional headshot of a friendly Indonesian male hospital administrator, wearing a neat uniform in a modern hospital hallway with soft bokeh lighting and warm clinical tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEOzFJrjuhl63dqbxf9cIkkAaJlaB-VdRbWxv-I2wBBkSiuj9HtPnUr9iqeC_-2ZoFJNkn_z3xzkPqPGgfoN77-L3I9dGVWnSQUUZAUKXIjDwY7SH9qWv8tV9U8UQ5tp5ykejZxQgm3q2PyICU6I7EH07Sd3uBEl7sw5irlam2XiaO6ye55rPkqUDIvcaK42AIjZKQpXCiXeuRcb05iIiZmwnga6Lsx80aFvM2ZGc-sgrEYuv9MOrCgTyNGsYSMUEnPBX0M1mbEJo"/>
+<div class="overflow-hidden">
+<p class="font-body-md text-on-surface truncate">Budi Santoso</p>
+<p class="font-caption text-ink-muted">Staff Admin</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="flex-1 ml-[224px] flex flex-col h-screen relative bg-background">
+<!-- TopNavBar (Authority: JSON) -->
+<header class="fixed top-0 right-0 h-[56px] w-[calc(100%-224px)] bg-surface dark:bg-surface-container-lowest border-b border-border dark:border-outline-variant flex justify-between items-center px-gutter z-20">
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted group-focus-within:text-primary transition-colors" data-icon="search">search</span>
+<input class="bg-surface-alt border-none h-9 pl-10 pr-4 rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary w-64 transition-all" placeholder="Cari dokumen..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 cursor-pointer active:opacity-70 hover:text-primary transition-colors text-ink-muted">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</div>
+<div class="flex items-center gap-2 cursor-pointer active:opacity-70 hover:text-primary transition-colors text-ink-muted">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="mt-[56px] p-desktop-margin overflow-y-auto flex-1 custom-scrollbar">
+<!-- Page Header -->
+<div class="mb-8 flex justify-between items-end">
+<div>
+<nav class="flex items-center gap-2 font-caption text-ink-muted mb-2">
+<span>Knowledge Base</span>
+<span class="material-symbols-outlined text-[12px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold">Upload Dokumen</span>
+</nav>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Manajemen Dokumen</h2>
+<p class="font-body-md text-ink-muted mt-1">Unggah dan kelola sumber pengetahuan untuk AI Sehati.</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface border border-border px-4 py-2 rounded-lg font-body-md text-on-surface hover:bg-surface-container-low transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="filter_list">filter_list</span>
+                        Filter
+                    </button>
+<button class="bg-ink text-surface px-4 py-2 rounded-lg font-body-md hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="refresh">refresh</span>
+                        Sync
+                    </button>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-8">
+<!-- Upload Zone -->
+<section class="bg-surface border-2 border-dashed border-border rounded-xl p-12 transition-all duration-300 group hover:border-primary/50 relative overflow-hidden" id="drop-zone">
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity"></div>
+<div class="flex flex-col items-center justify-center text-center relative z-10">
+<div class="w-16 h-16 bg-primary-soft rounded-full flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[32px]" data-icon="cloud_upload" style="font-variation-settings: 'FILL' 1;">cloud_upload</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Upload Dokumen</h3>
+<p class="font-body-md text-ink-muted max-w-sm mb-6">
+                            Seret dan lepas file di sini atau klik untuk memilih file dari komputer Anda. <br/>Format yang didukung: <span class="text-primary font-bold">.pdf, .docx, .txt</span>
+</p>
+<input accept=".pdf,.docx,.txt" class="hidden" id="file-input" multiple="" type="file"/>
+<button class="bg-primary text-on-primary px-8 py-3 rounded-lg font-card-title shadow-sm hover:shadow-md transition-all active:scale-[0.98]" onclick="document.getElementById('file-input').click()">
+                            Pilih File
+                        </button>
+<p class="font-caption text-ink-dim mt-4">Maksimum ukuran file: 25MB per dokumen</p>
+</div>
+</section>
+<!-- Document List Table -->
+<section class="bg-surface rounded-xl border border-border overflow-hidden shadow-[0_1px_2px_rgba(45,30,10,0.05)]">
+<div class="px-6 py-4 border-b border-border-soft flex items-center justify-between bg-surface-bright">
+<h4 class="font-card-title text-card-title text-on-surface">Daftar Dokumen</h4>
+<span class="font-caption px-2 py-0.5 bg-surface-alt rounded text-ink-muted">12 Dokumen Total</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-lowest font-eyebrow text-ink-muted uppercase tracking-wider">
+<th class="px-6 py-3 font-semibold">Nama File</th>
+<th class="px-6 py-3 font-semibold">Ukuran</th>
+<th class="px-6 py-3 font-semibold">Total Chunk</th>
+<th class="px-6 py-3 font-semibold">Tgl Unggah</th>
+<th class="px-6 py-3 font-semibold">Status</th>
+<th class="px-6 py-3 font-semibold">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-soft font-body-sm">
+<!-- Row 1: Indexed -->
+<tr class="hover:bg-surface-alt transition-colors group border-l-4 border-transparent hover:border-primary">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-danger-soft text-danger flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="description">description</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface">SOP_Layanan_Rawat_Jalan.pdf</p>
+<p class="font-caption text-ink-dim">Manual Operasional</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-ink-muted">2.4 MB</td>
+<td class="px-6 py-4 text-ink-muted">142</td>
+<td class="px-6 py-4 text-ink-muted">12 Okt 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-soft text-primary font-caption">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                            Indexed
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<button class="p-1.5 rounded-lg hover:bg-surface-container-high text-ink-muted transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Processing -->
+<tr class="hover:bg-surface-alt transition-colors group border-l-4 border-transparent hover:border-primary">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-info-soft text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="article">article</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface">Jadwal_Dokter_Spesialis_Q4.docx</p>
+<p class="font-caption text-ink-dim">Informasi Layanan</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-ink-muted">840 KB</td>
+<td class="px-6 py-4 text-ink-muted">12</td>
+<td class="px-6 py-4 text-ink-muted">15 Okt 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-info-soft text-tertiary font-caption processing-pulse">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-spin"></span>
+                                            Processing...
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<button class="p-1.5 rounded-lg hover:bg-surface-container-high text-ink-muted transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Indexed -->
+<tr class="hover:bg-surface-alt transition-colors group border-l-4 border-transparent hover:border-primary">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-dim text-ink-muted flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="text_snippet">text_snippet</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface">Ketentuan_BPJS_2023.txt</p>
+<p class="font-caption text-ink-dim">Administrasi</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-ink-muted">12 KB</td>
+<td class="px-6 py-4 text-ink-muted">5</td>
+<td class="px-6 py-4 text-ink-muted">14 Okt 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-soft text-primary font-caption">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                            Indexed
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<button class="p-1.5 rounded-lg hover:bg-surface-container-high text-ink-muted transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Indexed -->
+<tr class="hover:bg-surface-alt transition-colors group border-l-4 border-transparent hover:border-primary">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-danger-soft text-danger flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="description">description</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface">Panduan_Farmasi_Utama.pdf</p>
+<p class="font-caption text-ink-dim">Prosedur Medis</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-ink-muted">5.1 MB</td>
+<td class="px-6 py-4 text-ink-muted">312</td>
+<td class="px-6 py-4 text-ink-muted">10 Okt 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-soft text-primary font-caption">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                            Indexed
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<button class="p-1.5 rounded-lg hover:bg-surface-container-high text-ink-muted transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-border-soft flex items-center justify-between">
+<p class="font-caption text-ink-muted">Menampilkan 1-4 dari 12 dokumen</p>
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded border border-border text-ink-muted hover:bg-surface-alt">
+<span class="material-symbols-outlined text-[16px]" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-primary bg-primary-soft text-primary font-bold">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-border text-ink-muted hover:bg-surface-alt">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-border text-ink-muted hover:bg-surface-alt">3</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-border text-ink-muted hover:bg-surface-alt">
+<span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- System Status Footer (Part of SideNav logical shell) -->
+<footer class="ml-[-224px] mt-auto border-t border-border/50 bg-surface/50 p-2 text-center">
+<div class="flex items-center justify-center gap-6">
+<div class="flex items-center gap-2 text-ink-muted font-caption">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="sensors">sensors</span>
+<span>Status Sistem: Optimal</span>
+</div>
+<div class="flex items-center gap-2 text-ink-muted font-caption cursor-pointer hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[14px]" data-icon="help">help</span>
+<span>Pusat Bantuan</span>
+</div>
+</div>
+</footer>
+</main>
+<script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.add('drag-active');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.remove('drag-active');
+            }, false);
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        }, false);
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            if (files.length > 0) {
+                alert(`Mempersiapkan upload untuk ${files.length} file...`);
+                // Implementation of upload logic would go here
+            }
+        }
+    </script>
+</body></html>

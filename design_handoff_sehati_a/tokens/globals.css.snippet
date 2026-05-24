@@ -1,0 +1,79 @@
+/* Sehati · Direction A — Sand & Sage
+ * Paste isi :root block ini ke app/globals.css
+ * (di dalam @layer base, sebelum atau menggantikan tokens shadcn default)
+ */
+
+@layer base {
+  :root {
+    /* — Sehati · Sand & Sage — */
+    --background: 41 50% 95%;          /* #FAF6EE warm sand */
+    --foreground: 35 19% 9%;           /* #1F1B14 warm ink */
+
+    --card: 0 0% 100%;                 /* #FFFFFF */
+    --card-foreground: 35 19% 9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 35 19% 9%;
+
+    --primary: 120 14% 42%;            /* #5E7A5E sage */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 41 35% 92%;           /* #F2EDE0 cream */
+    --secondary-foreground: 35 19% 9%;
+
+    --muted: 41 35% 92%;
+    --muted-foreground: 32 12% 40%;    /* #6F665A */
+
+    --accent: 19 47% 47%;              /* #B05E3F clay */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 4 45% 45%;          /* #A8443E */
+    --destructive-foreground: 0 0% 100%;
+
+    --warning: 30 65% 48%;             /* #C97B2C */
+    --warning-foreground: 0 0% 100%;
+
+    --info: 205 32% 36%;               /* #3D6478 */
+    --info-foreground: 0 0% 100%;
+
+    --border: 41 38% 85%;              /* #E8E0CC */
+    --border-soft: 41 41% 89%;         /* #F0E9D6 */
+    --input: 41 38% 85%;
+    --ring: 120 14% 42%;
+
+    /* extended Sehati-specific (tidak ada di shadcn default) */
+    --surface-alt: 41 35% 92%;         /* #F2EDE0 */
+    --surface-dim: 41 41% 88%;         /* #EEE7D5 */
+    --ink-dim: 35 12% 60%;             /* #A39A8B */
+
+    --primary-soft: 96 18% 91%;        /* #EAEFE3 */
+    --primary-dim: 95 17% 85%;         /* #D9E1D2 */
+    --accent-soft: 22 56% 87%;         /* #F0D9CB */
+    --danger-soft: 6 43% 89%;          /* #F2D6D3 */
+    --warn-soft: 33 65% 88%;           /* #F4E1CC */
+    --info-soft: 200 27% 87%;          /* #D6E1E7 */
+
+    --radius: 0.75rem;                 /* 12 px — kartu */
+    --radius-sm: 0.5rem;               /* 8 px — chip/button kecil */
+    --radius-lg: 1rem;                 /* 16 px — kartu besar */
+    --radius-pill: 9999px;
+  }
+
+  /* Optional · dark mode placeholder (belum di-design) */
+  .dark {
+    --background: 35 19% 9%;
+    --foreground: 41 50% 95%;
+    /* ... isi ketika dark mode diperlukan */
+  }
+}
+
+/* Animations dari design (dipakai di typing indicator + slide-in card) */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes slide-in {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
