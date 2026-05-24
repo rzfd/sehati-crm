@@ -61,28 +61,28 @@ export default function OnboardingPage() {
   }
 
   if (loading) {
-    return <div className="p-6 text-sm text-gray-500">Memuat profil…</div>
+    return <div className="p-6 text-body-md text-ink-muted">Memuat profil…</div>
   }
   if (!patient) {
     return (
-      <div className="p-6 text-sm text-gray-500">
-        Sesi tidak ditemukan. <a href="/login" className="text-teal-600 underline">Login</a>
+      <div className="p-6 text-body-md text-ink-muted">
+        Sesi tidak ditemukan. <a href="/login" className="text-primary underline">Login</a>
       </div>
     )
   }
 
   return (
-    <div className="min-h-full flex flex-col bg-hero-teal">
+    <div className="min-h-full flex flex-col bg-background">
       <header className="p-4 flex items-center justify-between">
-        <Logo size={28} withText />
-        <span className="text-xs text-gray-500">Langkah {step}/3</span>
+        <Logo size={28} withText variant="sage" />
+        <span className="text-body-sm text-ink-muted">Langkah {step}/3</span>
       </header>
 
       {/* Progress bar */}
       <div className="px-4 mb-6">
-        <div className="h-1.5 bg-gray-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+        <div className="h-1.5 bg-border rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-teal-400 to-blue-500 transition-all duration-300"
+            className="h-full bg-primary transition-all duration-300"
             style={{ width: `${(step / 3) * 100}%` }}
           />
         </div>
@@ -137,7 +137,7 @@ export default function OnboardingPage() {
         )}
 
         {error && (
-          <p className="text-xs text-red-500 bg-red-50 dark:bg-red-500/10 rounded-md px-3 py-2 mt-4">{error}</p>
+          <p className="text-body-sm text-danger bg-danger-soft rounded-lg px-3 py-2 mt-4">{error}</p>
         )}
       </main>
 
@@ -145,7 +145,7 @@ export default function OnboardingPage() {
         {step > 1 && (
           <button
             onClick={() => setStep((s) => (s - 1) as Step)}
-            className="btn-secondary flex-1 justify-center"
+            className="btn-secondary flex-1"
             disabled={saving}
           >
             ← Kembali
@@ -159,7 +159,7 @@ export default function OnboardingPage() {
               setError(null)
               setStep((s) => (s + 1) as Step)
             }}
-            className="btn-primary flex-1 justify-center"
+            className="btn-primary flex-1"
           >
             Lanjut →
           </button>
@@ -167,7 +167,7 @@ export default function OnboardingPage() {
           <button
             onClick={complete}
             disabled={saving}
-            className="btn-primary flex-1 justify-center"
+            className="btn-primary flex-1"
           >
             {saving ? "Menyimpan…" : "Selesai 🎉"}
           </button>
@@ -184,8 +184,8 @@ function Pane({ emoji, title, description, children }: {
     <div className="card p-6 space-y-4">
       <div className="text-5xl text-center">{emoji}</div>
       <div className="text-center">
-        <h2 className={cn("text-xl font-bold text-gray-800 dark:text-gray-100")}>{title}</h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{description}</p>
+        <h2 className={cn("text-headline-md text-ink")}>{title}</h2>
+        <p className="text-body-md text-ink-muted mt-1">{description}</p>
       </div>
       <div className="pt-2">{children}</div>
     </div>

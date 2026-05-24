@@ -63,20 +63,20 @@ export function PatientSearchBar() {
         className="input text-xs h-8"
       />
       {open && q.length >= 2 && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-black/[0.08] rounded-lg shadow-md max-h-72 overflow-y-auto z-20">
+        <div className="absolute top-full left-0 right-0 mt-1 bg-surface dark:bg-surface-alt border border-border dark:border-border rounded-lg shadow-md dark:shadow-none max-h-72 overflow-y-auto z-20">
           {loading ? (
-            <p className="p-3 text-xs text-gray-400">Mencari…</p>
+            <p className="p-3 text-xs text-ink-dim">Mencari…</p>
           ) : results.length === 0 ? (
-            <p className="p-3 text-xs text-gray-400">Tidak ada hasil.</p>
+            <p className="p-3 text-xs text-ink-dim">Tidak ada hasil.</p>
           ) : (
             results.map((p) => (
               <button
                 key={p.id}
                 onClick={() => selectPatient(p)}
-                className="w-full text-left px-3 py-2 hover:bg-gray-50 border-b border-black/[0.04]"
+                className="w-full text-left px-3 py-2 hover:bg-background dark:hover:bg-surface-alt border-b border-border dark:border-border"
               >
-                <p className="text-xs font-medium text-gray-700">{p.name}</p>
-                {p.phone && <p className="text-[10px] text-gray-500">{p.phone}</p>}
+                <p className="text-xs font-medium text-ink dark:text-ink-dim">{p.name}</p>
+                {p.phone && <p className="text-[10px] text-ink-muted">{p.phone}</p>}
               </button>
             ))
           )}

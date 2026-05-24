@@ -47,7 +47,7 @@ export function Tooltip({ children, content, side = "top", delay = 200 }: Toolti
         <span
           role="tooltip"
           className={cn(
-            "absolute z-50 px-2 py-1 rounded-md bg-neutral-800 dark:bg-neutral-700 text-white text-[11px] font-medium shadow-md whitespace-nowrap pointer-events-none",
+            "absolute z-50 px-2 py-1 rounded-md bg-ink text-white text-[11px] font-medium shadow-md whitespace-nowrap pointer-events-none",
             sideClass,
           )}
         >

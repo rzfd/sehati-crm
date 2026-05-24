@@ -63,22 +63,19 @@ export function DocumentUpload({ onUploaded }: DocumentUploadProps) {
         }}
         onClick={() => !uploading && fileInput.current?.click()}
         className={cn(
-          "card border-2 border-dashed p-8 text-center cursor-pointer transition-colors",
-          dragOver  ? "border-purple-500 bg-purple-50" : "border-gray-300 hover:border-purple-500",
+          "rounded-2xl border-2 border-dashed p-10 text-center cursor-pointer transition-colors bg-surface-alt",
+          dragOver  ? "border-primary bg-primary-soft" : "border-border hover:border-primary",
           uploading && "opacity-60 cursor-not-allowed"
         )}
       >
-        <div className="mx-auto size-12 rounded-full bg-purple-50 flex items-center justify-center text-purple-500 mb-3">
-          <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="17 8 12 3 7 8"/>
-            <line x1="12" y1="3" x2="12" y2="15"/>
-          </svg>
+        <div className="mx-auto size-14 rounded-full bg-surface border border-border flex items-center justify-center text-primary mb-3 shadow-card">
+          <span className="material-symbols-rounded text-[26px]">cloud_upload</span>
         </div>
-        <p className="text-sm font-medium text-gray-700">
-          {uploading ? "Memproses dokumen…" : "Klik atau drag file di sini"}
+        <p className="text-headline-sm text-ink">
+          {uploading ? "Memproses dokumen…" : "Upload Dokumen"}
         </p>
-        <p className="text-xs text-gray-500 mt-1">PDF, DOC, DOCX, TXT — maks {APP_CONFIG.MAX_FILE_SIZE_MB}MB</p>
+        <p className="text-body-md text-ink-muted mt-1">Seret dan lepas file di sini atau klik untuk memilih dari komputer.</p>
+        <p className="text-body-sm text-ink-dim mt-1">Format: .pdf, .docx, .txt — maks {APP_CONFIG.MAX_FILE_SIZE_MB}MB</p>
 
         <input
           ref={fileInput}
@@ -95,23 +92,22 @@ export function DocumentUpload({ onUploaded }: DocumentUploadProps) {
       </div>
 
       {uploading && (
-        <div className="flex items-center gap-2 text-xs text-gray-500">
-          <span className="size-3 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
+        <div className="flex items-center gap-2 text-xs text-ink-muted">
+          <span className="size-3 border-2 border-secondary border-t-transparent rounded-full animate-spin" />
           Parsing → chunking → embedding (proses ini bisa 10-30 detik)
         </div>
       )}
 
       {error && (
-        <div className="rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-xs text-red-600">{error}</div>
+        <div className="rounded-lg bg-danger-soft border border-danger px-3 py-2 text-xs text-danger">{error}</div>
       )}
       {success && (
-        <div className="rounded-lg bg-teal-50 border border-teal-200 px-3 py-2 text-xs text-teal-600">{success}</div>
+        <div className="rounded-lg bg-primary-soft border border-primary px-3 py-2 text-xs text-primary">{success}</div>
       )}
 
-      <div>
+      <div className="flex justify-center">
         <Button
-          variant="purple"
-          size="sm"
+          variant="primary"
           onClick={() => fileInput.current?.click()}
           disabled={uploading}
         >

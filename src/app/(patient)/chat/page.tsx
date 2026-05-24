@@ -97,49 +97,59 @@ export default function PatientChatPage() {
   }
 
   if (userLoading || bootstrapping) {
-    return <div className="p-6 text-sm text-gray-500">Memuat percakapan…</div>
+    return <div className="p-6 text-body-md text-ink-muted">Memuat percakapan…</div>
   }
 
   if (!patient) {
     return (
-      <div className="p-6 text-sm text-gray-500">
-        Akun ini bukan pasien. <a href="/login" className="text-teal-600 underline">Login sebagai pasien</a> untuk pakai chat.
+      <div className="p-6 text-body-md text-ink-muted">
+        Akun ini bukan pasien. <a href="/login" className="text-primary underline">Login sebagai pasien</a> untuk pakai chat.
       </div>
     )
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <header className="bg-white border-b border-black/[0.08] px-4 py-3 flex items-center gap-3 flex-shrink-0">
-        <div className="size-9 rounded-full bg-teal-50 flex items-center justify-center text-teal-600">🏥</div>
+    <div className="flex flex-col h-full bg-background">
+      <header className="bg-surface border-b border-border px-4 h-topbar-height flex items-center gap-3 flex-shrink-0">
+        <div className="relative">
+          <div className="size-9 rounded-full bg-primary-soft flex items-center justify-center text-primary">
+            <span className="material-symbols-rounded filled text-[20px]">local_hospital</span>
+          </div>
+          <span className="absolute bottom-0 right-0 size-2.5 bg-primary border-2 border-surface rounded-full online-dot" />
+        </div>
         <div>
-          <p className="text-sm font-medium text-gray-700">Tim Klinik</p>
-          <p className="text-[11px] text-gray-500">Dibantu Asisten AI</p>
+          <p className="text-card-title text-ink">Klinik Sehati Pratama</p>
+          <p className="text-caption text-primary">Aktif sekarang · Dibantu Asisten AI</p>
         </div>
       </header>
 
-      <div className="px-4 py-2 bg-amber-50 text-[11px] text-amber-700 border-b border-amber-100">
+      <div className="px-4 py-2 bg-warning-soft text-caption text-warning border-b border-warning/15">
         Untuk keadaan darurat, segera ke IGD terdekat. AI di sini tidak memberi diagnosis.
       </div>
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-3 scrollbar-thin">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto chat-scroll px-4 py-4 flex flex-col gap-4">
         {msgLoading ? (
-          <p className="text-sm text-gray-400 text-center">Memuat pesan…</p>
+          <p className="text-body-md text-ink-dim text-center">Memuat pesan…</p>
         ) : messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center mt-8 px-4 text-center">
             <EmptyChatIllustration className="w-48 h-auto mb-3" />
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Sapa Tim Klinik 👋</p>
-            <p className="text-xs text-gray-500 mt-1 max-w-xs">
+            <p className="text-headline-sm text-ink">Sapa Tim Klinik 👋</p>
+            <p className="text-body-md text-ink-muted mt-1 max-w-xs">
               Tanya jam buka, biaya, BPJS, atau apapun tentang klinik. AI siap bantu 24/7.
             </p>
-            <div className="flex flex-wrap gap-1.5 justify-center mt-4">
-              <button onClick={() => handleSend("Apakah klinik buka hari ini?")} className="pill pill-teal text-[10px]">Jam buka?</button>
-              <button onClick={() => handleSend("Berapa biaya konsul dokter umum?")} className="pill pill-teal text-[10px]">Biaya konsul?</button>
-              <button onClick={() => handleSend("Apakah klinik menerima BPJS?")} className="pill pill-teal text-[10px]">BPJS?</button>
+            <div className="flex flex-wrap gap-2 justify-center mt-4">
+              <button onClick={() => handleSend("Apakah klinik buka hari ini?")} className="pill-sukses hover:bg-primary-dim transition-colors">Jam buka?</button>
+              <button onClick={() => handleSend("Berapa biaya konsul dokter umum?")} className="pill-sukses hover:bg-primary-dim transition-colors">Biaya konsul?</button>
+              <button onClick={() => handleSend("Apakah klinik menerima BPJS?")} className="pill-sukses hover:bg-primary-dim transition-colors">BPJS?</button>
             </div>
           </div>
         ) : (
           <>
+            <div className="flex justify-center my-1">
+              <span className="text-caption px-3 py-1 bg-surface-alt rounded-full text-ink-muted">
+                {format(new Date(), "'Hari ini' · EEE d MMM yyyy")}
+              </span>
+            </div>
             {messages.map((m) => (
               <ChatBubble
                 key={m.id}
@@ -149,24 +159,21 @@ export default function PatientChatPage() {
               />
             ))}
             {optimistic.map((o) => (
-              <div key={o.id} className="opacity-60">
-                <ChatBubble
-                  senderType="patient"
-                  content={o.content}
-                  timestamp={format(new Date(o.ts), "HH:mm")}
-                />
-              </div>
+              <ChatBubble
+                key={o.id}
+                senderType="patient"
+                content={o.content}
+                timestamp={format(new Date(o.ts), "HH:mm")}
+                pending
+              />
             ))}
           </>
         )}
         {sending && <TypingIndicator label="AI sedang menganalisis…" />}
-        {lastResult && lastResult.action !== "auto_reply" && !sending && (
-          <PipelineHint result={lastResult} />
-        )}
       </div>
 
       {error && (
-        <div className="px-4 py-2 bg-red-50 text-[11px] text-red-700 border-t border-red-100 flex-shrink-0">
+        <div className="px-4 py-2 bg-danger-soft text-caption text-danger border-t border-danger/15 flex-shrink-0">
           {error}
         </div>
       )}
@@ -174,31 +181,12 @@ export default function PatientChatPage() {
       <ChatInput
         onSend={handleSend}
         disabled={!conversationId}
-        placeholder="Tanya tentang klinik…"
+        placeholder="Tulis pesan…"
       />
     </div>
   )
 }
 
-// Catatan kecil setelah pipeline. Hanya tampil kalau bukan auto_reply (karena
-// auto_reply akan langsung kirim bubble AI). Untuk escalate/booking_request,
-// kasih tahu pasien bahwa staff akan respon.
-function PipelineHint({ result }: { result: PipelineSummary }) {
-  const message = (() => {
-    if (result.action === "escalate") {
-      return "Pesan Anda diteruskan ke staff klinik. Tim kami akan segera membalas."
-    }
-    if (result.action === "booking_request") {
-      return "Permintaan booking Anda dicatat. Staff akan mengonfirmasi waktu yang tersedia."
-    }
-    return ""
-  })()
-  if (!message) return null
-  return (
-    <div className="flex justify-start">
-      <div className="text-[11px] text-gray-500 bg-gray-100 rounded-lg px-3 py-1.5 max-w-[80%]">
-        {message}
-      </div>
-    </div>
-  )
-}
+// Catatan: acknowledgment escalate/booking sekarang di-insert server-side sebagai
+// pesan "Asisten AI" yang persist (lihat /api/chat) — tidak perlu hint sementara
+// di klien lagi.

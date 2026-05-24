@@ -25,8 +25,8 @@ export class ErrorBoundary extends Component<Props, State> {
       if (this.props.fallback) return this.props.fallback
       return (
         <div className="card p-6 m-4">
-          <p className="text-sm font-medium text-red-500 mb-1">Terjadi kesalahan</p>
-          <p className="text-xs text-gray-500 mb-3">{this.state.error.message}</p>
+          <p className="text-sm font-medium text-danger mb-1">Terjadi kesalahan</p>
+          <p className="text-xs text-ink-muted mb-3">{this.state.error.message}</p>
           <button onClick={this.reset} className="btn-secondary text-xs">Coba lagi</button>
         </div>
       )

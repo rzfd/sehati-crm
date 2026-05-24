@@ -12,12 +12,15 @@ export function AnomalyBanner({ anomalies }: Props) {
   if (!anomalies.length) return null
 
   return (
-    <div className="card border-l-4 border-l-amber-500 p-3 space-y-1.5">
-      <p className="text-xs font-medium text-amber-700 uppercase tracking-wide">Deteksi anomali</p>
-      <ul className="text-sm text-gray-700 space-y-1">
+    <div className="rounded-xl bg-warning-soft border border-warning/25 p-4 space-y-1.5">
+      <p className="eyebrow text-warning flex items-center gap-1.5">
+        <span className="material-symbols-rounded text-[16px]">warning</span>
+        Deteksi Anomali
+      </p>
+      <ul className="text-body-md text-ink space-y-1">
         {anomalies.map((a, i) => (
           <li key={i} className="flex gap-2">
-            <span className="text-amber-500">⚠</span>
+            <span className="text-warning">•</span>
             <span>{a.message}</span>
           </li>
         ))}

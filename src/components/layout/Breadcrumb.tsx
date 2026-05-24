@@ -33,7 +33,9 @@ const LABELS: Record<string, string> = {
 }
 
 // Onboarding adalah wizard satu arah — pasien belum boleh navigasi sebelum selesai.
-const HIDE_ON = ["/onboarding"]
+// Halaman pasien punya header sendiri (greeting / chat header), jadi breadcrumb
+// disembunyikan agar sesuai referensi mobile.
+const HIDE_ON = ["/onboarding", "/home", "/chat", "/booking", "/history", "/profile"]
 
 export function Breadcrumb() {
   const pathname = usePathname() ?? "/"
@@ -51,19 +53,19 @@ export function Breadcrumb() {
   return (
     <nav
       aria-label="Breadcrumb"
-      className="sticky top-0 z-20 px-4 sm:px-6 py-2.5 bg-white/95 dark:bg-neutral-900/95 backdrop-blur border-b border-black/[0.06] dark:border-white/[0.06]"
+      className="sticky top-0 z-20 px-4 sm:px-6 py-2.5 bg-background/95 backdrop-blur border-b border-border"
     >
-      <ol className="flex items-center flex-wrap gap-1 text-xs">
+      <ol className="flex items-center flex-wrap gap-1 text-body-sm">
         {crumbs.map((c, idx) => (
           <Fragment key={c.href}>
             {idx > 0 && <Separator />}
             <li className="flex items-center">
               {c.isLast ? (
-                <span className="text-gray-700 dark:text-gray-200 font-medium">{c.label}</span>
+                <span className="text-ink font-semibold">{c.label}</span>
               ) : (
                 <Link
                   href={c.href}
-                  className="text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-200 transition-colors"
+                  className="text-ink-muted hover:text-ink transition-colors"
                 >
                   {c.label}
                 </Link>
@@ -78,7 +80,7 @@ export function Breadcrumb() {
 
 function Separator() {
   return (
-    <li aria-hidden className="text-gray-300 dark:text-gray-600 flex items-center">
+    <li aria-hidden className="text-ink-dim flex items-center">
       <svg
         width="12"
         height="12"

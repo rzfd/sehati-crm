@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { Logo } from "@/components/shared/Logo"
 
 export default function ForgotPasswordPage() {
   const [email, setEmail]   = useState("")
@@ -32,15 +33,19 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6">
-      <div className="card p-6 w-full max-w-md space-y-4">
+      <div className="w-full max-w-md space-y-4">
+        <div className="text-center flex flex-col items-center">
+          <Logo size={40} withText variant="sage" className="mb-3" />
+        </div>
+        <div className="card p-6 space-y-4">
         <div>
-          <h1 className="text-lg font-medium text-gray-700">Lupa password</h1>
-          <p className="text-sm text-gray-500">Kami akan kirim link reset password ke email Anda.</p>
+          <h1 className="text-headline-sm text-ink">Lupa password</h1>
+          <p className="text-sm text-ink-muted">Kami akan kirim link reset password ke email Anda.</p>
         </div>
 
         {sent ? (
           <div className="space-y-3">
-            <p className="text-sm text-teal-700 bg-teal-50 rounded-md px-3 py-2">
+            <p className="text-sm text-primary bg-primary-soft rounded-md px-3 py-2">
               ✓ Cek inbox email <strong>{email}</strong>. Klik link reset di email untuk lanjut.
             </p>
             <Link href="/login" className="btn-primary w-full justify-center">Kembali ke login</Link>
@@ -48,7 +53,7 @@ export default function ForgotPasswordPage() {
         ) : (
           <form onSubmit={submit} className="space-y-3">
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Email</label>
+              <label className="block text-xs text-ink-muted mb-1">Email</label>
               <input
                 type="email" required
                 value={email} onChange={(e) => setEmail(e.target.value)}
@@ -56,15 +61,16 @@ export default function ForgotPasswordPage() {
                 placeholder="anda@email.com"
               />
             </div>
-            {error && <p className="text-xs text-red-500 bg-red-50 rounded-md px-2 py-1.5">{error}</p>}
+            {error && <p className="text-xs text-danger bg-danger-soft rounded-md px-2 py-1.5">{error}</p>}
             <button type="submit" disabled={loading} className="btn-primary w-full justify-center">
               {loading ? "Mengirim…" : "Kirim link reset"}
             </button>
-            <Link href="/login" className="text-xs text-gray-500 hover:text-teal-600 block text-center">
+            <Link href="/login" className="text-xs text-ink-muted hover:text-primary block text-center">
               ← Kembali ke login
             </Link>
           </form>
         )}
+        </div>
       </div>
     </div>
   )

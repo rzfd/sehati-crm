@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { ScheduleEditor } from "@/components/admin/ScheduleEditor"
+import { formatDoctorName } from "@/lib/format"
 
 interface Doctor {
   id:         string
@@ -24,6 +25,7 @@ export default function AdminDoctorsPage() {
   const [showForm, setShowForm] = useState(false)
   const [editId, setEditId]     = useState<string | null>(null)
   const [scheduleFor, setScheduleFor] = useState<Doctor | null>(null)
+  const [filter, setFilter] = useState<"all" | "active" | "inactive">("all")
 
   // form state
   const [name, setName]           = useState("")
@@ -98,96 +100,117 @@ export default function AdminDoctorsPage() {
 
   const active = doctors.filter((d) => d.is_active)
   const inactive = doctors.filter((d) => !d.is_active)
+  const shown = filter === "active" ? active : filter === "inactive" ? inactive : doctors
+
+  const TABS = [
+    { key: "all" as const,      label: "Semua",   count: doctors.length },
+    { key: "active" as const,   label: "Aktif",   count: active.length },
+    { key: "inactive" as const, label: "Off duty", count: inactive.length },
+  ]
 
   return (
-    <div className="p-6 max-w-5xl">
-      <div className="flex items-center justify-between mb-5">
+    <div className="p-6 max-w-6xl">
+      <div className="flex items-start justify-between mb-5">
         <div>
-          <h1 className="text-xl font-medium text-gray-700">Dokter</h1>
-          <p className="text-sm text-gray-500">Kelola data dokter klinik.</p>
+          <h1 className="text-headline-md text-ink">Manajemen Dokter</h1>
+          <p className="text-body-md text-ink-muted">Kelola jadwal dan pantau ketersediaan tim medis.</p>
         </div>
-        <button onClick={() => { resetForm(); setShowForm(true) }} className="btn-purple">+ Tambah dokter</button>
+        <button onClick={() => { resetForm(); setShowForm(true) }} className="btn-primary">
+          <span className="material-symbols-rounded text-[18px]">add</span> Tambah Dokter
+        </button>
       </div>
 
-      {error && <p className="text-xs text-red-500 mb-3 bg-red-50 rounded-md px-3 py-2">{error}</p>}
+      {/* Filter tabs */}
+      <div className="flex items-center gap-1 mb-5 rounded-full bg-surface-alt p-1 w-fit">
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => setFilter(t.key)}
+            className={`px-3.5 py-1.5 rounded-full text-body-sm font-medium transition-colors ${
+              filter === t.key ? "bg-surface text-ink shadow-card" : "text-ink-muted hover:text-ink"
+            }`}
+          >
+            {t.label} <span className="text-ink-dim">({t.count})</span>
+          </button>
+        ))}
+      </div>
+
+      {error && <p className="text-body-sm text-danger mb-3 bg-danger-soft rounded-lg px-3 py-2">{error}</p>}
 
       {loading ? (
-        <p className="text-sm text-gray-400">Memuat…</p>
+        <p className="text-body-md text-ink-dim">Memuat…</p>
+      ) : shown.length === 0 ? (
+        <div className="card p-8 text-center">
+          <p className="text-body-md text-ink-muted">Belum ada dokter. Tambah dokter pertama untuk mulai menerima booking.</p>
+        </div>
       ) : (
-        <>
-          {active.length === 0 ? (
-            <div className="card p-8 text-center">
-              <p className="text-sm text-gray-500">Belum ada dokter. Tambah dokter pertama untuk mulai menerima booking.</p>
-            </div>
-          ) : (
-            <div className="grid sm:grid-cols-2 gap-3">
-              {active.map((d) => (
-                <DoctorCard
-                  key={d.id} doctor={d}
-                  onEdit={openEdit}
-                  onToggle={toggleActive}
-                  onSchedule={() => setScheduleFor(d)}
-                />
-              ))}
-            </div>
-          )}
+        <div className="grid md:grid-cols-2 gap-3">
+          {shown.map((d) => (
+            <DoctorCard
+              key={d.id} doctor={d}
+              onEdit={openEdit}
+              onToggle={toggleActive}
+              onSchedule={() => setScheduleFor(d)}
+            />
+          ))}
 
-          {inactive.length > 0 && (
-            <details className="mt-6">
-              <summary className="cursor-pointer text-xs text-gray-400 mb-2 hover:text-gray-600">
-                {inactive.length} dokter tidak aktif
-              </summary>
-              <div className="grid sm:grid-cols-2 gap-3 mt-2">
-                {inactive.map((d) => (
-                  <DoctorCard
-                    key={d.id} doctor={d}
-                    onEdit={openEdit}
-                    onToggle={toggleActive}
-                    onSchedule={() => setScheduleFor(d)}
-                  />
-                ))}
-              </div>
-            </details>
-          )}
-        </>
+          {/* AI Doctor Routing — premium feature card */}
+          <div className="rounded-xl bg-primary-soft border border-primary-dim p-4 flex flex-col">
+            <span className="eyebrow text-primary">Fitur Premium</span>
+            <p className="text-headline-sm text-ink mt-1 flex items-center gap-1.5">
+              <span className="material-symbols-rounded filled text-primary text-[20px]">hub</span>
+              AI Doctor Routing
+            </p>
+            <p className="text-body-sm text-ink-muted mt-1">
+              Optimalkan antrean pasien otomatis berdasarkan spesialisasi dan beban kerja dokter secara real-time.
+            </p>
+            <ul className="mt-3 space-y-1.5 text-body-sm text-ink">
+              <li className="flex items-center gap-2"><span className="material-symbols-rounded text-[16px] text-primary">check_circle</span> Routing pasien otomatis</li>
+              <li className="flex items-center gap-2"><span className="material-symbols-rounded text-[16px] text-primary">check_circle</span> Prediksi waktu tunggu</li>
+            </ul>
+            <button className="btn-sage mt-4 self-start" disabled>
+              <span className="material-symbols-rounded text-[18px]">settings</span> Konfigurasi AI
+            </button>
+          </div>
+        </div>
       )}
 
       {scheduleFor && (
         <ScheduleEditor
           doctorId={scheduleFor.id}
-          doctorName={`${scheduleFor.title} ${scheduleFor.name}`}
+          doctorName={formatDoctorName(scheduleFor)}
           onClose={() => setScheduleFor(null)}
         />
       )}
 
       {showForm && (
         <div className="fixed inset-0 bg-black/30 dark:bg-black/60 modal-backdrop z-50 flex items-center justify-center p-4" onClick={resetForm}>
-          <div className="bg-white dark:bg-neutral-900 rounded-xl p-5 modal-content w-full max-w-md space-y-3" onClick={(e) => e.stopPropagation()}>
-            <h2 className="text-base font-medium text-gray-700">{editId ? "Edit dokter" : "Tambah dokter"}</h2>
+          <div className="bg-surface rounded-xl p-5 modal-content shadow-modal w-full max-w-md space-y-3" onClick={(e) => e.stopPropagation()}>
+            <h2 className="text-headline-sm text-ink">{editId ? "Edit dokter" : "Tambah dokter"}</h2>
             <form onSubmit={submit} className="space-y-3">
               <div className="grid grid-cols-[80px_1fr] gap-2">
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">Gelar</label>
+                  <label className="block text-xs text-ink-muted mb-1">Gelar</label>
                   <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="dr." />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">Nama lengkap</label>
+                  <label className="block text-xs text-ink-muted mb-1">Nama lengkap</label>
                   <input className="input" value={name} onChange={(e) => setName(e.target.value)} required />
                 </div>
               </div>
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Spesialisasi</label>
+                <label className="block text-xs text-ink-muted mb-1">Spesialisasi</label>
                 <select className="input" value={specialty} onChange={(e) => setSpecialty(e.target.value)}>
                   {SPECIALTIES.map((s) => <option key={s} value={s}>{s}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Bio <span className="text-gray-400">(opsional)</span></label>
+                <label className="block text-xs text-ink-muted mb-1">Bio <span className="text-ink-dim">(opsional)</span></label>
                 <textarea className="input resize-none" rows={3} value={bio} onChange={(e) => setBio(e.target.value)} />
               </div>
               <div className="flex gap-2 pt-2">
-                <button type="button" onClick={resetForm} className="btn-secondary flex-1 justify-center">Batal</button>
-                <button type="submit" disabled={saving} className="btn-purple flex-1 justify-center">
+                <button type="button" onClick={resetForm} className="btn-secondary flex-1">Batal</button>
+                <button type="submit" disabled={saving} className="btn-primary flex-1">
                   {saving ? "..." : "Simpan"}
                 </button>
               </div>
@@ -207,26 +230,60 @@ function DoctorCard({
   onToggle: (d: Doctor) => void
   onSchedule: () => void
 }) {
+  const DAYS = ["Sen", "Sel", "Rab", "Kam", "Jum"]
   return (
-    <div className="card p-4 flex gap-3 items-start">
-      <div className="size-10 rounded-full bg-purple-50 text-purple-500 flex items-center justify-center text-sm font-medium">
-        {doctor.name.split(" ").map((p) => p[0]).slice(0, 2).join("")}
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-gray-700">{doctor.title} {doctor.name}</p>
-        <p className="text-xs text-gray-500">{doctor.specialty}</p>
-        {doctor.bio && <p className="text-[11px] text-gray-400 mt-1 line-clamp-2">{doctor.bio}</p>}
-        <div className="flex gap-1.5 mt-2 flex-wrap">
-          <button onClick={() => onEdit(doctor)} className="text-[11px] text-purple-500 hover:text-purple-700">Edit</button>
-          <span className="text-gray-300">·</span>
-          <button onClick={onSchedule} className="text-[11px] text-teal-600 hover:text-teal-700">Jadwal</button>
-          <span className="text-gray-300">·</span>
-          <button onClick={() => onToggle(doctor)} className="text-[11px] text-gray-400 hover:text-gray-700">
-            {doctor.is_active ? "Nonaktifkan" : "Aktifkan"}
-          </button>
+    <div className="card p-4">
+      <div className="flex gap-3 items-start">
+        <div className="relative shrink-0">
+          <div className="size-12 rounded-full bg-info-soft text-tertiary flex items-center justify-center text-sm font-semibold overflow-hidden">
+            {doctor.avatar_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={doctor.avatar_url} alt={doctor.name} className="size-full object-cover" />
+            ) : (
+              doctor.name.split(" ").map((p) => p[0]).slice(0, 2).join("")
+            )}
+          </div>
+          {doctor.is_active && (
+            <span className="absolute bottom-0 right-0 size-3 bg-primary border-2 border-surface rounded-full" />
+          )}
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-card-title text-ink truncate">{formatDoctorName(doctor)}</p>
+            <span className={doctor.is_active ? "pill-sukses shrink-0" : "pill-gray shrink-0"}>
+              {doctor.is_active ? "Online" : "Off duty"}
+            </span>
+          </div>
+          <p className="text-body-sm text-ink-muted">{doctor.specialty}</p>
+          {doctor.bio && <p className="text-body-sm text-ink-dim mt-1 line-clamp-2">{doctor.bio}</p>}
         </div>
       </div>
-      {!doctor.is_active && <span className="pill pill-gray flex-shrink-0">Nonaktif</span>}
+
+      {/* Jadwal mingguan mini */}
+      <div className="mt-3">
+        <p className="eyebrow mb-1.5">Jadwal Praktik</p>
+        <div className="flex gap-1">
+          {DAYS.map((d) => (
+            <span key={d} className="flex-1 text-center text-body-sm py-1 rounded-md bg-primary-soft text-primary">{d}</span>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex gap-2 mt-3 pt-3 border-t border-border-soft">
+        <button onClick={() => onEdit(doctor)} className="btn-secondary flex-1 py-2">
+          <span className="material-symbols-rounded text-[16px]">edit</span> Edit
+        </button>
+        <button onClick={onSchedule} className="btn-primary flex-1 py-2">
+          <span className="material-symbols-rounded text-[16px]">calendar_month</span> Jadwal
+        </button>
+        <button
+          onClick={() => onToggle(doctor)}
+          title={doctor.is_active ? "Nonaktifkan" : "Aktifkan"}
+          className="btn-secondary px-3 py-2"
+        >
+          <span className="material-symbols-rounded text-[16px]">{doctor.is_active ? "toggle_on" : "toggle_off"}</span>
+        </button>
+      </div>
     </div>
   )
 }

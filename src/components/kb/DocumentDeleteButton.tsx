@@ -31,7 +31,7 @@ export function DocumentDeleteButton({ id }: { id: string }) {
     <button
       onClick={handleClick}
       disabled={loading}
-      className="text-xs text-gray-400 hover:text-red-500 disabled:opacity-50 px-2 py-1"
+      className="text-xs text-ink-dim hover:text-danger disabled:opacity-50 px-2 py-1"
       title="Hapus dokumen"
     >
       {loading ? "..." : "Hapus"}

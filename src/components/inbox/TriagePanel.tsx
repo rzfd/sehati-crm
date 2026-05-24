@@ -37,7 +37,7 @@ export function TriagePanel({ message, conversationId }: Props) {
 
   return (
     <div className="card p-3">
-      <p className="text-xs font-medium text-gray-700 mb-2">Triage AI</p>
+      <p className="text-xs font-medium text-ink dark:text-ink-dim mb-2">Triage AI</p>
       {!result && (
         <button onClick={runTriage} disabled={loading} className="btn-secondary text-xs">
           {loading ? "Menganalisis…" : "Analisis urgency"}
@@ -46,18 +46,18 @@ export function TriagePanel({ message, conversationId }: Props) {
       {result && (
         <div className="text-xs space-y-1.5">
           <p>
-            <span className="text-gray-400">Level:</span>{" "}
+            <span className="text-ink-dim">Level:</span>{" "}
             <span className={`pill ${result.urgency_level >= 3 ? "pill-red" : "pill-amber"}`}>
               {result.urgency_level}
             </span>
           </p>
-          <p className="text-gray-700">{result.reason}</p>
+          <p className="text-ink dark:text-ink-dim">{result.reason}</p>
           {result.evidence.length > 0 && (
-            <ul className="text-gray-500 list-disc list-inside">
+            <ul className="text-ink-muted list-disc list-inside">
               {result.evidence.map((e, i) => <li key={i}>&ldquo;{e}&rdquo;</li>)}
             </ul>
           )}
-          <p className="text-teal-600 font-medium">→ {result.recommendation}</p>
+          <p className="text-primary font-medium">→ {result.recommendation}</p>
         </div>
       )}
     </div>

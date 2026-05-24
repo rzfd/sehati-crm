@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Logo } from "@/components/shared/Logo"
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -65,20 +66,18 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-8">
+    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
       <div className="w-full max-w-sm">
         {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center size-12 rounded-xl bg-teal-400 mb-3">
-            <span className="text-white text-xl font-bold">S</span>
-          </div>
-          <h1 className="text-xl font-medium text-gray-700">Sehati CRM</h1>
-          <p className="text-sm text-gray-500 mt-1">Daftar sebagai pasien</p>
+        <div className="text-center mb-8 flex flex-col items-center">
+          <Logo size={40} withText variant="sage" className="mb-3" />
+          <h1 className="text-headline-md text-ink">Daftar akun pasien</h1>
+          <p className="text-body-md text-ink-muted mt-1">Buat akun untuk mulai konsultasi</p>
         </div>
 
         <form onSubmit={handleSubmit} className="card p-6 space-y-4">
           {error && (
-            <div className="rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-600">
+            <div className="rounded-lg bg-danger-soft border border-danger px-3 py-2 text-sm text-danger">
               {error}
             </div>
           )}
@@ -139,9 +138,9 @@ export default function RegisterPage() {
           </Button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 mt-4">
+        <p className="text-center text-sm text-ink-muted mt-4">
           Sudah punya akun?{" "}
-          <Link href="/login" className="text-teal-600 hover:underline font-medium">
+          <Link href="/login" className="text-primary hover:underline font-medium">
             Masuk
           </Link>
         </p>

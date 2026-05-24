@@ -4,6 +4,7 @@ import { format, formatDistanceToNow } from "date-fns"
 import { id as idLocale } from "date-fns/locale"
 import type { InboxConversation } from "@/hooks/useInbox"
 import { cn } from "@/lib/utils"
+import { Avatar } from "@/components/shared/Avatar"
 
 interface Props {
   conv:    InboxConversation
@@ -12,10 +13,10 @@ interface Props {
 }
 
 const URGENCY_BORDER: Record<number, string> = {
-  4: "border-l-red-500",
-  3: "border-l-amber-500",
-  2: "border-l-gray-300",
-  1: "border-l-gray-200",
+  4: "border-l-danger",
+  3: "border-l-warning",
+  2: "border-l-transparent",
+  1: "border-l-transparent",
 }
 
 export function ChatListItem({ conv, active, onClick }: Props) {
@@ -26,41 +27,44 @@ export function ChatListItem({ conv, active, onClick }: Props) {
     <button
       onClick={onClick}
       className={cn(
-        "w-full text-left px-3 py-3 border-b border-black/[0.04] border-l-4 flex flex-col gap-1 transition-colors",
-        URGENCY_BORDER[conv.urgency_level] ?? "border-l-gray-200",
-        active ? "bg-teal-50/40" : "hover:bg-gray-50",
+        "w-full text-left px-3 py-3 border-b border-border-soft border-l-[3px] flex gap-3 transition-colors",
+        URGENCY_BORDER[conv.urgency_level] ?? "border-l-transparent",
+        active ? "bg-primary-soft" : "hover:bg-surface-alt",
       )}
     >
-      <div className="flex items-center justify-between gap-2">
-        <span className={cn(
-          "text-sm truncate flex-1",
-          conv.unread_count > 0 ? "font-semibold text-gray-800" : "font-medium text-gray-700",
-        )}>
-          {conv.patient?.name ?? "Pasien"}
-        </span>
-        {conv.unread_count > 0 && (
-          <span className="flex-shrink-0 size-5 rounded-full bg-teal-500 text-white text-[10px] font-bold flex items-center justify-center">
-            {conv.unread_count > 9 ? "9+" : conv.unread_count}
+      <Avatar name={conv.patient?.name ?? "Pasien"} size="md" />
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between gap-2">
+          <span className={cn(
+            "text-card-title truncate flex-1",
+            conv.unread_count > 0 ? "text-ink font-bold" : "text-ink",
+          )}>
+            {conv.patient?.name ?? "Pasien"}
           </span>
-        )}
-        <span className="text-[10px] text-gray-400 flex-shrink-0">
-          {lastTime ? formatDistanceToNow(new Date(lastTime), { locale: idLocale, addSuffix: false }) : ""}
-        </span>
-      </div>
-      <p className="text-xs text-gray-500 truncate">
-        {conv.last_message?.sender_type === "ai_bot" && <span className="text-teal-600">AI: </span>}
-        {conv.last_message?.sender_type === "staff" && <span className="text-blue-500">Anda: </span>}
-        {conv.last_message?.content ?? "Belum ada pesan"}
-      </p>
-      <div className="flex items-center gap-1.5 mt-0.5">
-        {isUrgent && <span className="pill pill-red">Urgent</span>}
-        {conv.ai_handled && <span className="pill pill-teal">AI</span>}
-        {conv.patient?.is_new && <span className="pill pill-blue">Baru</span>}
-        {conv.routed_doctor && (
-          <span className="pill pill-gray truncate max-w-[120px]" title={conv.routed_doctor.name}>
-            → {conv.routed_doctor.name.split(" ").pop()}
+          <span className="text-caption text-ink-dim flex-shrink-0">
+            {lastTime ? formatDistanceToNow(new Date(lastTime), { locale: idLocale, addSuffix: false }) : ""}
           </span>
-        )}
+        </div>
+        <p className="text-body-sm text-ink-muted truncate mt-0.5">
+          {conv.last_message?.sender_type === "ai_bot" && <span className="text-primary font-medium">AI: </span>}
+          {conv.last_message?.sender_type === "staff" && <span className="text-tertiary font-medium">Anda: </span>}
+          {conv.last_message?.content ?? "Belum ada pesan"}
+        </p>
+        <div className="flex items-center gap-1.5 mt-1.5">
+          {isUrgent && <span className="pill-danger">Urgent</span>}
+          {conv.ai_handled && <span className="pill-sukses">AI</span>}
+          {conv.patient?.is_new && <span className="pill-info">Baru</span>}
+          {conv.routed_doctor && (
+            <span className="pill-gray truncate max-w-[120px]" title={conv.routed_doctor.name}>
+              → {conv.routed_doctor.name.split(" ").pop()}
+            </span>
+          )}
+          {conv.unread_count > 0 && (
+            <span className="ml-auto flex-shrink-0 size-5 rounded-full bg-primary text-white text-caption font-bold flex items-center justify-center">
+              {conv.unread_count > 9 ? "9+" : conv.unread_count}
+            </span>
+          )}
+        </div>
       </div>
     </button>
   )

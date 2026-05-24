@@ -20,7 +20,7 @@ const ITEMS: NavItem[] = [
 export function PatientBottomNav() {
   const pathname = usePathname()
   return (
-    <nav className="bg-white border-t border-black/[0.08] flex flex-shrink-0 z-30">
+    <nav className="bg-surface border-t border-border-soft flex flex-shrink-0 z-30">
       {ITEMS.map((item) => {
         const active = pathname?.startsWith(item.href)
         return (
@@ -28,12 +28,14 @@ export function PatientBottomNav() {
             key={item.href}
             href={item.href}
             className={cn(
-              "flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 text-[11px] transition-colors",
-              active ? "text-teal-600" : "text-gray-500 hover:text-teal-400",
+              "flex-1 flex flex-col items-center justify-center gap-1 py-2.5 text-caption transition-colors",
+              active ? "text-primary" : "text-ink-muted hover:text-primary",
             )}
           >
-            <span className="size-5">{item.icon}</span>
-            <span className={cn(active && "font-medium")}>{item.label}</span>
+            <span className={cn("size-6", active && "[&_path]:fill-primary/15 [&_circle]:fill-primary/15")}>
+              {item.icon}
+            </span>
+            <span className={cn(active && "font-bold")}>{item.label}</span>
           </Link>
         )
       })}

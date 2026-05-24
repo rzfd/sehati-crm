@@ -18,7 +18,7 @@ export default function PatientBookingPage() {
       try {
         const duration = 1200
         const end = Date.now() + duration
-        const colors = ["#1D9E75", "#5DCAA5", "#185FA5", "#7BB5E8"]
+        const colors = ["#466147", "#5e7a5e", "#95492b", "#C97B2C"]
         const frame = () => {
           confetti({
             particleCount: 3, angle: 60, spread: 55,
@@ -36,26 +36,26 @@ export default function PatientBookingPage() {
   }
 
   return (
-    <div className="p-4 pt-6">
-      <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-1">Buat janji</h1>
-      <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">Pilih dokter dan waktu yang tersedia.</p>
+    <div className="px-mobile-margin pt-6 pb-6">
+      <h1 className="text-headline-lg text-ink mb-1">Booking Jadwal</h1>
+      <p className="text-body-md text-ink-muted mb-5">Pilih dokter dan waktu yang tersedia.</p>
 
       {done ? (
         <div className="card p-6 space-y-3 text-center">
-          <div className="mx-auto size-16 rounded-full bg-teal-50 dark:bg-teal-500/15 flex items-center justify-center text-3xl">
-            ✅
+          <div className="mx-auto size-16 rounded-full bg-primary-soft flex items-center justify-center text-primary">
+            <span className="material-symbols-rounded filled text-[32px]">check_circle</span>
           </div>
           <div>
-            <p className="text-lg font-semibold text-gray-800 dark:text-gray-100">Booking terkirim!</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-headline-sm text-ink">Booking terkirim!</p>
+            <p className="text-body-md text-ink-muted mt-1">
               Tim klinik akan mengonfirmasi janji Anda dalam waktu singkat.
             </p>
           </div>
           <div className="flex gap-2 pt-2">
-            <button onClick={() => router.push("/history")} className="btn-secondary flex-1 justify-center">
+            <button onClick={() => router.push("/history")} className="btn-secondary flex-1">
               Lihat Riwayat
             </button>
-            <button onClick={() => setDone(false)} className="btn-primary flex-1 justify-center">
+            <button onClick={() => setDone(false)} className="btn-primary flex-1">
               Buat lagi
             </button>
           </div>

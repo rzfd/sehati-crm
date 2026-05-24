@@ -18,7 +18,7 @@ export function ThemeToggle() {
       <button
         onClick={cycle}
         aria-label="Toggle theme"
-        className="size-9 rounded-lg flex items-center justify-center text-gray-500 hover:text-teal-500 dark:text-gray-400 dark:hover:text-teal-400 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors"
+        className="size-9 rounded-lg flex items-center justify-center text-ink-muted hover:text-primary dark:text-ink-dim dark:hover:text-primary hover:bg-surface-alt dark:hover:bg-surface-alt transition-colors"
       >
         {theme === "light" && <SunIcon />}
         {theme === "dark"  && <MoonIcon />}

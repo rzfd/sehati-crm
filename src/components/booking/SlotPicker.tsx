@@ -12,10 +12,10 @@ interface SlotPickerProps {
 // Slot string format dari API: "HH:MM:SS". Tampilkan sebagai HH:MM.
 export function SlotPicker({ slots, selected, onSelect, loading }: SlotPickerProps) {
   if (loading) {
-    return <p className="text-sm text-gray-400">Memuat slot…</p>
+    return <p className="text-body-md text-ink-dim">Memuat slot…</p>
   }
   if (slots.length === 0) {
-    return <p className="text-sm text-gray-500">Tidak ada slot tersedia di hari ini.</p>
+    return <p className="text-body-md text-ink-muted">Tidak ada slot tersedia di hari ini.</p>
   }
 
   return (
@@ -28,10 +28,10 @@ export function SlotPicker({ slots, selected, onSelect, loading }: SlotPickerPro
             type="button"
             onClick={() => onSelect(slot)}
             className={cn(
-              "rounded-lg border px-3 py-2 text-sm transition-colors",
+              "rounded-xl border px-3 py-3 text-sm font-medium transition-colors",
               isActive
-                ? "bg-teal-400 text-white border-teal-500"
-                : "bg-white text-gray-700 border-black/[0.12] hover:border-teal-400 hover:bg-teal-50/30",
+                ? "bg-primary text-on-primary border-primary"
+                : "bg-surface text-ink border-border hover:border-primary/40",
             )}
           >
             {slot.slice(0, 5)}

@@ -134,9 +134,9 @@ export function ConversationView({
   const grouped = groupByDate(messages)
 
   return (
-    <div className="flex flex-col h-full bg-[#EFEAE2] dark:bg-neutral-950">
-      {/* WhatsApp-style header */}
-      <header className="flex items-center justify-between px-4 py-2.5 bg-teal-600 dark:bg-neutral-900 text-white flex-shrink-0 shadow-sm">
+    <div className="flex flex-col h-full bg-background">
+      {/* Conversation header */}
+      <header className="flex items-center justify-between px-4 h-topbar-height bg-primary text-white flex-shrink-0 shadow-sm">
         <div className="flex items-center gap-3 min-w-0">
           <Avatar name={patientName || "Pasien"} size="md" status="online" />
           <div className="min-w-0">
@@ -144,12 +144,12 @@ export function ConversationView({
             <div className="flex items-center gap-1.5 text-[11px] opacity-90">
               <span className={cn(
                 "inline-block",
-                status === "open"     ? "text-amber-200" :
-                status === "resolved" ? "text-teal-200" : "text-gray-300",
+                status === "open"     ? "text-warning" :
+                status === "resolved" ? "text-primary" : "text-ink-dim",
               )}>
                 {status === "open" ? "● Open" : status === "resolved" ? "✓ Resolved" : "⏸ Archived"}
               </span>
-              {urgencyLevel >= 3 && <span className="text-red-200">• Urgent {urgencyLevel}</span>}
+              {urgencyLevel >= 3 && <span className="text-danger">• Urgent {urgencyLevel}</span>}
             </div>
           </div>
         </div>
@@ -213,16 +213,16 @@ export function ConversationView({
         className="flex-1 min-h-0 overflow-y-auto overscroll-contain scrollbar-thin px-4 py-4 space-y-1 chat-bg"
       >
         {loading ? (
-          <p className="text-sm text-gray-400 text-center mt-8">Memuat…</p>
+          <p className="text-sm text-ink-dim text-center mt-8">Memuat…</p>
         ) : messages.length === 0 ? (
-          <p className="text-sm text-gray-500 dark:text-gray-400 text-center mt-12">
+          <p className="text-sm text-ink-muted dark:text-ink-dim text-center mt-12">
             Belum ada pesan. Tulis balasan untuk memulai.
           </p>
         ) : (
           grouped.map((group) => (
             <div key={group.label} className="space-y-1.5">
               <div className="flex justify-center my-3">
-                <span className="text-[10px] bg-white/80 dark:bg-neutral-800/80 backdrop-blur text-gray-600 dark:text-gray-300 px-2.5 py-0.5 rounded-full shadow-sm">
+                <span className="text-[10px] bg-surface/80 dark:bg-surface-alt/80 backdrop-blur text-ink dark:text-ink-dim px-2.5 py-0.5 rounded-full shadow-sm">
                   {group.label}
                 </span>
               </div>
@@ -235,7 +235,7 @@ export function ConversationView({
       </div>
 
       {isClosed ? (
-        <div className="px-4 py-3 bg-gray-100 dark:bg-neutral-900 text-xs text-gray-500 dark:text-gray-400 text-center flex-shrink-0 border-t border-black/[0.04] dark:border-white/[0.04]">
+        <div className="px-4 py-3 bg-surface-alt dark:bg-surface-alt text-xs text-ink-muted dark:text-ink-dim text-center flex-shrink-0 border-t border-border dark:border-border">
           Percakapan ini sudah {status === "resolved" ? "diselesaikan" : "diarsipkan"}. Buka kembali untuk membalas.
         </div>
       ) : (
@@ -243,15 +243,15 @@ export function ConversationView({
           <div className={cn(
             "flex items-center justify-between gap-2 px-3 py-1.5 text-[11px] border-t",
             internalMode
-              ? "bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20 text-amber-700 dark:text-amber-400"
-              : "bg-gray-50 dark:bg-neutral-900 border-black/[0.04] dark:border-white/[0.04] text-gray-500",
+              ? "bg-warning-soft dark:bg-warning/10 border-warning dark:border-warning/20 text-warning dark:text-warning"
+              : "bg-background dark:bg-surface-alt border-border dark:border-border text-ink-muted",
           )}>
             <label className="flex items-center gap-1.5 cursor-pointer">
               <input
                 type="checkbox"
                 checked={internalMode}
                 onChange={(e) => setInternalMode(e.target.checked)}
-                className="accent-amber-500"
+                className="accent-warning"
               />
               <span>📌 Internal note (tidak terlihat pasien)</span>
             </label>
@@ -277,8 +277,8 @@ function IconButton({ children, onClick, title, active }: {
       className={cn(
         "size-9 rounded-full flex items-center justify-center transition-colors",
         active
-          ? "bg-white/25"
-          : "hover:bg-white/15",
+          ? "bg-surface/25"
+          : "hover:bg-surface/15",
       )}
     >
       {children}
@@ -293,18 +293,18 @@ function MessageRow({ message, staffRole }: { message: Message; staffRole?: stri
   if (message.is_internal) {
     return (
       <div className="flex justify-center my-2">
-        <div className="bg-amber-100/90 dark:bg-amber-500/10 border border-amber-300/50 dark:border-amber-500/30 rounded-lg px-3 py-2 max-w-[85%]">
-          <p className="text-[10px] text-amber-700 dark:text-amber-400 mb-0.5 font-medium">
+        <div className="bg-warning-soft/90 dark:bg-warning/10 border border-warning/50 dark:border-warning/30 rounded-lg px-3 py-2 max-w-[85%]">
+          <p className="text-[10px] text-warning dark:text-warning mb-0.5 font-medium">
             📌 Internal note · {format(new Date(message.created_at), "HH:mm")}
           </p>
-          <p className="text-xs text-gray-700 dark:text-gray-200 whitespace-pre-wrap">{message.content}</p>
+          <p className="text-xs text-ink dark:text-ink-dim whitespace-pre-wrap">{message.content}</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="group">
+    <div className="group flex flex-col">
       <ChatBubble
         senderType={message.sender_type as SenderType}
         content={message.content}
@@ -313,8 +313,8 @@ function MessageRow({ message, staffRole }: { message: Message; staffRole?: stri
         isRead={message.is_read}
       />
       {isAi && aiMeta && aiMeta.kb_sources && aiMeta.kb_sources.length > 0 && (
-        <details className="mt-0.5 ml-2 text-[10px] text-gray-400 dark:text-gray-500 max-w-[80%] opacity-0 group-hover:opacity-100 transition-opacity">
-          <summary className="cursor-pointer hover:text-teal-600 dark:hover:text-teal-400">
+        <details className="mt-0.5 ml-2 text-[10px] text-ink-dim dark:text-ink-muted max-w-[80%] opacity-0 group-hover:opacity-100 transition-opacity">
+          <summary className="cursor-pointer hover:text-primary dark:hover:text-primary">
             AI citation ({aiMeta.kb_sources.length} sumber, conf {aiMeta.confidence?.toFixed(2) ?? "-"})
           </summary>
           <div className="mt-1 ml-2 space-y-0.5">

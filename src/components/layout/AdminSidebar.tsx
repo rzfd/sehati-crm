@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
 import { Logo } from "@/components/shared/Logo"
-import { ThemeToggle } from "@/components/shared/ThemeToggle"
 import type { StaffRole } from "@/lib/constants"
 
 interface NavLink {
@@ -67,22 +66,12 @@ export function AdminSidebar({ initialStaff }: AdminSidebarProps = {}) {
   const hasResolved = !!initialStaff || !loading
 
   return (
-    <aside className="w-56 shrink-0 bg-white dark:bg-neutral-900 border-r border-black/[0.08] dark:border-white/[0.06] flex flex-col">
-      <div className="p-4 border-b border-black/[0.08] dark:border-white/[0.06]">
-        <Logo size={28} withText variant="purple" className="mb-3" />
-        <div className="min-w-0">
-          <div className="text-sm font-medium text-gray-700 dark:text-gray-200 truncate">
-            {!hasResolved ? "Memuat…" : staff?.name ?? "Belum terhubung"}
-          </div>
-          {staff ? (
-            <span className="admin-badge">{staff.role}</span>
-          ) : hasResolved ? (
-            <span className="pill pill-red text-[10px]">Bukan staff</span>
-          ) : null}
-        </div>
+    <aside className="w-sidebar-width shrink-0 bg-surface-alt border-r border-border flex flex-col">
+      <div className="p-4">
+        <Logo size={28} withText variant="sage" />
       </div>
 
-      <nav className="flex-1 p-2 space-y-3 overflow-y-auto scrollbar-thin">
+      <nav className="flex-1 px-3 py-2 space-y-4 overflow-y-auto scrollbar-thin">
         {SECTIONS.map((section) => {
           // Kalau role belum ter-resolve, sembunyikan item dengan hideFor
           // (default pessimistic) supaya tidak ada flicker "muncul lalu hilang".
@@ -94,7 +83,7 @@ export function AdminSidebar({ initialStaff }: AdminSidebarProps = {}) {
           if (items.length === 0) return null
           return (
             <div key={section.label}>
-              <p className="px-3 pt-1 pb-1.5 text-[10px] uppercase tracking-wide text-gray-400">
+              <p className="eyebrow px-3 pt-1 pb-1.5">
                 {section.label}
               </p>
               <div className="space-y-0.5">
@@ -120,14 +109,31 @@ export function AdminSidebar({ initialStaff }: AdminSidebarProps = {}) {
         })}
       </nav>
 
-      <div className="p-2 border-t border-black/[0.08] dark:border-white/[0.06] flex items-center gap-1">
-        <ThemeToggle />
-        <form action="/api/auth/signout" method="post" className="flex-1">
-          <button type="submit" className="nav-item w-full text-left">
-            <LogoutIcon />
-            <span>Keluar</span>
-          </button>
-        </form>
+      <div className="p-3 border-t border-border">
+        <div className="flex items-center gap-2.5 px-1 py-1.5">
+          <div className="size-9 rounded-full bg-accent-soft text-secondary flex items-center justify-center font-semibold text-sm shrink-0">
+            {(staff?.name ?? "?").charAt(0).toUpperCase()}
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="text-card-title text-ink truncate">
+              {!hasResolved ? "Memuat…" : staff?.name ?? "Belum terhubung"}
+            </div>
+            {staff ? (
+              <span className="eyebrow text-secondary">{staff.role}</span>
+            ) : hasResolved ? (
+              <span className="eyebrow text-danger">Bukan staff</span>
+            ) : null}
+          </div>
+          <form action="/api/auth/signout" method="post">
+            <button
+              type="submit"
+              className="text-ink-muted hover:text-danger p-1.5 rounded-lg hover:bg-surface transition-colors"
+              title="Keluar"
+            >
+              <LogoutIcon />
+            </button>
+          </form>
+        </div>
       </div>
     </aside>
   )

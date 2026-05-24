@@ -16,9 +16,9 @@ interface Props {
 }
 
 const TABS: { key: keyof Variants; label: string; color: string }[] = [
-  { key: "formal",  label: "Formal",  color: "bg-blue-50 text-blue-600" },
-  { key: "warm",    label: "Hangat",  color: "bg-teal-50 text-teal-600" },
-  { key: "concise", label: "Singkat", color: "bg-purple-50 text-purple-500" },
+  { key: "formal",  label: "Formal",  color: "bg-info-soft text-tertiary" },
+  { key: "warm",    label: "Hangat",  color: "bg-primary-soft text-primary" },
+  { key: "concise", label: "Singkat", color: "bg-accent-soft text-secondary" },
 ]
 
 type Variants = { formal: string; warm: string; concise: string }
@@ -56,9 +56,9 @@ export function SmartReplyPanel({ patientMessage, clinicId, onUseReply }: Props)
   return (
     <div className="card p-3 space-y-3">
       <div className="flex items-center justify-between">
-        <p className="text-xs font-medium text-gray-700">Smart Reply</p>
+        <p className="text-xs font-medium text-ink">Smart Reply</p>
         {result && (
-          <button onClick={() => { clear(); setEdited("") }} className="text-[10px] text-gray-400 hover:text-gray-600">
+          <button onClick={() => { clear(); setEdited("") }} className="text-[10px] text-ink-dim hover:text-ink">
             Reset
           </button>
         )}
@@ -66,13 +66,13 @@ export function SmartReplyPanel({ patientMessage, clinicId, onUseReply }: Props)
 
       {templates.length > 0 && (
         <div>
-          <p className="text-[10px] text-gray-400 uppercase mb-1">Template cepat</p>
+          <p className="text-[10px] text-ink-dim uppercase mb-1">Template cepat</p>
           <div className="flex flex-wrap gap-1">
             {templates.slice(0, 6).map((t) => (
               <button
                 key={t.id}
                 onClick={() => applyTemplate(t)}
-                className="pill pill-purple text-[10px] hover:bg-purple-100"
+                className="pill pill-purple text-[10px] hover:bg-accent-soft"
                 title={t.content}
               >
                 {t.title}

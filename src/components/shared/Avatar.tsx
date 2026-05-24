@@ -26,15 +26,16 @@ const statusSize: Record<NonNullable<AvatarProps["size"]>, string> = {
 }
 
 // Generate gradient deterministik dari nama → 2 warna brand
+// Warm Sand & Sage-friendly gradients (sage / clay / slate / sand tones)
 const PALETTES: Array<[string, string]> = [
-  ["#1D9E75", "#5DCAA5"],  // teal
-  ["#185FA5", "#7BB5E8"],  // blue
-  ["#534AB7", "#9990F9"],  // purple
-  ["#BA7517", "#E19921"],  // amber
-  ["#993556", "#E781A5"],  // pink
-  ["#0E7490", "#67E8F9"],  // cyan
-  ["#65A30D", "#A3E635"],  // lime
-  ["#7C2D12", "#F97316"],  // orange
+  ["#466147", "#5e7a5e"],  // sage
+  ["#385f73", "#51788d"],  // slate
+  ["#95492b", "#bd6a45"],  // clay
+  ["#C97B2C", "#e0a05a"],  // amber-clay
+  ["#5b6e4f", "#7c906c"],  // olive
+  ["#7a5b3e", "#a07e5a"],  // taupe
+  ["#54707d", "#7794a1"],  // blue-grey
+  ["#8a5a4a", "#b07f6c"],  // terracotta
 ]
 
 function hashName(name: string): number {
@@ -62,7 +63,7 @@ export function Avatar({ name, src, size = "md", status, className, ring }: Avat
         className={cn(
           "rounded-full flex items-center justify-center font-semibold text-white overflow-hidden",
           sizeClass[size],
-          ring && "ring-2 ring-white dark:ring-neutral-900 ring-offset-2 ring-offset-transparent",
+          ring && "ring-2 ring-surface ring-offset-2 ring-offset-transparent",
         )}
         style={!src ? { backgroundImage: `linear-gradient(135deg, ${c1}, ${c2})` } : undefined}
       >
@@ -77,11 +78,11 @@ export function Avatar({ name, src, size = "md", status, className, ring }: Avat
         <span
           aria-label={status}
           className={cn(
-            "absolute bottom-0 right-0 rounded-full ring-2 ring-white dark:ring-neutral-900",
+            "absolute bottom-0 right-0 rounded-full ring-2 ring-surface",
             statusSize[size],
-            status === "online" ? "bg-teal-400" :
-            status === "busy"   ? "bg-amber-500" :
-            "bg-gray-400",
+            status === "online" ? "bg-primary online-dot" :
+            status === "busy"   ? "bg-warning" :
+            "bg-ink-dim",
           )}
         />
       )}

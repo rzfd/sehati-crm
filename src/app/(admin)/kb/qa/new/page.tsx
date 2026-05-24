@@ -1,17 +1,22 @@
-import Link from "next/link"
+import { createClient } from "@/lib/supabase/server"
 import { QAEditor } from "@/components/kb/QAEditor"
 import { AIPreview } from "@/components/kb/AIPreview"
+import { KBQuestionNav } from "@/components/kb/KBQuestionNav"
 
-export default function NewQAPage() {
+export const dynamic = "force-dynamic"
+
+export default async function NewQAPage() {
+  const supabase = await createClient()
+  const { data: list } = await supabase
+    .from("kb_qa_pairs")
+    .select("id, question, status, tags")
+    .order("updated_at", { ascending: false })
+    .limit(50)
+
   return (
-    <div className="p-6 max-w-6xl">
-      <div className="mb-6">
-        <Link href="/kb/qa" className="text-xs text-gray-500 hover:text-purple-500">← Kembali ke Q&amp;A</Link>
-        <h1 className="text-xl font-medium text-gray-700 mt-2">Q&amp;A Baru</h1>
-        <p className="text-sm text-gray-500 mt-1">Buat pasangan pertanyaan-jawaban untuk knowledge base</p>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4">
+    <div className="p-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_320px] gap-4 items-start">
+        <KBQuestionNav items={list ?? []} />
         <QAEditor />
         <AIPreview />
       </div>

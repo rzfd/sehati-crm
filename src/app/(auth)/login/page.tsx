@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Logo } from "@/components/shared/Logo"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -54,20 +55,18 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <div className="w-full max-w-sm">
         {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center size-12 rounded-xl bg-teal-400 mb-3">
-            <span className="text-white text-xl font-bold">S</span>
-          </div>
-          <h1 className="text-xl font-medium text-gray-700">Sehati CRM</h1>
-          <p className="text-sm text-gray-500 mt-1">Masuk ke akun Anda</p>
+        <div className="text-center mb-8 flex flex-col items-center">
+          <Logo size={40} withText variant="sage" className="mb-3" />
+          <h1 className="text-headline-md text-ink">Selamat datang</h1>
+          <p className="text-body-md text-ink-muted mt-1">Masuk untuk melanjutkan ke klinik Anda</p>
         </div>
 
         <form onSubmit={handleSubmit} className="card p-6 space-y-4">
           {error && (
-            <div className="rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-600">
+            <div className="rounded-lg bg-danger-soft border border-danger px-3 py-2 text-sm text-danger">
               {error}
             </div>
           )}
@@ -103,12 +102,12 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <p className="text-center text-xs text-gray-500 mt-3">
+        <p className="text-center text-xs text-ink-muted mt-3">
           <Link href="/forgot-password" className="hover:underline">Lupa password?</Link>
         </p>
-        <p className="text-center text-sm text-gray-500 mt-2">
+        <p className="text-center text-sm text-ink-muted mt-2">
           Belum punya akun?{" "}
-          <Link href="/register" className="text-teal-600 hover:underline font-medium">
+          <Link href="/register" className="text-primary hover:underline font-medium">
             Daftar sebagai pasien
           </Link>
         </p>

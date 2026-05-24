@@ -8,6 +8,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser"
 import { createClient } from "@/lib/supabase/client"
 import { toast } from "@/lib/toast"
 import { cn } from "@/lib/utils"
+import { formatDoctorName } from "@/lib/format"
 import { EmptyBookingIllustration } from "@/components/shared/Illustrations"
 
 interface BookingRow {
@@ -27,13 +28,13 @@ const STATUS_LABEL: Record<BookingRow["status"], string> = {
   cancelled: "Dibatalkan",
 }
 
-// Border-left color per status (sesuai design system)
-const STATUS_BORDER: Record<BookingRow["status"], string> = {
-  pending:   "border-amber-500",
-  confirmed: "border-teal-400",
-  completed: "border-gray-400",
-  no_show:   "border-red-500",
-  cancelled: "border-gray-300",
+// Timeline dot color per status (sesuai design system)
+const STATUS_DOT: Record<BookingRow["status"], string> = {
+  pending:   "bg-warning",
+  confirmed: "bg-primary",
+  completed: "bg-tertiary",
+  no_show:   "bg-danger",
+  cancelled: "bg-ink-dim",
 }
 
 export default function PatientHistoryPage() {
@@ -95,39 +96,39 @@ export default function PatientHistoryPage() {
   const past = bookings.filter((b) => !upcoming.includes(b))
 
   return (
-    <div className="p-4 pt-6 space-y-5">
-      <h1 className="text-lg font-medium text-gray-700">Riwayat</h1>
+    <div className="px-mobile-margin pt-6 pb-6">
+      <h1 className="text-headline-lg text-ink mb-5">Riwayat</h1>
 
       {loading ? (
-        <p className="text-sm text-gray-400">Memuat…</p>
+        <p className="text-body-md text-ink-dim">Memuat…</p>
       ) : bookings.length === 0 ? (
         <div className="card p-8 text-center space-y-3 flex flex-col items-center">
           <EmptyBookingIllustration className="w-44 h-auto" />
           <div>
-            <p className="text-base font-medium text-gray-700 dark:text-gray-100">Belum ada janji</p>
-            <p className="text-xs text-gray-500 mt-1">Buat janji pertama Anda untuk mulai konsultasi.</p>
+            <p className="text-headline-sm text-ink">Belum ada janji</p>
+            <p className="text-body-md text-ink-muted mt-1">Buat janji pertama Anda untuk mulai konsultasi.</p>
           </div>
-          <Link href="/booking" className="btn-primary inline-flex">+ Buat janji</Link>
+          <Link href="/booking" className="btn-sage inline-flex">+ Buat janji</Link>
         </div>
       ) : (
-        <>
+        <div className="space-y-6">
           {upcoming.length > 0 && (
             <section>
-              <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">Mendatang</p>
-              <ul className="space-y-2">
+              <p className="eyebrow mb-3">Mendatang</p>
+              <ol className="relative">
                 {upcoming.map((b) => <BookingItem key={b.id} booking={b} onCancel={cancelBooking} />)}
-              </ul>
+              </ol>
             </section>
           )}
           {past.length > 0 && (
             <section>
-              <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">Riwayat</p>
-              <ul className="space-y-2">
+              <p className="eyebrow mb-3">Riwayat</p>
+              <ol className="relative">
                 {past.map((b) => <BookingItem key={b.id} booking={b} onCancel={cancelBooking} />)}
-              </ul>
+              </ol>
             </section>
           )}
-        </>
+        </div>
       )}
     </div>
   )
@@ -135,42 +136,54 @@ export default function PatientHistoryPage() {
 
 function BookingItem({ booking, onCancel }: { booking: BookingRow; onCancel: (id: string) => void }) {
   const canCancel = booking.status === "pending" || booking.status === "confirmed"
+  const dt = parseISO(booking.booking_date)
   return (
-    <li className={cn("card border-l-4 p-3", STATUS_BORDER[booking.status])}>
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <p className="text-sm font-medium text-gray-700 truncate">
-            {booking.doctor?.title ?? "dr."} {booking.doctor?.name}
-          </p>
-          <p className="text-xs text-gray-500">{booking.doctor?.specialty}</p>
-          <p className="text-xs text-gray-600 mt-1">
-            {format(parseISO(booking.booking_date), "EEEE, d MMM yyyy", { locale: idLocale })}
-            <span className="mx-1.5 text-gray-300">•</span>
-            {booking.booking_time.slice(0, 5)}
-          </p>
-          {booking.notes && (
-            <p className="text-[11px] text-gray-400 mt-1.5 italic">&ldquo;{booking.notes}&rdquo;</p>
-          )}
-          {canCancel && (
-            <button
-              onClick={() => onCancel(booking.id)}
-              className="mt-2 text-[11px] text-red-500 hover:text-red-700"
-            >
-              Batalkan
-            </button>
-          )}
+    <li className="relative flex gap-3 pb-4 last:pb-0">
+      {/* Date rail */}
+      <div className="flex flex-col items-center w-10 shrink-0">
+        <span className="eyebrow text-ink-dim">{format(dt, "MMM", { locale: idLocale }).toUpperCase()}</span>
+        <span className="text-xl font-bold text-ink leading-tight">{format(dt, "d")}</span>
+        <span className={cn("mt-1.5 size-2.5 rounded-full ring-4 ring-background", STATUS_DOT[booking.status])} />
+        <span className="flex-1 w-px bg-border mt-1" />
+      </div>
+      {/* Card */}
+      <div className="card p-3 flex-1 mb-1">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <p className="text-card-title text-ink truncate">
+              {formatDoctorName({ title: booking.doctor?.title ?? "dr.", name: booking.doctor?.name ?? "" })}
+            </p>
+            <p className="text-body-sm text-ink-muted flex items-center gap-1">
+              <span className="material-symbols-rounded text-[14px] text-tertiary">stethoscope</span>
+              {booking.doctor?.specialty}
+            </p>
+          </div>
+          <span className={cn("flex-shrink-0", pillFor(booking.status))}>
+            {STATUS_LABEL[booking.status]}
+          </span>
         </div>
-        <span className={cn("pill flex-shrink-0", pillFor(booking.status))}>
-          {STATUS_LABEL[booking.status]}
-        </span>
+        <p className="text-body-sm text-ink-muted mt-1.5">
+          {booking.booking_time.slice(0, 5)} WIB
+        </p>
+        {booking.notes && (
+          <p className="text-body-sm text-ink-muted mt-2 rounded-lg bg-accent-soft px-3 py-1.5">{booking.notes}</p>
+        )}
+        {canCancel && (
+          <button
+            onClick={() => onCancel(booking.id)}
+            className="mt-2 text-caption text-danger hover:underline"
+          >
+            Batalkan
+          </button>
+        )}
       </div>
     </li>
   )
 }
 
 function pillFor(s: BookingRow["status"]) {
-  if (s === "confirmed") return "pill-teal"
-  if (s === "pending")   return "pill-amber"
-  if (s === "no_show" || s === "cancelled") return "pill-red"
-  return "pill-gray"
+  if (s === "confirmed") return "pill-sukses"
+  if (s === "pending")   return "pill-warning"
+  if (s === "no_show" || s === "cancelled") return "pill-danger"
+  return "pill-info"
 }

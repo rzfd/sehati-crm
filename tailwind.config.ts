@@ -103,6 +103,52 @@ const config: Config = {
           800: "#1A1A18",
           900: "#0D0D0C",
         },
+
+        // ── Sand & Sage semantic tokens (design system) ─────
+        // Surfaces
+        background:    "#FAF6EE", // sand — app background
+        surface:       "#FFFFFF", // cards
+        "surface-alt": "#F2EDE0", // sidebars, inset areas
+        "surface-dim": "#EEE7D5", // patient chat bubble, chips
+        // Primary (Sage)
+        primary: {
+          DEFAULT: "#466147",
+          soft:    "#EAEFE3",
+          dim:     "#D9E1D2",
+        },
+        "on-primary": "#FFFFFF",
+        "on-primary-soft": "#334d34", // readable sage text on primary-soft
+        // Secondary (Clay)
+        secondary: {
+          DEFAULT: "#95492b",
+          soft:    "#F0D9CB",
+        },
+        "accent-soft": "#F0D9CB",
+        // Tertiary (Info / Doctor blue-slate)
+        tertiary: {
+          DEFAULT: "#385f73",
+          soft:    "#D6E1E7",
+        },
+        "info-soft": "#D6E1E7",
+        // Semantic
+        danger: {
+          DEFAULT: "#A8443E",
+          soft:    "#F2D6D3",
+        },
+        warning: {
+          DEFAULT: "#C97B2C",
+          soft:    "#F4E1CC",
+        },
+        // Text / ink
+        ink: {
+          DEFAULT: "#1f1b14", // near-black warm ink (on-surface)
+          muted:   "#6F665A",
+          dim:     "#A39A8B",
+        },
+        "on-surface": "#1f1b14",
+        // Lines
+        border:        "#E8E0CC",
+        "border-soft": "#F0E9D6",
       },
 
       // ── Typography ───────────────────────────────────────
@@ -120,6 +166,16 @@ const config: Config = {
         "2xl":["22px", { lineHeight: "30px" }],
         "3xl":["26px", { lineHeight: "34px" }],
         "4xl":["32px", { lineHeight: "40px" }],
+        // ── Sand & Sage type scale ──
+        "headline-lg": ["28px", { lineHeight: "34px", letterSpacing: "-0.02em", fontWeight: "600" }],
+        "headline-md": ["22px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }],
+        "card-title":  ["14px", { lineHeight: "20px", fontWeight: "600" }],
+        "body-md":     ["13px", { lineHeight: "20px", fontWeight: "500" }],
+        "body-sm":     ["12px", { lineHeight: "18px", fontWeight: "500" }],
+        caption:       ["11px", { lineHeight: "16px", fontWeight: "500" }],
+        eyebrow:       ["10px", { lineHeight: "14px", letterSpacing: "0.05em", fontWeight: "600" }],
+        "code-mono":   ["12px", { lineHeight: "16px", fontWeight: "400" }],
       },
       fontWeight: {
         normal: "400",
@@ -139,13 +195,15 @@ const config: Config = {
       },
 
       // ── Shadows ──────────────────────────────────────────
+      // Warm brown-tinted shadows (Sand & Sage — never pure black)
       boxShadow: {
-        xs:  "0 1px 2px rgba(0,0,0,0.05)",
-        sm:  "0 2px 4px rgba(0,0,0,0.06)",
-        md:  "0 4px 12px rgba(0,0,0,0.08)",
-        lg:  "0 8px 24px rgba(0,0,0,0.10)",
-        xl:  "0 16px 40px rgba(0,0,0,0.12)",
-        card:"0 2px 8px rgba(0,0,0,0.06), 0 0 0 0.5px rgba(0,0,0,0.08)",
+        xs:  "0 1px 2px rgba(45,30,10,0.05)",
+        sm:  "0 1px 2px rgba(45,30,10,0.05)",
+        md:  "0 4px 12px rgba(45,30,10,0.06)",
+        lg:  "0 8px 24px rgba(45,30,10,0.06)",
+        xl:  "0 16px 40px rgba(45,30,10,0.08)",
+        card:"0 1px 2px rgba(45,30,10,0.05)",
+        modal:"0 8px 24px rgba(45,30,10,0.06)",
       },
 
       // ── Spacing extras ───────────────────────────────────
@@ -155,6 +213,10 @@ const config: Config = {
         "15":  "60px",
         "18":  "72px",
         "22":  "88px",
+        "sidebar-width": "224px",
+        "topbar-height": "56px",
+        "desktop-margin": "24px",
+        "mobile-margin": "16px",
       },
 
       // ── Animation ────────────────────────────────────────

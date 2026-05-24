@@ -8,7 +8,7 @@ interface UrgentBannerProps {
 export function UrgentBanner({ reason, evidence, recommendation, onDismiss }: UrgentBannerProps) {
   return (
     <div className="urgent-banner">
-      <div className="flex-shrink-0 size-9 rounded-full bg-white/15 flex items-center justify-center">
+      <div className="flex-shrink-0 size-9 rounded-full bg-surface/15 flex items-center justify-center">
         <span className="text-lg">!</span>
       </div>
       <div className="flex-1 min-w-0">

@@ -55,7 +55,7 @@ export default function StaffInboxPage() {
   }, [activeId])
 
   if (!staff) {
-    return <div className="p-6 text-sm text-gray-500">Memuat sesi staff…</div>
+    return <div className="p-6 text-sm text-ink-muted">Memuat sesi staff…</div>
   }
 
   function refetchConv() {
@@ -71,7 +71,7 @@ export default function StaffInboxPage() {
   // Layout: ChatList (320, scroll mandiri) | ConversationView (flex, scroll mandiri) | DetailsPanel overlay
   // Outer h-full overflow-hidden — page tidak scroll, fit ke parent main (di bawah breadcrumb).
   return (
-    <div className="grid grid-cols-[320px_1fr] h-full max-h-full overflow-hidden relative bg-gray-50 dark:bg-neutral-950">
+    <div className="grid grid-cols-[320px_1fr] h-full max-h-full overflow-hidden relative bg-background dark:bg-surface-alt">
       <div className="min-w-0 min-h-0 h-full overflow-hidden">
         <ChatList />
       </div>
@@ -88,10 +88,10 @@ export default function StaffInboxPage() {
             detailsOpen={showDetails}
           />
         ) : (
-          <div className="flex flex-col items-center justify-center h-full bg-gray-50 dark:bg-neutral-950 text-center p-6">
+          <div className="flex flex-col items-center justify-center h-full bg-background dark:bg-surface-alt text-center p-6">
             <EmptyInboxIllustration className="w-56 h-auto mb-4 opacity-80" />
-            <p className="text-base font-medium text-gray-700 dark:text-gray-200">Mulai percakapan</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-sm">
+            <p className="text-base font-medium text-ink dark:text-ink-dim">Mulai percakapan</p>
+            <p className="text-sm text-ink-muted dark:text-ink-dim mt-1 max-w-sm">
               Pilih chat dari daftar di kiri untuk lihat detail dan balas pasien.
             </p>
           </div>
@@ -108,12 +108,12 @@ export default function StaffInboxPage() {
             <aside className={cn(
               "absolute right-0 top-0 bottom-0 z-20",
               "w-full sm:w-96 lg:w-80",
-              "bg-white dark:bg-neutral-900",
-              "border-l border-black/[0.08] dark:border-white/[0.06]",
+              "bg-surface dark:bg-surface-alt",
+              "border-l border-border dark:border-border",
               "flex flex-col modal-content shadow-xl lg:shadow-none",
             )}>
               {/* Tab header */}
-              <div className="flex items-center justify-between px-3 py-2 border-b border-black/[0.06] dark:border-white/[0.04] flex-shrink-0">
+              <div className="flex items-center justify-between px-3 py-2 border-b border-border dark:border-border flex-shrink-0">
                 <div className="flex gap-1 text-xs">
                   <TabBtn active={detailsTab === "patient"} onClick={() => setDetailsTab("patient")}>Pasien</TabBtn>
                   {lastPatientMsg && <TabBtn active={detailsTab === "triage"}  onClick={() => setDetailsTab("triage")}>Triage</TabBtn>}
@@ -122,7 +122,7 @@ export default function StaffInboxPage() {
                 <button
                   onClick={() => setShowDetails(false)}
                   aria-label="Tutup panel"
-                  className="size-7 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 flex items-center justify-center text-gray-500"
+                  className="size-7 rounded-md hover:bg-surface-alt dark:hover:bg-surface-alt flex items-center justify-center text-ink-muted"
                 >
                   <svg viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                     <path d="M4 4l8 8M12 4L4 12" />
@@ -182,8 +182,8 @@ function TabBtn({ active, onClick, children }: { active: boolean; onClick: () =>
       className={cn(
         "px-2.5 py-1 rounded-md transition-colors",
         active
-          ? "bg-teal-50 dark:bg-teal-500/15 text-teal-600 dark:text-teal-400 font-medium"
-          : "text-gray-500 hover:bg-gray-100 dark:hover:bg-neutral-800",
+          ? "bg-primary-soft dark:bg-primary/15 text-primary dark:text-primary font-medium"
+          : "text-ink-muted hover:bg-surface-alt dark:hover:bg-surface-alt",
       )}
     >
       {children}

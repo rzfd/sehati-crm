@@ -143,27 +143,27 @@ export default function AdminStaffPage() {
     <div className="p-6 max-w-5xl">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h1 className="text-xl font-medium text-gray-700">Staff</h1>
-          <p className="text-sm text-gray-500">Kelola akun &amp; role tim klinik.</p>
+          <h1 className="text-xl font-medium text-ink">Staff</h1>
+          <p className="text-sm text-ink-muted">Kelola akun &amp; role tim klinik.</p>
         </div>
         <button onClick={() => setShowForm(true)} className="btn-purple">+ Tambah staff</button>
       </div>
 
       {error && !showForm && (
-        <p className="text-xs text-red-500 mb-3 bg-red-50 rounded-md px-3 py-2">{error}</p>
+        <p className="text-xs text-danger mb-3 bg-danger-soft rounded-md px-3 py-2">{error}</p>
       )}
 
       {loading ? (
-        <p className="text-sm text-gray-400">Memuat…</p>
+        <p className="text-sm text-ink-dim">Memuat…</p>
       ) : staff.length === 0 ? (
         <div className="card p-8 text-center">
-          <p className="text-sm text-gray-500">Belum ada staff lain.</p>
+          <p className="text-sm text-ink-muted">Belum ada staff lain.</p>
         </div>
       ) : (
         <>
           <div className="card overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-xs text-gray-500">
+              <thead className="bg-background text-xs text-ink-muted">
                 <tr>
                   <th className="text-left px-3 py-2">Nama</th>
                   <th className="text-left px-3 py-2">Role</th>
@@ -173,13 +173,13 @@ export default function AdminStaffPage() {
               </thead>
               <tbody className="divide-y divide-black/[0.04]">
                 {active.map((s) => (
-                  <tr key={s.id} className="hover:bg-gray-50/50">
-                    <td className="px-3 py-2 font-medium text-gray-700">{s.name}</td>
+                  <tr key={s.id} className="hover:bg-background/50">
+                    <td className="px-3 py-2 font-medium text-ink">{s.name}</td>
                     <td className="px-3 py-2">
                       <select
                         value={s.role}
                         onChange={(e) => changeRole(s, e.target.value)}
-                        className="text-xs border border-black/[0.08] rounded-md px-2 py-1 bg-white"
+                        className="text-xs border border-border rounded-md px-2 py-1 bg-surface"
                       >
                         {ROLES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
                       </select>
@@ -189,7 +189,7 @@ export default function AdminStaffPage() {
                         value={s.linked_doctor_id ?? ""}
                         onChange={(e) => changeLinkedDoctor(s, e.target.value)}
                         disabled={s.role !== "doctor_assistant"}
-                        className="text-xs border border-black/[0.08] rounded-md px-2 py-1 bg-white disabled:bg-gray-50 disabled:text-gray-400"
+                        className="text-xs border border-border rounded-md px-2 py-1 bg-surface disabled:bg-background disabled:text-ink-dim"
                       >
                         <option value="">— tidak ada —</option>
                         {doctors.map((d) => (
@@ -198,7 +198,7 @@ export default function AdminStaffPage() {
                       </select>
                     </td>
                     <td className="px-3 py-2 text-right">
-                      <button onClick={() => toggleActive(s)} className="text-[11px] text-gray-400 hover:text-red-500">
+                      <button onClick={() => toggleActive(s)} className="text-[11px] text-ink-dim hover:text-danger">
                         Nonaktifkan
                       </button>
                     </td>
@@ -210,17 +210,17 @@ export default function AdminStaffPage() {
 
           {inactive.length > 0 && (
             <details className="mt-6">
-              <summary className="cursor-pointer text-xs text-gray-400 mb-2 hover:text-gray-600">
+              <summary className="cursor-pointer text-xs text-ink-dim mb-2 hover:text-ink">
                 {inactive.length} staff tidak aktif
               </summary>
               <ul className="space-y-1 mt-2">
                 {inactive.map((s) => (
                   <li key={s.id} className="card p-3 flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-500">{s.name}</p>
-                      <p className="text-xs text-gray-400">{roleLabel(s.role)}</p>
+                      <p className="text-sm text-ink-muted">{s.name}</p>
+                      <p className="text-xs text-ink-dim">{roleLabel(s.role)}</p>
                     </div>
-                    <button onClick={() => toggleActive(s)} className="text-[11px] text-teal-600 hover:text-teal-700">Aktifkan</button>
+                    <button onClick={() => toggleActive(s)} className="text-[11px] text-primary hover:text-primary">Aktifkan</button>
                   </li>
                 ))}
               </ul>
@@ -231,30 +231,30 @@ export default function AdminStaffPage() {
 
       {showForm && (
         <div className="fixed inset-0 bg-black/30 dark:bg-black/60 modal-backdrop z-50 flex items-center justify-center p-4" onClick={resetForm}>
-          <div className="bg-white dark:bg-neutral-900 rounded-xl p-5 modal-content w-full max-w-md space-y-3" onClick={(e) => e.stopPropagation()}>
-            <h2 className="text-base font-medium text-gray-700">Tambah staff baru</h2>
+          <div className="bg-surface dark:bg-surface-alt rounded-xl p-5 modal-content w-full max-w-md space-y-3" onClick={(e) => e.stopPropagation()}>
+            <h2 className="text-base font-medium text-ink">Tambah staff baru</h2>
             <form onSubmit={submit} className="space-y-3">
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Nama lengkap</label>
+                <label className="block text-xs text-ink-muted mb-1">Nama lengkap</label>
                 <input className="input" value={name} onChange={(e) => setName(e.target.value)} required />
               </div>
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Email</label>
+                <label className="block text-xs text-ink-muted mb-1">Email</label>
                 <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
               </div>
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Password awal (min 8)</label>
+                <label className="block text-xs text-ink-muted mb-1">Password awal (min 8)</label>
                 <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
               </div>
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Role</label>
+                <label className="block text-xs text-ink-muted mb-1">Role</label>
                 <select className="input" value={role} onChange={(e) => setRole(e.target.value)}>
                   {ROLES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
                 </select>
               </div>
               {role === "doctor_assistant" && (
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">Dokter yang dibantu</label>
+                  <label className="block text-xs text-ink-muted mb-1">Dokter yang dibantu</label>
                   <select className="input" value={linkedDoctor} onChange={(e) => setLinkedDoctor(e.target.value)} required>
                     <option value="">Pilih dokter…</option>
                     {doctors.map((d) => <option key={d.id} value={d.id}>{d.name} ({d.specialty})</option>)}
@@ -262,7 +262,7 @@ export default function AdminStaffPage() {
                 </div>
               )}
 
-              {error && <p className="text-xs text-red-500 bg-red-50 rounded-md px-2 py-1.5">{error}</p>}
+              {error && <p className="text-xs text-danger bg-danger-soft rounded-md px-2 py-1.5">{error}</p>}
 
               <div className="flex gap-2 pt-2">
                 <button type="button" onClick={resetForm} className="btn-secondary flex-1 justify-center">Batal</button>

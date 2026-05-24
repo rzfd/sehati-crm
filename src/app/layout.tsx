@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor:     "#1D9E75",
+  themeColor:     "#466147",
   width:          "device-width",
   initialScale:   1,
   maximumScale:   1,
@@ -31,7 +31,19 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id" className="h-full antialiased" suppressHydrationWarning>
-      <body className="min-h-full bg-gray-50 text-gray-700 font-sans dark:bg-neutral-950 dark:text-gray-200 transition-colors">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        />
+      </head>
+      <body className="min-h-full bg-background text-ink font-sans">
         <ThemeProvider>
           <ServiceWorkerRegister />
           <Toaster />

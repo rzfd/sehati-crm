@@ -11,11 +11,13 @@ interface ChatBubbleProps {
   pending?:   boolean   // optimistic state
 }
 
-const VARIANT: Record<string, { cls: string; align: "left" | "right"; label?: string }> = {
-  patient: { cls: "bubble-patient", align: "right" },
-  ai_bot:  { cls: "bubble-ai",      align: "left", label: "Asisten AI" },
-  staff:   { cls: "bubble-staff",   align: "left" },
-  asdok:   { cls: "bubble-asdok",   align: "left", label: "Asisten Dokter" },
+// Sand & Sage rule: patient = left-aligned, everyone else (AI / staff / asdok)
+// = right-aligned. Konsisten untuk chat pasien maupun inbox staff.
+const VARIANT: Record<string, { cls: string; align: "left" | "right"; label?: string; ai?: boolean }> = {
+  patient: { cls: "bubble-patient", align: "left" },
+  ai_bot:  { cls: "bubble-ai",      align: "right", label: "Asisten AI", ai: true },
+  staff:   { cls: "bubble-staff",   align: "right" },
+  asdok:   { cls: "bubble-asdok",   align: "right", label: "Asisten Dokter" },
 }
 
 export function ChatBubble({ senderType, content, senderName, timestamp, staffRole, isRead, pending }: ChatBubbleProps) {
@@ -24,38 +26,36 @@ export function ChatBubble({ senderType, content, senderName, timestamp, staffRo
   const isPatient = senderType === "patient"
 
   return (
-    <div className={cn("flex flex-col gap-0.5 group", variant.align === "right" ? "items-end" : "items-start")}>
+    <div className={cn("flex flex-col gap-1 group max-w-[85%]", variant.align === "right" ? "items-end self-end" : "items-start self-start")}>
       {(variant.label || senderName) && (
-        <span className="text-[10px] text-gray-400 dark:text-gray-500 px-1 flex items-center gap-1">
-          {variant.label === "Asisten AI" && (
-            <span className="inline-flex size-1.5 rounded-full bg-teal-400" aria-hidden />
+        <span className={cn(
+          "flex items-center gap-1 px-1",
+          variant.ai
+            ? "eyebrow text-primary"
+            : "text-eyebrow uppercase tracking-[0.05em] font-bold text-tertiary",
+        )}>
+          {variant.ai && (
+            <span className="material-symbols-rounded filled text-[14px]" aria-hidden>auto_awesome</span>
           )}
           {variant.label ?? senderName}
         </span>
       )}
-      <div className={cn(
-        variant.cls,
-        "transition-all shadow-sm",
-        pending && "opacity-60",
-      )}>
+      <div className={cn(variant.cls, "transition-all", pending && "opacity-60")}>
         <p className="whitespace-pre-wrap break-words leading-relaxed">{content}</p>
       </div>
       {timestamp && (
-        <span className="text-[10px] text-gray-400 dark:text-gray-500 px-1 flex items-center gap-1">
+        <span className="text-caption text-ink-dim px-1 flex items-center gap-1">
           {timestamp}
           {isPatient && !pending && (
             <span
-              className={cn(
-                "inline-flex items-center transition-colors",
-                isRead ? "text-teal-500" : "text-gray-400 dark:text-gray-500",
-              )}
+              className={cn("inline-flex items-center transition-colors", isRead ? "text-primary" : "text-ink-dim")}
               aria-label={isRead ? "Dibaca" : "Terkirim"}
             >
               <ReadIcon double={Boolean(isRead)} />
             </span>
           )}
           {pending && (
-            <span className="text-gray-400 dark:text-gray-500" aria-label="Mengirim">
+            <span className="text-ink-dim" aria-label="Mengirim">
               <svg viewBox="0 0 16 16" className="size-3 inline" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="8" cy="8" r="6" />
                 <path d="M8 4v4l3 1.5" strokeLinecap="round" />

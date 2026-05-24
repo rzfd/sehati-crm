@@ -20,7 +20,7 @@ export function SkeletonCard({ className }: SkeletonProps) {
 
 export function SkeletonListItem() {
   return (
-    <div className="px-3 py-3 border-b border-black/[0.04] dark:border-white/[0.04] space-y-2">
+    <div className="px-3 py-3 border-b border-border dark:border-border space-y-2">
       <div className="flex items-center justify-between">
         <Skeleton className="h-4 w-1/2" />
         <Skeleton className="h-3 w-8" />

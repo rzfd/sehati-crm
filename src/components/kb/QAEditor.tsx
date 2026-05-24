@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { cn } from "@/lib/utils"
 import type { KBQAPair } from "@/types/database"
 
 type Status = "draft" | "published" | "archived"
@@ -81,16 +82,36 @@ export function QAEditor({ initial }: QAEditorProps) {
     }
   }
 
+  const STATUSES: { value: Status; label: string }[] = [
+    { value: "published", label: "Published" },
+    { value: "draft",     label: "Draft" },
+    { value: "archived",  label: "Archived" },
+  ]
+  const tagList = tags.split(",").map((t) => t.trim()).filter(Boolean)
+
   return (
-    <div className="card p-5 space-y-4">
+    <div className="card p-5 space-y-5">
+      <div className="flex items-center justify-between border-b border-border-soft pb-4">
+        <div>
+          <p className="eyebrow">{isEdit ? "Edit Knowledge" : "Knowledge Baru"}</p>
+          {isEdit && <p className="font-mono text-code-mono text-ink-dim mt-0.5">ID: {initial!.id.slice(0, 12).toUpperCase()}</p>}
+        </div>
+        <div className="flex gap-2">
+          <Button variant="secondary" size="sm" onClick={() => router.push("/kb/qa")} disabled={loading}>Batalkan</Button>
+          <Button variant="primary" size="sm" loading={loading} onClick={handleSave}>
+            {isEdit ? "Simpan Perubahan" : "Buat Q&A"}
+          </Button>
+        </div>
+      </div>
+
       {error && (
-        <div className="rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-600">
+        <div className="rounded-lg bg-danger-soft border border-danger/30 px-3 py-2 text-body-sm text-danger">
           {error}
         </div>
       )}
 
       <div>
-        <Label htmlFor="question" required>Pertanyaan</Label>
+        <Label htmlFor="question" required>Pertanyaan Utama</Label>
         <Input
           id="question"
           placeholder="Contoh: Jam buka klinik kapan?"
@@ -98,10 +119,11 @@ export function QAEditor({ initial }: QAEditorProps) {
           onChange={(e) => setQuestion(e.target.value)}
           required
         />
+        <p className="text-body-sm text-ink-dim mt-1">Gunakan bahasa yang sering ditanyakan pasien untuk akurasi retrieval lebih baik.</p>
       </div>
 
       <div>
-        <Label htmlFor="answer" required>Jawaban</Label>
+        <Label htmlFor="answer" required>Jawaban Database</Label>
         <Textarea
           id="answer"
           rows={6}
@@ -113,46 +135,46 @@ export function QAEditor({ initial }: QAEditorProps) {
       </div>
 
       <div>
-        <Label htmlFor="tags">Tag (pisah dengan koma)</Label>
+        <Label>Status Publikasi</Label>
+        <div className="flex gap-2">
+          {STATUSES.map((s) => (
+            <button
+              key={s.value}
+              type="button"
+              onClick={() => setStatus(s.value)}
+              className={cn(
+                "flex-1 rounded-lg border px-3 py-2 text-body-sm font-medium transition-colors",
+                status === s.value ? "border-primary bg-primary-soft text-primary" : "border-border text-ink-muted hover:border-primary/40",
+              )}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="tags">Kategori &amp; Tags</Label>
+        {tagList.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-2">
+            {tagList.map((t) => <span key={t} className="pill-info">{t}</span>)}
+          </div>
+        )}
         <Input
           id="tags"
-          placeholder="contoh: jam-buka, info"
+          placeholder="Pisah dengan koma — mis: jam-buka, info"
           value={tags}
           onChange={(e) => setTags(e.target.value)}
         />
       </div>
 
-      <div>
-        <Label htmlFor="status">Status</Label>
-        <select
-          id="status"
-          className="input"
-          value={status}
-          onChange={(e) => setStatus(e.target.value as Status)}
-        >
-          <option value="draft">Draft (belum aktif)</option>
-          <option value="published">Published (aktif dipakai AI)</option>
-          <option value="archived">Arsip (tidak dipakai)</option>
-        </select>
-      </div>
-
-      <div className="flex items-center justify-between pt-2">
-        <div>
-          {isEdit && (
-            <Button variant="danger" size="sm" onClick={handleDelete} disabled={loading}>
-              Hapus
-            </Button>
-          )}
-        </div>
-        <div className="flex gap-2">
-          <Button variant="secondary" onClick={() => router.push("/kb/qa")} disabled={loading}>
-            Batal
-          </Button>
-          <Button variant="purple" loading={loading} onClick={handleSave}>
-            {isEdit ? "Simpan Perubahan" : "Buat Q&A"}
+      {isEdit && (
+        <div className="pt-2 border-t border-border-soft">
+          <Button variant="danger" size="sm" onClick={handleDelete} disabled={loading}>
+            <span className="material-symbols-rounded text-[16px]">delete</span> Hapus Q&amp;A
           </Button>
         </div>
-      </div>
+      )}
     </div>
   )
 }

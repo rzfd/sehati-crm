@@ -14,12 +14,12 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           rows={rows}
           className={cn(
             "input resize-y min-h-[80px]",
-            error && "border-red-400 focus:ring-red-400/30 focus:border-red-400",
+            error && "border-danger focus:ring-danger/30 focus:border-danger",
             className
           )}
           {...props}
         />
-        {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+        {error && <p className="mt-1 text-xs text-danger">{error}</p>}
       </div>
     )
   }

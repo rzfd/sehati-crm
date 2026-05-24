@@ -4,13 +4,29 @@ interface LogoProps {
   size?:      number
   withText?:  boolean
   className?: string
-  variant?:   "default" | "purple" | "white"
+  variant?:   "default" | "purple" | "blue" | "white" | "sage"
 }
 
 // Brand logo Sehati — heart + plus medical glyph.
+//
+// Style guide (sprint 8 — Logo consistency):
+//   AdminSidebar  → size 28, withText, variant "purple"
+//   StaffSidebar  → size 28, withText, variant "blue"
+//   Patient pages → size 24 (default teal), withText optional
+//   Auth pages    → size 40, withText, default teal
 export function Logo({ size = 28, withText = false, className, variant = "default" }: LogoProps) {
-  const color1 = variant === "purple" ? "#534AB7" : variant === "white" ? "#FFFFFF" : "#1D9E75"
-  const color2 = variant === "purple" ? "#9990F9" : variant === "white" ? "#FFFFFF" : "#5DCAA5"
+  const color1 =
+    variant === "purple" ? "#95492b"
+    : variant === "blue"   ? "#385f73"
+    : variant === "white"  ? "#FFFFFF"
+    : variant === "sage"   ? "#466147"
+    : "#466147"
+  const color2 =
+    variant === "purple" ? "#C97B2C"
+    : variant === "blue"   ? "#51788d"
+    : variant === "white"  ? "#FFFFFF"
+    : variant === "sage"   ? "#5e7a5e"
+    : "#5e7a5e"
 
   return (
     <span className={cn("inline-flex items-center gap-2", className)}>
@@ -37,8 +53,8 @@ export function Logo({ size = 28, withText = false, className, variant = "defaul
         />
       </svg>
       {withText && (
-        <span className="text-base font-bold tracking-tight text-gray-800 dark:text-gray-100">
-          Sehati
+        <span className="text-base font-bold tracking-tight text-ink">
+          Sehati <span className="font-semibold text-ink-muted">CRM</span>
         </span>
       )}
     </span>

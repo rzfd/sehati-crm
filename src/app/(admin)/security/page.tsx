@@ -88,31 +88,31 @@ export default function SecurityPage() {
   return (
     <div className="p-6 max-w-2xl space-y-5">
       <div>
-        <h1 className="text-xl font-medium text-gray-700">Keamanan akun</h1>
-        <p className="text-sm text-gray-500">Aktifkan 2FA (TOTP) dengan Google Authenticator / Authy / 1Password.</p>
+        <h1 className="text-xl font-medium text-ink">Keamanan akun</h1>
+        <p className="text-sm text-ink-muted">Aktifkan 2FA (TOTP) dengan Google Authenticator / Authy / 1Password.</p>
       </div>
 
-      {error && <p className="text-xs text-red-500 bg-red-50 rounded-md px-3 py-2">{error}</p>}
+      {error && <p className="text-xs text-danger bg-danger-soft rounded-md px-3 py-2">{error}</p>}
 
       {loading ? (
-        <p className="text-sm text-gray-400">Memuat…</p>
+        <p className="text-sm text-ink-dim">Memuat…</p>
       ) : factors.length > 0 ? (
         <div className="card p-4 space-y-2">
-          <p className="text-xs text-gray-400 uppercase tracking-wide">Factor aktif</p>
+          <p className="text-xs text-ink-dim uppercase tracking-wide">Factor aktif</p>
           {factors.map((f) => (
             <div key={f.id} className="flex items-center justify-between gap-2 text-sm">
               <div>
-                <p className="font-medium text-gray-700">{f.friendly_name || f.factor_type}</p>
-                <p className="text-[10px] text-gray-400">{f.factor_type} · {f.status}</p>
+                <p className="font-medium text-ink">{f.friendly_name || f.factor_type}</p>
+                <p className="text-[10px] text-ink-dim">{f.factor_type} · {f.status}</p>
               </div>
-              <button onClick={() => unenroll(f.id)} className="text-xs text-red-500 hover:text-red-700">
+              <button onClick={() => unenroll(f.id)} className="text-xs text-danger hover:text-danger">
                 Hapus
               </button>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-sm text-amber-700 bg-amber-50 rounded-md px-3 py-2">
+        <p className="text-sm text-warning bg-warning-soft rounded-md px-3 py-2">
           ⚠ Akun belum dilindungi 2FA. Aktifkan sekarang untuk keamanan tambahan.
         </p>
       )}
@@ -120,7 +120,7 @@ export default function SecurityPage() {
       {/* Enrollment */}
       {!enrollData ? (
         <div className="card p-4 space-y-3">
-          <p className="text-sm font-medium text-gray-700">Aktifkan authenticator baru</p>
+          <p className="text-sm font-medium text-ink">Aktifkan authenticator baru</p>
           <input
             value={friendlyName}
             onChange={(e) => setFriendlyName(e.target.value)}
@@ -133,12 +133,12 @@ export default function SecurityPage() {
         </div>
       ) : (
         <div className="card p-4 space-y-3">
-          <p className="text-sm font-medium text-gray-700">Scan QR di authenticator app</p>
+          <p className="text-sm font-medium text-ink">Scan QR di authenticator app</p>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={enrollData.qr} alt="MFA QR" className="size-48 mx-auto bg-white p-2 rounded-md" />
-          <p className="text-[10px] text-gray-500 text-center font-mono break-all">{enrollData.secret}</p>
+          <img src={enrollData.qr} alt="MFA QR" className="size-48 mx-auto bg-surface p-2 rounded-md" />
+          <p className="text-[10px] text-ink-muted text-center font-mono break-all">{enrollData.secret}</p>
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Kode 6 digit dari authenticator</label>
+            <label className="block text-xs text-ink-muted mb-1">Kode 6 digit dari authenticator</label>
             <input
               value={verifyCode}
               onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, ""))}

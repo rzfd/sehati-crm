@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation"
 import { AdminSidebar } from "@/components/layout/AdminSidebar"
 import { StaffSidebar } from "@/components/layout/StaffSidebar"
 import { Breadcrumb } from "@/components/layout/Breadcrumb"
@@ -8,6 +9,8 @@ import type { StaffRole } from "@/lib/constants"
 // muncul dari first paint, tanpa flicker.
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const initialStaff = await resolveStaff()
+  // Asdok tidak boleh akses Dashboard — operasional cuma Inbox + Kalender.
+  if (initialStaff?.role === "doctor_assistant") redirect("/inbox")
   const isAdmin = initialStaff?.role === "admin"
 
   return (

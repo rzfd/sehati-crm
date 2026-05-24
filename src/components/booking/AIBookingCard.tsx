@@ -53,19 +53,21 @@ export function AIBookingCard({ suggestion, conversationId, onConfirmed, onRejec
   }
 
   return (
-    <div className="card p-3 border-l-4 border-l-amber-500 space-y-2">
+    <div className="card p-3 border-l-4 border-l-primary space-y-2">
       <div className="flex items-center gap-2">
-        <span className="pill pill-amber">AI booking</span>
-        <span className="text-[10px] text-gray-400">Saran dari AI</span>
+        <span className="pill-sukses flex items-center gap-1">
+          <span className="material-symbols-rounded filled text-[12px]">auto_awesome</span> AI booking
+        </span>
+        <span className="text-caption text-ink-dim">Saran dari AI</span>
       </div>
       <div className="text-sm">
-        <p className="font-medium text-gray-700">dr. {suggestion.doctor_name}</p>
-        <p className="text-xs text-gray-500">{suggestion.specialty}</p>
-        <p className="text-xs text-gray-600 mt-1">
+        <p className="font-medium text-ink">dr. {suggestion.doctor_name}</p>
+        <p className="text-xs text-ink-muted">{suggestion.specialty}</p>
+        <p className="text-xs text-ink mt-1">
           {format(parseISO(suggestion.date), "EEEE, d MMM yyyy", { locale: idLocale })} • {suggestion.time.slice(0, 5)}
         </p>
       </div>
-      {error && <p className="text-xs text-red-500 bg-red-50 rounded-md px-2 py-1">{error}</p>}
+      {error && <p className="text-xs text-danger bg-danger-soft rounded-md px-2 py-1">{error}</p>}
       <div className="flex gap-1.5">
         <button onClick={confirm} disabled={busy} className="btn-primary text-xs flex-1 justify-center">
           {busy ? "..." : "Konfirmasi"}

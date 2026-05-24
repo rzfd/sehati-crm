@@ -40,8 +40,11 @@ export function AIPreview() {
   return (
     <div className="card p-4 sticky top-6">
       <div className="mb-3">
-        <h3 className="text-sm font-medium text-gray-700">AI Preview</h3>
-        <p className="text-xs text-gray-400 mt-0.5">Coba simulasi: apakah Q&A ini di-retrieve?</p>
+        <h3 className="text-card-title text-ink flex items-center gap-1.5">
+          <span className="material-symbols-rounded filled text-[18px] text-primary">auto_awesome</span>
+          AI Preview
+        </h3>
+        <p className="text-body-sm text-ink-dim mt-0.5">Coba simulasi: apakah Q&amp;A ini di-retrieve?</p>
       </div>
 
       <div className="space-y-2 mb-3">
@@ -52,9 +55,9 @@ export function AIPreview() {
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         />
         <Button
-          variant="purple"
+          variant="sage"
           size="sm"
-          className="w-full justify-center"
+          className="w-full"
           loading={loading}
           onClick={handleSearch}
           disabled={!query.trim()}
@@ -64,22 +67,22 @@ export function AIPreview() {
       </div>
 
       {error && (
-        <div className="rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-xs text-red-600">{error}</div>
+        <div className="rounded-lg bg-danger-soft border border-danger px-3 py-2 text-xs text-danger">{error}</div>
       )}
 
       {matches !== null && !error && (
         <div className="space-y-2 mt-2">
           {matches.length === 0 ? (
-            <p className="text-xs text-gray-500">Tidak ada match di KB. Pertimbangkan menambahkan Q&A baru.</p>
+            <p className="text-xs text-ink-muted">Tidak ada match di KB. Pertimbangkan menambahkan Q&A baru.</p>
           ) : (
             matches.map((m, i) => (
-              <div key={m.id} className="rounded-lg border border-black/[0.06] bg-gray-50 p-2.5">
+              <div key={m.id} className="rounded-lg border border-border bg-background p-2.5">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-medium text-gray-700">#{i + 1}</span>
+                  <span className="text-xs font-medium text-ink">#{i + 1}</span>
                   <span className="pill pill-purple text-[10px]">{Math.round(m.similarity * 100)}%</span>
                 </div>
-                <p className="text-xs text-gray-600 line-clamp-3 whitespace-pre-line">{m.content}</p>
-                <span className="text-[10px] text-gray-400 mt-1 inline-block">{m.source_type === "qa_pair" ? "Q&A" : "Dokumen"}</span>
+                <p className="text-xs text-ink line-clamp-3 whitespace-pre-line">{m.content}</p>
+                <span className="text-[10px] text-ink-dim mt-1 inline-block">{m.source_type === "qa_pair" ? "Q&A" : "Dokumen"}</span>
               </div>
             ))
           )}
