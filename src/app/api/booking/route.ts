@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
+import type { Database } from "@/types/database"
+
+type BookingInsert = Database["public"]["Tables"]["bookings"]["Insert"]
 
 export async function GET(req: Request) {
   try {
@@ -72,22 +75,27 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Slot sudah terisi. Pilih waktu lain." }, { status: 409 })
     }
 
+    const insertPayload: BookingInsert = {
+      clinic_id:       patient.clinic_id,
+      patient_id:      patient.id,
+      doctor_id,
+      booking_date,
+      booking_time,
+      notes:           notes || null,
+      conversation_id: conversation_id || null,
+      status:          "pending",
+    }
+    // Payment/insurance fields hanya diset kalau client kirim — kolom ini ditambah
+    // di migration 010, jadi insert tetap aman walau schema lama belum punya
+    // selama field opsional ini di-omit.
+    if (payment_method)     insertPayload.payment_method     = payment_method
+    if (payment_status)     insertPayload.payment_status     = payment_status
+    if (insurance_provider) insertPayload.insurance_provider = insurance_provider
+    if (insurance_number)   insertPayload.insurance_number   = insurance_number
+
     const { data, error } = await supabase
       .from("bookings")
-      .insert({
-        clinic_id:          patient.clinic_id,
-        patient_id:         patient.id,
-        doctor_id,
-        booking_date,
-        booking_time,
-        notes:              notes || null,
-        conversation_id:    conversation_id || null,
-        status:             "pending",
-        payment_method:     payment_method || null,
-        payment_status:     payment_status || "unpaid",
-        insurance_provider: insurance_provider || null,
-        insurance_number:   insurance_number || null,
-      })
+      .insert(insertPayload)
       .select()
       .single()
 

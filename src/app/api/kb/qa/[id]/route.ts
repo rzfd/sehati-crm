@@ -68,7 +68,7 @@ export async function PATCH(
     if (status)              update.status = status as typeof update.status
 
     if (contentChanged) {
-      update.embedding = await embedText(`Q: ${update.question}\nA: ${update.answer}`)
+      update.embedding = await embedText(`Q: ${update.question}\nA: ${update.answer}`, "document")
     }
 
     const { data, error } = await supabase

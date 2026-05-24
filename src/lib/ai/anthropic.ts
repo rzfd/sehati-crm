@@ -6,7 +6,12 @@ import { AI_CONFIG } from "@/lib/constants"
 let _client: Anthropic | null = null
 export function getAnthropic(): Anthropic {
   if (!_client) {
-    _client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+    // SDK menangani retry/backoff otomatis (429/5xx/network) + timeout per request.
+    _client = new Anthropic({
+      apiKey:     process.env.ANTHROPIC_API_KEY,
+      maxRetries: 3,
+      timeout:    30_000, // 30s — triage (Sonnet) bisa ~5s p95, beri ruang
+    })
   }
   return _client
 }

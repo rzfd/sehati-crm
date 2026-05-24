@@ -5,6 +5,29 @@ import { runChatPipeline } from "@/lib/ai/pipeline"
 import { SENDER_TYPE } from "@/lib/constants"
 import { checkRateLimit, rateLimitKey } from "@/lib/rate-limit"
 
+// Insert pesan acknowledgment dari "Asisten AI" (bubble yang persist + realtime).
+// Dipakai saat pipeline escalate/booking_request agar pasien dapat feedback.
+async function insertAck(
+  service: ReturnType<typeof createServiceClient>,
+  conversationId: string,
+  content: string,
+  metadata: Record<string, unknown>,
+) {
+  const { data, error } = await service
+    .from("messages")
+    .insert({
+      conversation_id: conversationId,
+      sender_type:     SENDER_TYPE.AI_BOT,
+      sender_id:       null,
+      content,
+      metadata:        JSON.parse(JSON.stringify({ ...metadata, decided_at: new Date().toISOString() })),
+    })
+    .select()
+    .single()
+  if (error) console.error("[api/chat] ack insert:", error)
+  return data
+}
+
 // /api/chat — patient mengirim pesan + jalankan AI pipeline.
 //
 // Authentikasi pakai user cookie (verifikasi siapa yang send).
@@ -19,7 +42,7 @@ export async function POST(req: Request) {
     if (!user) return NextResponse.json({ error: "Belum login." }, { status: 401 })
 
     // Rate limit: 20 req/menit per user (refill ~0.33/s = 20/min)
-    const rl = checkRateLimit(rateLimitKey(req, user.id, "chat"), { capacity: 20, refillRate: 0.33 })
+    const rl = await checkRateLimit(rateLimitKey(req, user.id, "chat"), { capacity: 20, refillRate: 0.33 })
     if (!rl.ok) {
       return NextResponse.json(
         { error: `Terlalu banyak request. Coba lagi ${rl.retryAfter}s.` },
@@ -127,6 +150,18 @@ export async function POST(req: Request) {
       }
       if (pipeline.recommendedDoctorId) update.routed_to_doctor = pipeline.recommendedDoctorId
       await service.from("conversations").update(update).eq("id", conversationId)
+
+      // UX: kirim acknowledgment yang PERSIST (lewat realtime + tetap ada saat
+      // refresh) supaya pasien tahu pesannya diterima walau AI belum bisa jawab.
+      // Konten murni prosedural — tidak ada saran medis (aturan safety).
+      const isUrgent = (pipeline.triage?.urgency_level ?? 1) >= 3 || pipeline.gatekeeper.category === "urgent"
+      aiMessage = await insertAck(
+        service, conversationId,
+        isUrgent
+          ? "Pesan Anda ditandai prioritas dan telah diteruskan ke tim medis kami. Mohon tunggu, staf akan segera menghubungi Anda. Jika ini keadaan darurat, segera ke IGD terdekat atau hubungi 119."
+          : "Terima kasih. Pertanyaan Anda sudah diteruskan ke staf klinik dan akan segera dibalas oleh tim kami.",
+        { ack: true, escalated: true, urgent: isUrgent, category: pipeline.gatekeeper.category },
+      )
     } else if (pipeline.action === "booking_request") {
       const update: Record<string, unknown> = {
         category:        "booking",
@@ -134,6 +169,12 @@ export async function POST(req: Request) {
       }
       if (pipeline.recommendedDoctorId) update.routed_to_doctor = pipeline.recommendedDoctorId
       await service.from("conversations").update(update).eq("id", conversationId)
+
+      aiMessage = await insertAck(
+        service, conversationId,
+        "Permintaan booking Anda sudah dicatat. Staf klinik akan mengonfirmasi jadwal yang tersedia secepatnya.",
+        { ack: true, booking: true },
+      )
     }
 
     return NextResponse.json({

@@ -2,19 +2,26 @@
 // ── Sehati CRM — Centralized constants ───────────────────
 
 // ── Safety ───────────────────────────────────────────────
+// Hard blocklist (substring, lowercase) → bypass AI langsung ke staff prioritas.
+// Lebih baik over-escalate (false positive ke staff) daripada melewatkan darurat.
+// Triage (Sonnet) tetap jaring untuk parafrase di luar daftar ini.
 export const URGENT_KEYWORDS = [
-  "tidak bisa nafas",
-  "sesak parah",
-  "dada sakit",
-  "stroke",
-  "kejang",
-  "darah banyak",
-  "pingsan",
-  "ingin mengakhiri hidup",
-  "bunuh diri",
-  "tidak sadar",
-  "muntah darah",
-  "pendarahan hebat",
+  // Pernapasan
+  "tidak bisa nafas", "tidak bisa napas", "tidak bisa bernafas", "tidak bisa bernapas",
+  "susah nafas", "susah napas", "sulit bernafas", "sulit bernapas",
+  "sesak parah", "sesak nafas", "sesak napas", "sesak berat",
+  // Dada / jantung
+  "dada sakit", "sakit dada", "nyeri dada", "dada terasa sakit", "dada sesak", "serangan jantung",
+  // Neurologis
+  "stroke", "kejang", "kejang-kejang", "lumpuh", "bicara pelo", "wajah perot", "mati rasa sebelah",
+  // Penurunan kesadaran
+  "pingsan", "mau pingsan", "tidak sadar", "tidak sadarkan diri", "hilang kesadaran",
+  // Perdarahan
+  "darah banyak", "muntah darah", "pendarahan hebat", "perdarahan hebat", "darah terus keluar",
+  // Self-harm
+  "ingin mengakhiri hidup", "mengakhiri hidup", "bunuh diri", "menyakiti diri sendiri",
+  // Lain-lain akut
+  "overdosis", "keracunan", "tersedak", "alergi parah", "anafilaksis", "luka bakar parah",
 ] as const;
 
 // ── Colors (sync dengan tailwind.config.ts) ───────────────
@@ -74,7 +81,11 @@ export const AI_CONFIG = {
   SONNET: "claude-sonnet-4-6",
 
   // Thresholds
-  KB_SIMILARITY_THRESHOLD:  0.70,  // Minimum similarity untuk KB match
+  // voyage-3-lite + input_type (document/query): similarity absolut rendah TAPI
+  // separasi bersih — query relevan ~0.39–0.61, tak-relevan ~0.23. 0.40 ada di
+  // celah itu: tangkap match relevan (termasuk slang/terse) & buang yang ngawur.
+  // (Sebelum pakai input_type harus ~0.50; lihat memory kb_retrieval_threshold.)
+  KB_SIMILARITY_THRESHOLD:  0.40,  // Minimum similarity untuk KB match
   CONFIDENCE_THRESHOLD:     0.75,  // Minimum confidence untuk auto-reply
   KB_TOP_K:                 3,     // Jumlah chunks yang di-retrieve
 

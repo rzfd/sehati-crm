@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     }
 
     const content   = `Q: ${question}\nA: ${answer}`
-    const embedding = await embedText(content)
+    const embedding = await embedText(content, "document")
 
     const { data, error } = await supabase
       .from("kb_qa_pairs")

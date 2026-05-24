@@ -13,7 +13,7 @@ export async function retrieveFromKB(
   supabase?: SupabaseClient<Database>,
 ): Promise<KBMatch[]> {
   const sb = supabase ?? (await createServerClient())
-  const embedding = await embedText(query)
+  const embedding = await embedText(query, "query")
 
   const { data, error } = await sb.rpc("match_kb", {
     query_embedding:  embedding,

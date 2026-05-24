@@ -103,7 +103,7 @@ export async function POST(req: Request) {
       const embeddings: number[][] = []
       for (let i = 0; i < chunks.length; i += BATCH_SIZE) {
         const batch = chunks.slice(i, i + BATCH_SIZE)
-        const vecs  = await embedBatch(batch)
+        const vecs  = await embedBatch(batch, "document")
         embeddings.push(...vecs)
       }
 

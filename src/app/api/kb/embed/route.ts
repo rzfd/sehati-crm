@@ -6,14 +6,16 @@ import { embedText, embedBatch } from "@/lib/voyage"
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { text, texts } = body
+    const { text, texts, inputType } = body
+    // Default "document" — endpoint ini dipakai untuk meng-embed konten KB yang disimpan.
+    const it = inputType === "query" ? "query" : "document"
 
     if (Array.isArray(texts)) {
-      const vectors = await embedBatch(texts)
+      const vectors = await embedBatch(texts, it)
       return NextResponse.json({ vectors })
     }
     if (typeof text === "string") {
-      const vector = await embedText(text)
+      const vector = await embedText(text, it)
       return NextResponse.json({ vector })
     }
     return NextResponse.json({ error: "Provide either 'text' or 'texts'." }, { status: 400 })

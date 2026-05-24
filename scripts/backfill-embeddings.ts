@@ -59,7 +59,7 @@ async function backfillQA() {
     const texts = slice.map((r) => `Q: ${r.question}\nA: ${r.answer}`)
 
     try {
-      const vectors = await embedBatch(texts)
+      const vectors = await embedBatch(texts, "document")
       for (let j = 0; j < slice.length; j++) {
         const { error: upErr } = await supabase
           .from("kb_qa_pairs")
@@ -77,7 +77,7 @@ async function backfillQA() {
       // Fallback: per-item dengan delay
       for (const row of slice) {
         try {
-          const v = await embedText(`Q: ${row.question}\nA: ${row.answer}`)
+          const v = await embedText(`Q: ${row.question}\nA: ${row.answer}`, "document")
           await supabase.from("kb_qa_pairs").update({ embedding: v as unknown as number[] }).eq("id", row.id)
           ok++
           process.stdout.write(`.`)
@@ -114,7 +114,7 @@ async function backfillChunks() {
   for (let i = 0; i < data.length; i += BATCH_SIZE) {
     const slice = data.slice(i, i + BATCH_SIZE)
     try {
-      const vectors = await embedBatch(slice.map((r) => r.content))
+      const vectors = await embedBatch(slice.map((r) => r.content), "document")
       for (let j = 0; j < slice.length; j++) {
         const { error: upErr } = await supabase
           .from("kb_document_chunks")
