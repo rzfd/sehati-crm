@@ -7,11 +7,18 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "migrate": "tsx supabase/migrate.ts",
     "seed": "tsx supabase/seed.ts",
     "setup-admin": "tsx supabase/setup-admin.ts",
     "test:pipeline": "tsx scripts/test-pipeline.ts",
     "backfill:embeddings": "tsx scripts/backfill-embeddings.ts",
+    "seed:kb": "tsx scripts/seed-kb.ts",
+    "reembed:kb": "tsx scripts/reembed-kb.ts",
+    "bench:ai": "tsx scripts/bench/ai-accuracy.ts",
+    "bench:api": "tsx scripts/bench/api-load.ts",
+    "bench:web": "tsx scripts/bench/web-vitals.ts",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:report": "playwright show-report"
@@ -48,6 +55,7 @@
     "pg": "^8.20.0",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^2.1.9"
   }
 }
