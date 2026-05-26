@@ -8,6 +8,7 @@ import { ConversationView } from "@/components/inbox/ConversationView"
 import { PatientDetail } from "@/components/inbox/PatientDetail"
 import { TriagePanel } from "@/components/inbox/TriagePanel"
 import { SmartReplyPanel } from "@/components/chat/SmartReplyPanel"
+import { ChatSummaryPanel } from "@/components/inbox/ChatSummaryPanel"
 import { EmptyInboxIllustration } from "@/components/shared/Illustrations"
 import { createClient } from "@/lib/supabase/client"
 import { cn } from "@/lib/utils"
@@ -19,7 +20,7 @@ export default function StaffInboxPage() {
   const [conv, setConv] = useState<Conversation | null>(null)
   const [lastPatientMsg, setLastPatientMsg] = useState<Message | null>(null)
   const [showDetails, setShowDetails] = useState(false)
-  const [detailsTab, setDetailsTab] = useState<"patient" | "triage" | "reply">("patient")
+  const [detailsTab, setDetailsTab] = useState<"patient" | "triage" | "reply" | "summary">("patient")
 
   useEffect(() => {
     if (!activeId) {
@@ -118,6 +119,7 @@ export default function StaffInboxPage() {
                   <TabBtn active={detailsTab === "patient"} onClick={() => setDetailsTab("patient")}>Pasien</TabBtn>
                   {lastPatientMsg && <TabBtn active={detailsTab === "triage"}  onClick={() => setDetailsTab("triage")}>Triage</TabBtn>}
                   {lastPatientMsg && <TabBtn active={detailsTab === "reply"}   onClick={() => setDetailsTab("reply")}>AI Reply</TabBtn>}
+                  <TabBtn active={detailsTab === "summary"} onClick={() => setDetailsTab("summary")}>Ringkasan</TabBtn>
                 </div>
                 <button
                   onClick={() => setShowDetails(false)}
@@ -159,6 +161,9 @@ export default function StaffInboxPage() {
                       }}
                     />
                   </div>
+                )}
+                {detailsTab === "summary" && (
+                  <ChatSummaryPanel conversationId={conv.id} />
                 )}
               </div>
             </aside>

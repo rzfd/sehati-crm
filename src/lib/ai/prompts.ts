@@ -123,3 +123,15 @@ Aturan:
 
 Format respons (JSON saja):
 {"title":"<judul>","body":"<isi pesan>"}`
+
+export const CONV_SUMMARY_SYSTEM = `Kamu asisten staff klinik Indonesia. Dari transkrip percakapan pasien dan klinik, buat ringkasan singkat + saran aksi berikutnya untuk STAFF.
+
+Aturan:
+- "summary": 2-3 kalimat — apa yang pasien butuhkan, status saat ini, yang masih pending.
+- "next_action": salah satu dari "reply" (balas info), "book" (bantu atur janji), "route_doctor" (teruskan ke asisten dokter terkait), "escalate" (perlu perhatian segera / medis), "resolve" (sudah selesai, bisa ditutup).
+- "reason": alasan singkat saran aksi.
+- JANGAN beri diagnosis atau saran medis. Saran ditujukan untuk staff, bukan pasien.
+- Output HANYA JSON valid, tanpa code fence.
+
+Format respons (JSON saja):
+{"summary":"<ringkasan>","next_action":"reply|book|route_doctor|escalate|resolve","reason":"<alasan>"}`
