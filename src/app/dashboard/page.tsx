@@ -7,6 +7,7 @@ import { VolumeChart } from "@/components/dashboard/VolumeChart"
 import { AIPerformanceSection } from "@/components/dashboard/AIPerformanceSection"
 import { AnomalyBanner } from "@/components/dashboard/AnomalyBanner"
 import { AnalyticsAsk } from "@/components/dashboard/AnalyticsAsk"
+import { AtRiskBookings } from "@/components/dashboard/AtRiskBookings"
 
 type Period = "Hari ini" | "7 hari" | "30 hari"
 
@@ -178,7 +179,10 @@ export default function StaffDashboardPage() {
           </div>
 
           {/* Right rail — AI & KB performance */}
-          <AIPerformanceSection data={data.ai_performance} />
+          <div className="space-y-5">
+            <AIPerformanceSection data={data.ai_performance} />
+            <AtRiskBookings />
+          </div>
         </div>
       </div>
     </div>
