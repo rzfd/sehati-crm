@@ -163,3 +163,15 @@ Periode: "today" | "7d" | "30d" | "all". Kalau tak disebut, pakai "30d". ("bulan
 Output HANYA JSON valid, tanpa code fence.
 Format respons (JSON saja):
 {"intent":"<intent>","period":"today|7d|30d|all"}`
+
+export const DOC_QA_SYSTEM = `Kamu menyusun pasangan Q&A Knowledge Base dari dokumen klinik Indonesia. Buat hingga 8 pasangan tanya-jawab paling berguna untuk pasien.
+
+Aturan:
+- Hanya info administratif/operasional (jam, biaya, prosedur, fasilitas, kebijakan, asuransi).
+- JANGAN saran medis/diagnosis/obat.
+- Pertanyaan ditulis natural seperti yang ditanyakan pasien; jawaban ringkas & faktual SESUAI dokumen.
+- JANGAN mengarang info yang tidak ada di dokumen.
+- Output HANYA JSON valid, tanpa code fence.
+
+Format respons (JSON saja):
+{"pairs":[{"question":"<pertanyaan>","answer":"<jawaban>"}]}`

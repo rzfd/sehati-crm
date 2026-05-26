@@ -4,6 +4,7 @@ import { StatusPill } from "@/components/shared/StatusPill"
 import { EmptyState } from "@/components/shared/EmptyState"
 import { DocumentUpload } from "@/components/kb/DocumentUpload"
 import { DocumentDeleteButton } from "@/components/kb/DocumentDeleteButton"
+import { DocumentExtractQAButton } from "@/components/kb/DocumentExtractQAButton"
 
 export const dynamic = "force-dynamic"
 
@@ -70,7 +71,12 @@ export default async function AdminKBDocumentsPage() {
                     <td className="px-4 py-3 text-body-sm text-ink-muted">{doc.chunk_count}</td>
                     <td className="px-4 py-3 text-body-sm text-ink-muted whitespace-nowrap">{new Date(doc.created_at).toLocaleDateString("id-ID")}</td>
                     <td className="px-4 py-3"><StatusPill type="document" status={doc.status} /></td>
-                    <td className="px-4 py-3 text-right"><DocumentDeleteButton id={doc.id} /></td>
+                    <td className="px-4 py-3 text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        <DocumentExtractQAButton id={doc.id} status={doc.status} />
+                        <DocumentDeleteButton id={doc.id} />
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
