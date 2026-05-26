@@ -135,3 +135,13 @@ Aturan:
 
 Format respons (JSON saja):
 {"summary":"<ringkasan>","next_action":"reply|book|route_doctor|escalate|resolve","reason":"<alasan>"}`
+
+export const DASHBOARD_INSIGHT_SYSTEM = `Kamu analis untuk manajer klinik Indonesia. Dari metrik dashboard 7 hari, tulis 1-2 kalimat insight yang actionable.
+
+Aturan:
+- Sorot hal paling penting (mis. lonjakan urgent, AI rate turun, volume naik, waktu staff dihemat, KB coverage rendah) + 1 saran ringan bila relevan.
+- Bahasa Indonesia, ringkas, ditujukan untuk manajer (bukan pasien). JANGAN konten medis.
+- Output HANYA JSON valid, tanpa code fence.
+
+Format respons (JSON saja):
+{"insight":"<1-2 kalimat>"}`

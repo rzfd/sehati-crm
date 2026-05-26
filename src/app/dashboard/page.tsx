@@ -38,6 +38,7 @@ export default function StaffDashboardPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [period, setPeriod] = useState<Period>("7 hari")
+  const [insight, setInsight] = useState<string | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -54,6 +55,30 @@ export default function StaffDashboardPage() {
     })()
     return () => { cancelled = true }
   }, [])
+
+  // Insight AI naratif dari metrik (progressive enhancement; setState hanya di async).
+  useEffect(() => {
+    if (!data) return
+    let cancelled = false
+    fetch("/api/dashboard/insight", {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({
+        total_conversations: data.kpi.total_conversations,
+        ai_handled_pct:      data.kpi.ai_handled_pct,
+        urgent_count:        data.kpi.urgent_count,
+        open_count:          data.kpi.open_count,
+        hit_rate:            data.ai_performance.hit_rate,
+        kb_coverage:         data.ai_performance.kb_coverage,
+        time_saved_minutes:  data.ai_performance.time_saved_minutes,
+        anomalies:           data.anomalies.map((a) => a.message),
+      }),
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (!cancelled && d?.insight) setInsight(d.insight) })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [data])
 
   if (loading) return <div className="p-6 text-body-md text-ink-muted">Memuat dashboard…</div>
   if (error)   return <div className="p-6 text-body-md text-danger">{error}</div>
@@ -119,8 +144,9 @@ export default function StaffDashboardPage() {
               <div>
                 <p className="eyebrow text-primary">Insight AI</p>
                 <p className="text-body-md text-ink mt-1">
-                  AI menangani <strong>{aiHandled.toFixed(0)}%</strong> percakapan otomatis minggu ini,
-                  menghemat estimasi <strong>{totalSaved} menit</strong> waktu staff.
+                  {insight ?? (
+                    <>AI menangani <strong>{aiHandled.toFixed(0)}%</strong> percakapan otomatis minggu ini, menghemat estimasi <strong>{totalSaved} menit</strong> waktu staff.</>
+                  )}
                 </p>
               </div>
             </div>
