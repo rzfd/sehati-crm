@@ -181,11 +181,12 @@ export async function POST(req: Request) {
       patientMessage: patientMsg,
       aiMessage,
       pipeline: {
-        action:     pipeline.action,
-        gatekeeper: pipeline.gatekeeper,
-        triage:     pipeline.triage,
-        decidedAt:  pipeline.decidedAt,
-        reason:     pipeline.reason,
+        action:            pipeline.action,
+        gatekeeper:        pipeline.gatekeeper,
+        triage:            pipeline.triage,
+        decidedAt:         pipeline.decidedAt,
+        reason:            pipeline.reason,
+        bookingSuggestion: pipeline.bookingSuggestion ?? null,
       },
     })
   } catch (err) {

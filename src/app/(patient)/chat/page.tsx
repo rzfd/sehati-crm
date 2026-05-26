@@ -10,14 +10,16 @@ import { ChatBubble } from "@/components/chat/ChatBubble"
 import { ChatInput } from "@/components/chat/ChatInput"
 import { TypingIndicator } from "@/components/chat/TypingIndicator"
 import { EmptyChatIllustration } from "@/components/shared/Illustrations"
+import { PatientBookingCard, type ChatBookingSuggestion } from "@/components/chat/PatientBookingCard"
 import type { SenderType } from "@/lib/constants"
 
 type PipelineAction = "auto_reply" | "escalate" | "booking_request"
 
 interface PipelineSummary {
-  action:    PipelineAction
-  reason:    string
-  decidedAt: string
+  action:             PipelineAction
+  reason:             string
+  decidedAt:          string
+  bookingSuggestion?: ChatBookingSuggestion | null
 }
 
 export default function PatientChatPage() {
@@ -30,6 +32,7 @@ export default function PatientChatPage() {
   const [sending, setSending] = useState(false)
   const [optimistic, setOptimistic] = useState<{ id: string; content: string; ts: number }[]>([])
   const [lastResult, setLastResult] = useState<PipelineSummary | null>(null)
+  const [bookingDismissed, setBookingDismissed] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -69,6 +72,7 @@ export default function PatientChatPage() {
     setOptimistic((prev) => [...prev, { id: tempId, content: text, ts: Date.now() }])
     setSending(true)
     setError(null)
+    setBookingDismissed(false)
     try {
       const res = await fetch("/api/chat", {
         method:  "POST",
@@ -84,9 +88,10 @@ export default function PatientChatPage() {
       }
       if (data.pipeline) {
         setLastResult({
-          action:    data.pipeline.action,
-          reason:    data.pipeline.reason,
-          decidedAt: data.pipeline.decidedAt,
+          action:            data.pipeline.action,
+          reason:            data.pipeline.reason,
+          decidedAt:         data.pipeline.decidedAt,
+          bookingSuggestion: data.pipeline.bookingSuggestion ?? null,
         })
       }
     } catch (err) {
@@ -177,6 +182,16 @@ export default function PatientChatPage() {
       {error && (
         <div className="px-4 py-2 bg-danger-soft text-caption text-danger border-t border-danger/15 flex-shrink-0">
           {error}
+        </div>
+      )}
+
+      {lastResult?.action === "booking_request" && lastResult.bookingSuggestion && !bookingDismissed && conversationId && (
+        <div className="px-4 pb-2 max-w-3xl mx-auto w-full">
+          <PatientBookingCard
+            suggestion={lastResult.bookingSuggestion}
+            conversationId={conversationId}
+            onDismiss={() => setBookingDismissed(true)}
+          />
         </div>
       )}
 
