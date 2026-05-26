@@ -34,6 +34,8 @@ export default function BroadcastsPage() {
   const [sending, setSending] = useState(false)
   const [doctors, setDoctors] = useState<Doctor[]>([])
   const [history, setHistory] = useState<BroadcastRow[]>([])
+  const [goal, setGoal] = useState("")
+  const [composing, setComposing] = useState(false)
 
   useEffect(() => {
     fetch("/api/booking/doctors").then((r) => r.json())
@@ -63,6 +65,25 @@ export default function BroadcastsPage() {
       .catch(() => {})
     return () => { cancelled = true }
   }, [segmentType, segmentValue, needsValue])
+
+  async function composeWithAI() {
+    if (!goal.trim()) return
+    setComposing(true)
+    try {
+      const res = await fetch("/api/broadcasts/compose", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ goal, segment_type: segmentType }),
+      })
+      const d = await res.json().catch(() => ({}))
+      if (!res.ok) { toast.error(d.error ?? "Gagal membuat draft."); return }
+      if (d.title) setTitle(d.title)
+      if (d.body) setBody(d.body)
+      toast.success("Draft dibuat", "Tinjau & edit sebelum kirim.")
+    } finally {
+      setComposing(false)
+    }
+  }
 
   async function send() {
     if (!title.trim() || !body.trim()) { toast.error("Judul & isi wajib."); return }
@@ -130,6 +151,27 @@ export default function BroadcastsPage() {
             {count === null
               ? "Pilih segmen untuk melihat estimasi penerima."
               : <>Estimasi penerima: <span className="font-semibold text-ink">{count} pasien</span></>}
+          </div>
+
+          <div className="rounded-lg border border-primary-dim bg-primary-soft/40 p-3 space-y-2">
+            <label className="block text-body-sm text-primary font-medium flex items-center gap-1.5">
+              <span className="material-symbols-rounded text-[18px]">auto_awesome</span> Buat dengan AI
+            </label>
+            <textarea
+              className="input"
+              rows={2}
+              value={goal}
+              onChange={(e) => setGoal(e.target.value)}
+              placeholder="Tujuan kampanye, mis. promo vaksin flu untuk lansia, diskon 20% sampai akhir bulan"
+            />
+            <button
+              type="button"
+              onClick={composeWithAI}
+              disabled={composing || !goal.trim()}
+              className="btn-sage text-sm w-full justify-center disabled:opacity-60"
+            >
+              {composing ? "Membuat…" : "Draft judul & isi"}
+            </button>
           </div>
 
           <div>
