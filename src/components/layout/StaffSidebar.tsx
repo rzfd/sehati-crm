@@ -21,6 +21,7 @@ const NAV: NavLink[] = [
   { href: "/inbox",     label: "Inbox",     icon: <InboxIcon /> },
   { href: "/calendar",  label: "Kalender",  icon: <CalIcon /> },
   { href: "/dashboard", label: "Dashboard", icon: <DashIcon />, hideFor: ["doctor_assistant"] },
+  { href: "/broadcasts", label: "Broadcast", icon: <BroadcastIcon />, hideFor: ["doctor_assistant", "receptionist", "cs"] },
 ]
 
 export function StaffSidebar() {
@@ -145,6 +146,14 @@ function DashIcon() {
       <rect x="11" y="3" width="6" height="4" rx="1" />
       <rect x="11" y="9" width="6" height="8" rx="1" />
       <rect x="3" y="13" width="6" height="4" rx="1" />
+    </svg>
+  )
+}
+function BroadcastIcon() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" className="size-4">
+      <path d="M3 8v4l9 4V4L3 8Z" strokeLinejoin="round" />
+      <path d="M12 7a3 3 0 0 1 0 6" strokeLinecap="round" />
     </svg>
   )
 }

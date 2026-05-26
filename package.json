@@ -41,6 +41,7 @@
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",
     "voyageai": "^0.2.1",
+    "web-push": "^3.6.7",
     "zustand": "^5.0.13"
   },
   "devDependencies": {
@@ -50,6 +51,7 @@
     "@types/pg": "^8.20.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/web-push": "^3.6.4",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "pg": "^8.20.0",

@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
+import { computeAvailableSlots } from "@/lib/slots"
 
 // GET /api/booking/slots?doctor_id=X&date=YYYY-MM-DD
-// Generate slot dari doctor_schedules untuk day_of_week tertentu,
-// kurangi slot yang sudah dibooked (pending/confirmed).
+// Availability dihitung otoritatif di lib/slots (service client → lihat semua booking).
 export async function GET(req: Request) {
   try {
     const supabase = await createClient()
@@ -17,84 +17,10 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "doctor_id dan date wajib." }, { status: 400 })
     }
 
-    const date = new Date(`${dateStr}T00:00:00`)
-    if (isNaN(date.getTime())) {
-      return NextResponse.json({ error: "Format tanggal invalid." }, { status: 400 })
-    }
-    const dayOfWeek = date.getDay() // 0=Minggu .. 6=Sabtu
-
-    // Cek exception untuk hari ini
-    const { data: exceptions } = await supabase
-      .from("doctor_schedule_exceptions")
-      .select("kind, start_time, end_time")
-      .eq("doctor_id", doctorId)
-      .eq("date", dateStr)
-
-    const fullDay = (exceptions ?? []).some((e) => e.kind === "full_day")
-    if (fullDay) {
-      return NextResponse.json({ slots: [], reason: "Dokter cuti hari ini" })
-    }
-    const partialBlocks = (exceptions ?? []).filter((e) => e.kind === "partial")
-
-    const { data: schedules, error: schedErr } = await supabase
-      .from("doctor_schedules")
-      .select("start_time, end_time, slot_duration_minutes")
-      .eq("doctor_id", doctorId)
-      .eq("day_of_week", dayOfWeek)
-
-    if (schedErr) throw schedErr
-    if (!schedules || schedules.length === 0) {
-      return NextResponse.json({ slots: [] })
-    }
-
-    // Generate semua possible slot dari semua schedule windows hari itu
-    const allSlots: string[] = []
-    for (const s of schedules) {
-      const [sh, sm] = s.start_time.split(":").map(Number)
-      const [eh, em] = s.end_time.split(":").map(Number)
-      const startMin = sh * 60 + sm
-      const endMin   = eh * 60 + em
-      for (let t = startMin; t < endMin; t += s.slot_duration_minutes) {
-        const h = Math.floor(t / 60).toString().padStart(2, "0")
-        const m = (t % 60).toString().padStart(2, "0")
-        allSlots.push(`${h}:${m}:00`)
-      }
-    }
-
-    // Fetch existing bookings untuk hari + dokter
-    const { data: booked } = await supabase
-      .from("bookings")
-      .select("booking_time")
-      .eq("doctor_id", doctorId)
-      .eq("booking_date", dateStr)
-      .in("status", ["pending", "confirmed"])
-
-    const bookedSet = new Set((booked ?? []).map((b) => b.booking_time))
-
-    // Convert partial exceptions ke set of blocked time strings
-    const blockedSet = new Set<string>()
-    for (const block of partialBlocks) {
-      if (!block.start_time || !block.end_time) continue
-      const startBlk = toMinutes(block.start_time)
-      const endBlk   = toMinutes(block.end_time)
-      for (const slot of allSlots) {
-        const sMin = toMinutes(slot)
-        if (sMin >= startBlk && sMin < endBlk) blockedSet.add(slot)
-      }
-    }
-
-    const slots = allSlots
-      .filter((s) => !bookedSet.has(s) && !blockedSet.has(s))
-      .sort((a, b) => a.localeCompare(b))
-
-    return NextResponse.json({ slots })
+    const result = await computeAvailableSlots(doctorId, dateStr)
+    return NextResponse.json(result)
   } catch (err) {
     console.error("[api/booking/slots]", err)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
-}
-
-function toMinutes(t: string): number {
-  const [h, m] = t.split(":").map(Number)
-  return h * 60 + m
 }

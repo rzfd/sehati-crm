@@ -22,6 +22,7 @@ const LABELS: Record<string, string> = {
   settings:    "Klinik",
   security:    "Keamanan",
   "audit-log": "Audit Log",
+  broadcasts:  "Broadcast",
   // patient
   home:        "Beranda",
   chat:        "Chat",

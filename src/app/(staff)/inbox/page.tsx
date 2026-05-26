@@ -150,17 +150,11 @@ export default function StaffInboxPage() {
                       patientMessage={lastPatientMsg.content}
                       clinicId={conv.clinic_id}
                       onUseReply={async (text) => {
-                        const supabase = createClient()
-                        await supabase.from("messages").insert({
-                          conversation_id: conv.id,
-                          sender_type:     "staff",
-                          sender_id:       staff.id,
-                          content:         text,
+                        await fetch(`/api/conversations/${conv.id}/messages`, {
+                          method:  "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body:    JSON.stringify({ content: text }),
                         })
-                        await supabase
-                          .from("conversations")
-                          .update({ last_message_at: new Date().toISOString() })
-                          .eq("id", conv.id)
                         setShowDetails(false)
                       }}
                     />

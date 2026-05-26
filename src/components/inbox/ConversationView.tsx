@@ -95,25 +95,12 @@ export function ConversationView({
     if (!staff) return
     setSending(true)
     try {
-      const supabase = createClient()
-      await supabase.from("messages").insert({
-        conversation_id: conversationId,
-        sender_type:     "staff",
-        sender_id:       staff.id,
-        content:         text,
-        is_internal:     internalMode,
+      // Kirim via API: insert message + update conversation + notif pasien (server-side).
+      await fetch(`/api/conversations/${conversationId}/messages`, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ content: text, is_internal: internalMode }),
       })
-      if (!internalMode) {
-        const { data: conv } = await supabase
-          .from("conversations").select("assigned_to").eq("id", conversationId).maybeSingle()
-        await supabase
-          .from("conversations")
-          .update({
-            last_message_at: new Date().toISOString(),
-            ...(conv?.assigned_to ? {} : { assigned_to: staff.id }),
-          })
-          .eq("id", conversationId)
-      }
     } finally {
       setSending(false)
     }

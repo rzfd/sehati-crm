@@ -1,10 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { toast } from "@/lib/toast"
 
 interface Clinic {
   id:       string
   name:     string
+  slug:     string
   address:  string | null
   phone:    string | null
   logo_url: string | null
@@ -78,6 +80,31 @@ export default function ClinicSettingsPage() {
       {!clinic ? (
         <p className="text-sm text-danger">{error ?? "Klinik tidak ditemukan."}</p>
       ) : (
+        <>
+        <div className="card p-5 space-y-2">
+          <div>
+            <p className="text-sm font-medium text-ink">Link registrasi pasien</p>
+            <p className="text-xs text-ink-muted">Bagikan link ini (atau jadikan QR) agar pasien mendaftar langsung ke klinik Anda.</p>
+          </div>
+          <div className="flex gap-2">
+            <input
+              readOnly
+              className="input font-mono text-xs"
+              value={`${typeof window !== "undefined" ? window.location.origin : ""}/register?c=${clinic.slug}`}
+              onClick={(e) => (e.target as HTMLInputElement).select()}
+            />
+            <button
+              type="button"
+              onClick={() => {
+                navigator.clipboard?.writeText(`${window.location.origin}/register?c=${clinic.slug}`)
+                toast.success("Link disalin")
+              }}
+              className="btn-secondary shrink-0"
+            >
+              Salin
+            </button>
+          </div>
+        </div>
         <form onSubmit={save} className="card p-5 space-y-3">
           <div>
             <label className="block text-xs text-ink-muted mb-1">Nama klinik</label>
@@ -101,6 +128,7 @@ export default function ClinicSettingsPage() {
             {saving ? "Menyimpan…" : "Simpan"}
           </button>
         </form>
+        </>
       )}
     </div>
   )

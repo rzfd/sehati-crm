@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createServiceClient } from "@/lib/supabase/service"
+import { notify, notificationContent } from "@/lib/notifications"
 
 // GET /api/cron/booking-reminders
 // Dipanggil oleh cron eksternal (Vercel Cron, GitHub Actions, atau pg_cron).
@@ -34,6 +35,23 @@ export async function GET(req: Request) {
       const { error: logErr } = await supabase.from("booking_reminders_log").insert(logs)
       if (logErr) console.error("[cron/reminders] log insert:", logErr)
     }
+
+    // Buat notifikasi in-app (+ push Phase 2) untuk tiap reminder (best-effort, paralel).
+    await Promise.all(
+      list.map((r) =>
+        notify({
+          clinicId:  r.clinic_id,
+          patientId: r.patient_id,
+          type:      "booking_reminder",
+          ...notificationContent("booking_reminder", {
+            doctorName: r.doctor_name,
+            date:       r.booking_date,
+            time:       r.booking_time,
+          }),
+          metadata:  { booking_id: r.booking_id },
+        }),
+      ),
+    )
 
     // Place to integrate WA/SMS/email provider. Untuk sekarang return data
     // supaya caller bisa proses (mis. Vercel Cron + WhatsApp Business API).

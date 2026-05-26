@@ -36,7 +36,7 @@ export default function PatientBookingPage() {
   }
 
   return (
-    <div className="px-mobile-margin pt-6 pb-6">
+    <div className="p-6 lg:p-8 max-w-2xl">
       <h1 className="text-headline-lg text-ink mb-1">Booking Jadwal</h1>
       <p className="text-body-md text-ink-muted mb-5">Pilih dokter dan waktu yang tersedia.</p>
 

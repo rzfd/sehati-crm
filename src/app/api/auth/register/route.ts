@@ -3,7 +3,7 @@ import { createServiceClient } from "@/lib/supabase/service"
 
 export async function POST(req: Request) {
   try {
-    const { name, phone, email, password } = await req.json()
+    const { name, phone, email, password, clinic: clinicSlug } = await req.json()
 
     if (!name || !email || !password) {
       return NextResponse.json({ error: "Data tidak lengkap." }, { status: 400 })
@@ -14,18 +14,17 @@ export async function POST(req: Request) {
 
     const supabase = createServiceClient()
 
-    // Get default clinic
-    const { data: clinic, error: clinicErr } = await supabase
-      .from("clinics")
-      .select("id")
-      .limit(1)
-      .single()
-    if (clinicErr || !clinic) {
-      console.error("[register] clinic lookup failed:", clinicErr)
-      return NextResponse.json(
-        { error: "Klinik tidak ditemukan. Hubungi administrator." },
-        { status: 500 }
-      )
+    // Klinik tujuan: dari slug (link registrasi per klinik) atau fallback single-clinic
+    // (dev) bila hanya ada satu klinik.
+    let clinicId: string | null = null
+    if (clinicSlug) {
+      const { data: c } = await supabase.from("clinics").select("id").eq("slug", clinicSlug).maybeSingle()
+      if (!c) return NextResponse.json({ error: "Klinik tidak ditemukan." }, { status: 404 })
+      clinicId = c.id
+    } else {
+      const { data: list } = await supabase.from("clinics").select("id").limit(2)
+      if (list && list.length === 1) clinicId = list[0].id
+      else return NextResponse.json({ error: "Pilih klinik untuk mendaftar." }, { status: 400 })
     }
 
     // Create auth user (email_confirm: true skips email verification)
@@ -45,7 +44,7 @@ export async function POST(req: Request) {
     // Create patient record
     const { error: patientErr } = await supabase.from("patients").insert({
       user_id:   authData.user.id,
-      clinic_id: clinic.id,
+      clinic_id: clinicId!,
       name,
       phone:     phone || null,
     })

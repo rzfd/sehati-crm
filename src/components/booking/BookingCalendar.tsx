@@ -6,6 +6,7 @@ import { id as idLocale } from "date-fns/locale"
 import { createClient } from "@/lib/supabase/client"
 import { cn } from "@/lib/utils"
 import { toast } from "@/lib/toast"
+import { RescheduleModal } from "@/components/booking/RescheduleModal"
 
 interface Booking {
   id:            string
@@ -38,6 +39,8 @@ export function BookingCalendar({ clinicId }: Props) {
   const [loading, setLoading]   = useState(true)
   const [selected, setSelected] = useState<Booking | null>(null)
   const [updating, setUpdating] = useState(false)
+  const [reschedule, setReschedule] = useState<Booking | null>(null)
+  const [refreshTick, setRefreshTick] = useState(0)
 
   async function updateStatus(newStatus: "confirmed" | "cancelled" | "completed" | "no_show") {
     if (!selected) return
@@ -94,7 +97,7 @@ export function BookingCalendar({ clinicId }: Props) {
       setLoading(false)
     })()
     return () => { cancelled = true }
-  }, [weekStart, clinicId])
+  }, [weekStart, clinicId, refreshTick])
 
   // Build doctor color map (stable across week)
   const doctorIds = Array.from(new Set(bookings.map((b) => b.doctor_id)))
@@ -250,10 +253,30 @@ export function BookingCalendar({ clinicId }: Props) {
                   </button>
                 </div>
               )}
+              {(selected.status === "pending" || selected.status === "confirmed") && (
+                <button
+                  onClick={() => { setReschedule(selected); setSelected(null) }}
+                  disabled={updating}
+                  className="btn-secondary w-full justify-center"
+                >
+                  <span className="material-symbols-rounded text-[18px]">edit_calendar</span>
+                  Jadwalkan ulang
+                </button>
+              )}
               <button onClick={() => setSelected(null)} className="btn-secondary w-full justify-center">Tutup</button>
             </div>
           </div>
         </div>
+      )}
+
+      {reschedule && (
+        <RescheduleModal
+          bookingId={reschedule.id}
+          doctorId={reschedule.doctor_id}
+          doctorName={reschedule.doctor?.name}
+          onClose={() => setReschedule(null)}
+          onDone={() => setRefreshTick((t) => t + 1)}
+        />
       )}
     </div>
   )

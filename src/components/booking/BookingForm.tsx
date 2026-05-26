@@ -120,7 +120,7 @@ export function BookingForm({ onSubmitted }: BookingFormProps) {
           ) : doctors.length === 0 ? (
             <p className="text-body-md text-ink-muted">Belum ada dokter aktif di klinik ini.</p>
           ) : (
-            <div className="space-y-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {doctors.map((d) => {
                 const sel = doctor?.id === d.id
                 return (

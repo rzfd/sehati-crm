@@ -9,6 +9,7 @@ export type Database = {
         Row: {
           id:         string
           name:       string
+          slug:       string
           address:    string | null
           phone:      string | null
           logo_url:   string | null
@@ -19,6 +20,7 @@ export type Database = {
         Insert: {
           id?:        string
           name:       string
+          slug?:      string
           address?:   string | null
           phone?:     string | null
           logo_url?:  string | null
@@ -27,6 +29,87 @@ export type Database = {
           updated_at?: string
         }
         Update: Partial<Database["public"]["Tables"]["clinics"]["Insert"]>
+        Relationships: []
+      }
+
+      notifications: {
+        Row: {
+          id:         string
+          clinic_id:  string
+          patient_id: string
+          type:       string
+          title:      string
+          body:       string
+          link:       string | null
+          metadata:   Json
+          read_at:    string | null
+          created_at: string
+        }
+        Insert: {
+          id?:         string
+          clinic_id:   string
+          patient_id:  string
+          type:        string
+          title:       string
+          body:        string
+          link?:       string | null
+          metadata?:   Json
+          read_at?:    string | null
+          created_at?: string
+        }
+        Update: Partial<Database["public"]["Tables"]["notifications"]["Insert"]>
+        Relationships: []
+      }
+
+      push_subscriptions: {
+        Row: {
+          id:         string
+          patient_id: string
+          endpoint:   string
+          p256dh:     string
+          auth:       string
+          user_agent: string | null
+          created_at: string
+        }
+        Insert: {
+          id?:         string
+          patient_id:  string
+          endpoint:    string
+          p256dh:      string
+          auth:        string
+          user_agent?: string | null
+          created_at?: string
+        }
+        Update: Partial<Database["public"]["Tables"]["push_subscriptions"]["Insert"]>
+        Relationships: []
+      }
+
+      broadcasts: {
+        Row: {
+          id:              string
+          clinic_id:       string
+          created_by:      string | null
+          title:           string
+          body:            string
+          link:            string | null
+          segment_type:    string
+          segment_value:   string | null
+          recipient_count: number
+          created_at:      string
+        }
+        Insert: {
+          id?:              string
+          clinic_id:        string
+          created_by?:      string | null
+          title:            string
+          body:             string
+          link?:            string | null
+          segment_type:     string
+          segment_value?:   string | null
+          recipient_count?: number
+          created_at?:      string
+        }
+        Update: Partial<Database["public"]["Tables"]["broadcasts"]["Insert"]>
         Relationships: []
       }
 
@@ -544,6 +627,7 @@ export type Database = {
         Returns: {
           booking_id:    string
           clinic_id:     string
+          patient_id:    string
           patient_name:  string
           patient_phone: string | null
           doctor_name:   string
@@ -565,6 +649,8 @@ export type Clinic          = Tables["clinics"]["Row"]
 export type Doctor          = Tables["doctors"]["Row"]
 export type DoctorSchedule  = Tables["doctor_schedules"]["Row"]
 export type StaffMember     = Tables["staff_members"]["Row"]
+export type Notification    = Tables["notifications"]["Row"]
+export type PushSubscription = Tables["push_subscriptions"]["Row"]
 export type Patient         = Tables["patients"]["Row"]
 export type Conversation    = Tables["conversations"]["Row"]
 export type Message         = Tables["messages"]["Row"]

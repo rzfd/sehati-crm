@@ -1,16 +1,28 @@
-import { PatientBottomNav } from "@/components/layout/PatientBottomNav"
-import { Breadcrumb } from "@/components/layout/Breadcrumb"
+"use client"
+
+import { usePathname } from "next/navigation"
+import { PatientSidebar } from "@/components/layout/PatientSidebar"
+import { PatientTopbar } from "@/components/layout/PatientTopbar"
+import { PatientRightRail } from "@/components/layout/PatientRightRail"
 
 export default function PatientLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname() ?? ""
+
+  // Onboarding adalah wizard satu arah pra-dashboard — tampil tanpa shell.
+  if (pathname.startsWith("/onboarding")) {
+    return <div className="min-h-screen overflow-auto bg-background">{children}</div>
+  }
+
+  // 3-kolom dashboard: sidebar + main (topbar + konten) + right rail.
+  // Pola mengikuti (staff)/layout.tsx yang sudah teruji di Next 16.
   return (
-    // h-[100dvh] supaya BottomNav selalu di bawah viewport + main scrollable.
-    // dvh > vh untuk mobile karena handle hide/show address bar.
-    <div className="flex flex-col h-[100dvh] max-w-md mx-auto bg-background overflow-hidden">
-      <main className="flex-1 flex flex-col overflow-hidden min-h-0">
-        <Breadcrumb />
-        <div className="flex-1 min-h-0 overflow-y-auto">{children}</div>
+    <div className="flex h-screen overflow-hidden bg-background">
+      <PatientSidebar />
+      <main className="flex-1 flex flex-col overflow-hidden min-w-0">
+        <PatientTopbar />
+        <div className="flex-1 min-h-0 overflow-auto">{children}</div>
       </main>
-      <PatientBottomNav />
+      <PatientRightRail />
     </div>
   )
 }

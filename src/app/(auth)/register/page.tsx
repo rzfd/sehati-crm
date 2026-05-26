@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
@@ -14,6 +14,19 @@ export default function RegisterPage() {
   const [form, setForm] = useState({ name: "", phone: "", email: "", password: "" })
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [clinicSlug, setClinicSlug] = useState<string | null>(null)
+  const [clinicName, setClinicName] = useState<string | null>(null)
+
+  // Baca ?c=<slug> dari link registrasi klinik (tanpa useSearchParams agar tidak
+  // butuh Suspense boundary). setState hanya di callback async.
+  useEffect(() => {
+    const c = new URLSearchParams(window.location.search).get("c")
+    if (!c) return
+    fetch(`/api/clinic/by-slug?c=${encodeURIComponent(c)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => { setClinicSlug(c); if (d?.name) setClinicName(d.name) })
+      .catch(() => { setClinicSlug(c) })
+  }, [])
 
   function update(field: string, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -39,6 +52,7 @@ export default function RegisterPage() {
         phone:    form.phone,
         email:    form.email,
         password: form.password,
+        clinic:   clinicSlug,
       }),
     })
     const result = await res.json()
@@ -72,7 +86,11 @@ export default function RegisterPage() {
         <div className="text-center mb-8 flex flex-col items-center">
           <Logo size={40} withText variant="sage" className="mb-3" />
           <h1 className="text-headline-md text-ink">Daftar akun pasien</h1>
-          <p className="text-body-md text-ink-muted mt-1">Buat akun untuk mulai konsultasi</p>
+          <p className="text-body-md text-ink-muted mt-1">
+            {clinicName
+              ? <>di <span className="font-semibold text-ink">{clinicName}</span></>
+              : "Buat akun untuk mulai konsultasi"}
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="card p-6 space-y-4">
@@ -142,6 +160,12 @@ export default function RegisterPage() {
           Sudah punya akun?{" "}
           <Link href="/login" className="text-primary hover:underline font-medium">
             Masuk
+          </Link>
+        </p>
+        <p className="text-center text-sm text-ink-muted mt-2">
+          Punya klinik?{" "}
+          <Link href="/register-clinic" className="text-primary hover:underline font-medium">
+            Daftarkan klinik
           </Link>
         </p>
       </div>

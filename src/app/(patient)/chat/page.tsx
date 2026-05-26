@@ -127,49 +127,51 @@ export default function PatientChatPage() {
         Untuk keadaan darurat, segera ke IGD terdekat. AI di sini tidak memberi diagnosis.
       </div>
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto chat-scroll px-4 py-4 flex flex-col gap-4">
-        {msgLoading ? (
-          <p className="text-body-md text-ink-dim text-center">Memuat pesan…</p>
-        ) : messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center mt-8 px-4 text-center">
-            <EmptyChatIllustration className="w-48 h-auto mb-3" />
-            <p className="text-headline-sm text-ink">Sapa Tim Klinik 👋</p>
-            <p className="text-body-md text-ink-muted mt-1 max-w-xs">
-              Tanya jam buka, biaya, BPJS, atau apapun tentang klinik. AI siap bantu 24/7.
-            </p>
-            <div className="flex flex-wrap gap-2 justify-center mt-4">
-              <button onClick={() => handleSend("Apakah klinik buka hari ini?")} className="pill-sukses hover:bg-primary-dim transition-colors">Jam buka?</button>
-              <button onClick={() => handleSend("Berapa biaya konsul dokter umum?")} className="pill-sukses hover:bg-primary-dim transition-colors">Biaya konsul?</button>
-              <button onClick={() => handleSend("Apakah klinik menerima BPJS?")} className="pill-sukses hover:bg-primary-dim transition-colors">BPJS?</button>
+      <div ref={scrollRef} className="flex-1 overflow-y-auto chat-scroll">
+        <div className="max-w-3xl mx-auto w-full px-4 py-4 flex flex-col gap-4">
+          {msgLoading ? (
+            <p className="text-body-md text-ink-dim text-center">Memuat pesan…</p>
+          ) : messages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center mt-8 px-4 text-center">
+              <EmptyChatIllustration className="w-48 h-auto mb-3" />
+              <p className="text-headline-sm text-ink">Sapa Tim Klinik 👋</p>
+              <p className="text-body-md text-ink-muted mt-1 max-w-xs">
+                Tanya jam buka, biaya, BPJS, atau apapun tentang klinik. AI siap bantu 24/7.
+              </p>
+              <div className="flex flex-wrap gap-2 justify-center mt-4">
+                <button onClick={() => handleSend("Apakah klinik buka hari ini?")} className="pill-sukses hover:bg-primary-dim transition-colors">Jam buka?</button>
+                <button onClick={() => handleSend("Berapa biaya konsul dokter umum?")} className="pill-sukses hover:bg-primary-dim transition-colors">Biaya konsul?</button>
+                <button onClick={() => handleSend("Apakah klinik menerima BPJS?")} className="pill-sukses hover:bg-primary-dim transition-colors">BPJS?</button>
+              </div>
             </div>
-          </div>
-        ) : (
-          <>
-            <div className="flex justify-center my-1">
-              <span className="text-caption px-3 py-1 bg-surface-alt rounded-full text-ink-muted">
-                {format(new Date(), "'Hari ini' · EEE d MMM yyyy")}
-              </span>
-            </div>
-            {messages.map((m) => (
-              <ChatBubble
-                key={m.id}
-                senderType={m.sender_type as SenderType}
-                content={m.content}
-                timestamp={format(new Date(m.created_at), "HH:mm")}
-              />
-            ))}
-            {optimistic.map((o) => (
-              <ChatBubble
-                key={o.id}
-                senderType="patient"
-                content={o.content}
-                timestamp={format(new Date(o.ts), "HH:mm")}
-                pending
-              />
-            ))}
-          </>
-        )}
-        {sending && <TypingIndicator label="AI sedang menganalisis…" />}
+          ) : (
+            <>
+              <div className="flex justify-center my-1">
+                <span className="text-caption px-3 py-1 bg-surface-alt rounded-full text-ink-muted">
+                  {format(new Date(), "'Hari ini' · EEE d MMM yyyy")}
+                </span>
+              </div>
+              {messages.map((m) => (
+                <ChatBubble
+                  key={m.id}
+                  senderType={m.sender_type as SenderType}
+                  content={m.content}
+                  timestamp={format(new Date(m.created_at), "HH:mm")}
+                />
+              ))}
+              {optimistic.map((o) => (
+                <ChatBubble
+                  key={o.id}
+                  senderType="patient"
+                  content={o.content}
+                  timestamp={format(new Date(o.ts), "HH:mm")}
+                  pending
+                />
+              ))}
+            </>
+          )}
+          {sending && <TypingIndicator label="AI sedang menganalisis…" />}
+        </div>
       </div>
 
       {error && (

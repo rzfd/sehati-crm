@@ -72,7 +72,7 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-full flex flex-col bg-background">
+    <div className="min-h-screen w-full max-w-md mx-auto flex flex-col bg-background">
       <header className="p-4 flex items-center justify-between">
         <Logo size={28} withText variant="sage" />
         <span className="text-body-sm text-ink-muted">Langkah {step}/3</span>
