@@ -75,6 +75,22 @@ export function BookingCalendar({ clinicId }: Props) {
     }
   }
 
+  async function sendFollowup() {
+    if (!selected) return
+    setUpdating(true)
+    try {
+      const res = await fetch(`/api/booking/${selected.id}/followup`, { method: "POST" })
+      if (res.ok) {
+        toast.success("Follow-up terkirim")
+      } else {
+        const d = await res.json().catch(() => ({}))
+        toast.error("Gagal", d.error ?? "Tidak bisa kirim follow-up.")
+      }
+    } finally {
+      setUpdating(false)
+    }
+  }
+
   const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i))
 
   useEffect(() => {
@@ -261,6 +277,16 @@ export function BookingCalendar({ clinicId }: Props) {
                 >
                   <span className="material-symbols-rounded text-[18px]">edit_calendar</span>
                   Jadwalkan ulang
+                </button>
+              )}
+              {selected.status === "completed" && (
+                <button
+                  onClick={sendFollowup}
+                  disabled={updating}
+                  className="btn-secondary w-full justify-center"
+                >
+                  <span className="material-symbols-rounded text-[18px]">forward_to_inbox</span>
+                  {updating ? "..." : "Kirim follow-up (AI)"}
                 </button>
               )}
               <button onClick={() => setSelected(null)} className="btn-secondary w-full justify-center">Tutup</button>
