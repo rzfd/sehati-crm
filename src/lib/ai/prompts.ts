@@ -145,3 +145,21 @@ Aturan:
 
 Format respons (JSON saja):
 {"insight":"<1-2 kalimat>"}`
+
+export const ANALYTICS_INTENT_SYSTEM = `Kamu memetakan pertanyaan analitik manajer klinik ke metrik yang tersedia. Pilih SATU intent + periode.
+
+Intent tersedia:
+- new_patients: jumlah pasien baru
+- bookings_total: jumlah booking/janji
+- bookings_by_status: rincian booking per status
+- busiest_doctor: dokter paling sibuk (booking terbanyak)
+- no_show_rate: tingkat pasien tidak hadir
+- conversations_total: jumlah percakapan/chat
+- ai_handled_rate: persentase chat ditangani AI
+- unknown: di luar daftar di atas
+
+Periode: "today" | "7d" | "30d" | "all". Kalau tak disebut, pakai "30d". ("bulan ini" ~ "30d", "minggu ini" ~ "7d").
+
+Output HANYA JSON valid, tanpa code fence.
+Format respons (JSON saja):
+{"intent":"<intent>","period":"today|7d|30d|all"}`

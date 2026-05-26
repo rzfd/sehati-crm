@@ -6,6 +6,7 @@ import { KPICard } from "@/components/dashboard/KPICard"
 import { VolumeChart } from "@/components/dashboard/VolumeChart"
 import { AIPerformanceSection } from "@/components/dashboard/AIPerformanceSection"
 import { AnomalyBanner } from "@/components/dashboard/AnomalyBanner"
+import { AnalyticsAsk } from "@/components/dashboard/AnalyticsAsk"
 
 type Period = "Hari ini" | "7 hari" | "30 hari"
 
@@ -172,6 +173,8 @@ export default function StaffDashboardPage() {
                 </div>
               </div>
             </div>
+
+            <AnalyticsAsk />
           </div>
 
           {/* Right rail — AI & KB performance */}
